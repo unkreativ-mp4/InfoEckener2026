@@ -88,17 +88,17 @@ public class Main extends InputAdapter implements ApplicationListener {
         float speed = 4f;
         float delta = Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             diamondSwordSprite.translateX(speed * delta); // move the bucket right
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             diamondSwordSprite.translateX(-speed * delta); // move the bucket left
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            diamondSwordSprite.translateY(speed * delta); // move the bucket left
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            diamondSwordSprite.translateY(speed * delta); // move the bucket up
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            diamondSwordSprite.translateY(-speed * delta); // move the bucket left
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            diamondSwordSprite.translateY(-speed * delta); // move the bucket down
         }
     }
     // Note: you can override methods from InputAdapter API to handle user's input.
