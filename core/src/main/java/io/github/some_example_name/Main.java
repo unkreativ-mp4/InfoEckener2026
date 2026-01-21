@@ -2,6 +2,7 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -51,7 +52,8 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-
+        input();
+        //logic();
         draw();
     }
 
@@ -82,5 +84,22 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.end();
     }
 
+    private void input() {
+        float speed = 4f;
+        float delta = Gdx.graphics.getDeltaTime();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            diamondSwordSprite.translateX(speed * delta); // move the bucket right
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            diamondSwordSprite.translateX(-speed * delta); // move the bucket left
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            diamondSwordSprite.translateY(speed * delta); // move the bucket left
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            diamondSwordSprite.translateY(-speed * delta); // move the bucket left
+        }
+    }
     // Note: you can override methods from InputAdapter API to handle user's input.
 }
