@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -53,7 +54,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     @Override
     public void render() {
         input();
-        //logic();
+        logic();
         draw();
     }
 
@@ -100,6 +101,18 @@ public class Main extends InputAdapter implements ApplicationListener {
         else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             diamondSwordSprite.translateY(-speed * delta); // move the bucket left
         }
+    }
+
+    private void logic() {
+        float worldWidth = viewport.getWorldWidth();
+        float worldHeight = viewport.getWorldHeight();
+
+        // Store the bucket size for brevity
+        float bucketWidth = diamondSwordSprite.getWidth();
+        float bucketHeight = diamondSwordSprite.getHeight();
+
+        // Subtract the bucket width
+        diamondSwordSprite.setX(MathUtils.clamp(diamondSwordSprite.getX(), 0, worldWidth - bucketWidth));
     }
     // Note: you can override methods from InputAdapter API to handle user's input.
 }
