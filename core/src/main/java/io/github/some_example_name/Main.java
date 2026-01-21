@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -15,13 +16,23 @@ public class Main extends InputAdapter implements ApplicationListener {
     SpriteBatch spriteBatch;
     FitViewport viewport;
 
-    Texture diamond_sword_texture;
+    Sprite diamondSwordSprite;
+    //Sprite backgroundTextureSprite;
+
+    Texture diamondSwordTexture;
+    Texture backgroundTexture;
 
     @Override
     public void create() {
         Gdx.input.setInputProcessor(this);
 
-        diamond_sword_texture = new Texture("Diamond_Sword_texture.png");
+        diamondSwordTexture = new Texture("Diamond_Sword_texture.png");
+        diamondSwordSprite = new Sprite(diamondSwordTexture); // Initialize the sprite based on the texture
+        diamondSwordSprite.setSize(1, 1); // Define the size of the sprite
+
+        backgroundTexture = new Texture("BackgroundTexture.jpg");
+       // backgroundTextureSprite = new Sprite(backgroundTexture);
+       // backgroundTextureSprite.setSize(1, 1);
 
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(8, 5);
@@ -62,7 +73,11 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
         spriteBatch.begin();
 
-        spriteBatch.draw(diamond_sword_texture, 0, 0, 1, 1);
+        float worldWidth = viewport.getWorldWidth();
+        float worldHeight = viewport.getWorldHeight();
+
+        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
+        diamondSwordSprite.draw(spriteBatch); // Sprites have their own draw method
 
         spriteBatch.end();
     }
