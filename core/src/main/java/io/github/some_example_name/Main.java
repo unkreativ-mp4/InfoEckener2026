@@ -108,11 +108,12 @@ public class Main extends InputAdapter implements ApplicationListener {
         float worldHeight = viewport.getWorldHeight();
 
         // Store the bucket size for brevity
-        float bucketWidth = diamondSwordSprite.getWidth();
-        float bucketHeight = diamondSwordSprite.getHeight();
+        float diamondSwordWidth = diamondSwordSprite.getWidth();
+        float diamondSwordHeight = diamondSwordSprite.getHeight();
 
         // Subtract the bucket width
-        diamondSwordSprite.setX(MathUtils.clamp(diamondSwordSprite.getX(), 0, worldWidth - bucketWidth));
+        diamondSwordSprite.setX(MathUtils.clamp(diamondSwordSprite.getX(), 0, worldWidth - diamondSwordWidth));
+        diamondSwordSprite.setY(MathUtils.clamp(diamondSwordSprite.getY(), 0, worldHeight - diamondSwordHeight));
     }
     // Note: you can override methods from InputAdapter API to handle user's input.
 }
