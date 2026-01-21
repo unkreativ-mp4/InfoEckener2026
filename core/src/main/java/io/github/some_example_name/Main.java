@@ -18,44 +18,47 @@ public class Main extends InputAdapter implements ApplicationListener {
     SpriteBatch spriteBatch;
     FitViewport viewport;
 
-    Sprite diamondSwordSprite;
-    //Sprite backgroundTextureSprite;
-
-    Texture diamondSwordTexture;
     Texture backgroundTexture;
+
+    Player player;
+    GameUI ui;
 
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(this);
-
-        diamondSwordTexture = new Texture("Diamond_Sword_texture.png");
-        diamondSwordSprite = new Sprite(diamondSwordTexture); // Initialize the sprite based on the texture
-        diamondSwordSprite.setSize(1, 1); // Define the size of the sprite
-
-        backgroundTexture = new Texture("BackgroundTexture.jpg");
-       // backgroundTextureSprite = new Sprite(backgroundTexture);
-       // backgroundTextureSprite.setSize(1, 1);
 
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(8, 5);
+
+        backgroundTexture = new Texture("BackgroundTexture.jpg");
+        Texture swordTexture = new Texture("Diamond_Sword_Texture.png");
+
+        player = new Player(swordTexture);
+        ui = new GameUI(spriteBatch);
+        Gdx.input.setInputProcessor(ui.getStage());
+
+
     }
 
     @Override
     public void resize(int width, int height) {
 
         viewport.update(width, height, true);
-        // If the window is minimized on a desktop (LWJGL3) platform, width and height are 0, which causes problems.
-        // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
         if(width <= 0 || height <= 0) return;
 
-        // Resize your screen here. The parameters represent the new window size.
+        viewport.update(width, height, true);
+        ui.resize(width, height);
     }
 
     @Override
     public void render() {
-        input();
-        logic();
+        player.playerMovement();
+        player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
+
+        float delta = Gdx.graphics.getDeltaTime();
+
+        ui.update(delta);
         draw();
+        ui.draw();
     }
 
     @Override
@@ -80,48 +83,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         float worldHeight = viewport.getWorldHeight();
 
         spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
-        diamondSwordSprite.draw(spriteBatch); // Sprites have their own draw method
+        player.draw(spriteBatch);
 
         spriteBatch.end();
     }
-
-    private void input() {
-        float speed = 4f;
-        float delta = Gdx.graphics.getDeltaTime();
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            diamondSwordSprite.translateX(speed * delta); // move the bucket right
-            diamondSwordSprite.setFlip(false, false);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            diamondSwordSprite.translateX(-speed * delta); // move the bucket left
-            diamondSwordSprite.setFlip(true, false);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            diamondSwordSprite.translateY(speed * delta); // move the bucket up
-            diamondSwordSprite.setFlip(true, false);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            diamondSwordSprite.translateY(-speed * delta); // move the bucket down
-            diamondSwordSprite.setFlip(false, true);
-        }
-    }
-
-    private void logic() {
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
-
-        // Store the bucket size for brevity
-        float diamondSwordWidth = diamondSwordSprite.getWidth();
-        float diamondSwordHeight = diamondSwordSprite.getHeight();
-
-        // Subtract the bucket width
-        diamondSwordSprite.setX(MathUtils.clamp(diamondSwordSprite.getX(), 0, worldWidth - diamondSwordWidth));
-        diamondSwordSprite.setY(MathUtils.clamp(diamondSwordSprite.getY(), 0, worldHeight - diamondSwordHeight));
-
-
-
-
-    }
-    // Note: you can override methods from InputAdapter API to handle user's input.
 }
