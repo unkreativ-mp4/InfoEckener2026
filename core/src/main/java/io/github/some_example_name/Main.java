@@ -91,15 +91,19 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             diamondSwordSprite.translateX(speed * delta); // move the bucket right
+            diamondSwordSprite.setFlip(false, false);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             diamondSwordSprite.translateX(-speed * delta); // move the bucket left
+            diamondSwordSprite.setFlip(true, false);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             diamondSwordSprite.translateY(speed * delta); // move the bucket up
+            diamondSwordSprite.setFlip(true, false);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
             diamondSwordSprite.translateY(-speed * delta); // move the bucket down
+            diamondSwordSprite.setFlip(false, true);
         }
     }
 
@@ -114,6 +118,10 @@ public class Main extends InputAdapter implements ApplicationListener {
         // Subtract the bucket width
         diamondSwordSprite.setX(MathUtils.clamp(diamondSwordSprite.getX(), 0, worldWidth - diamondSwordWidth));
         diamondSwordSprite.setY(MathUtils.clamp(diamondSwordSprite.getY(), 0, worldHeight - diamondSwordHeight));
+
+
+
+
     }
     // Note: you can override methods from InputAdapter API to handle user's input.
 }
