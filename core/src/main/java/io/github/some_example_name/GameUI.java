@@ -14,18 +14,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class GameUI {
 
     private Stage stage;
-    private Table inventoryTable;
-    private boolean inventoryVisible;
-    private float inventoryScale = 2.5f;
-
-    static final float BASE_SLOT_SIZE = 48f;
-    static final float BASE_SLOT_PAD  = 4f;
-    static final float BASE_INV_PAD   = 12f;
-
-    float slotSize = BASE_SLOT_SIZE * inventoryScale;
-    float slotPad  = BASE_SLOT_PAD  * inventoryScale;
-    float invPad   = BASE_INV_PAD   * inventoryScale;
-
 
     public GameUI(SpriteBatch batch) {
         stage = new Stage(new ScreenViewport(), batch);
@@ -33,32 +21,14 @@ public class GameUI {
         Table rootTable = new Table();
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
-        rootTable.setDebug(true);
 
-        inventoryTable = new Table();
-
-        inventoryTable.pad(invPad);
-        inventoryTable.defaults().size(slotSize).pad(slotPad);
-
-        inventoryTable.setDebug(false);
-
+        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
-        NinePatch inventoryTexturePatch = new NinePatch(inventoryTexture, 40, 40, 40, 40);
-        inventoryTable.setBackground(new NinePatchDrawable(inventoryTexturePatch));
+        InventoryUI inventory = new InventoryUI(inventoryTexture, slotTexture, 2.5f, 4, 7);
 
-        rootTable.center();
-        rootTable.add(inventoryTable).center();
-
-        int rows = 4;
-        int cols = 7;
-
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                Table slot = createSlot();
-                inventoryTable.add(createSlot());
-            }
-            inventoryTable.row();
-        }
+        rootTable.setDebug(true);
+        inventory.setDebug(true);
+        rootTable.add(inventory).center();
     }
 
     public void update(float delta) {
@@ -76,24 +46,7 @@ public class GameUI {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
-
-
-    private Table createSlot() {
-        Table slot = new Table();
-
-        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
-        NinePatch InventorySlotPatch = new NinePatch(slotTexture, 6, 6, 6, 6);
-        slot.setBackground(new NinePatchDrawable(InventorySlotPatch));
-
-        slot.setDebug(true);
-        return slot;
-    }
-
-    public void toggleInventory() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            inventoryVisible = true;
-        }
-
-    }
-
 }
+
+
+

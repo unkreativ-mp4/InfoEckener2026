@@ -37,11 +37,11 @@ public class Main extends InputAdapter implements ApplicationListener {
         ui = new GameUI(spriteBatch);
         ui.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        InputMultiplexer multiplexer = new InputMultiplexer();
+       /* InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(ui.getStage()); // Stage first
         multiplexer.addProcessor(this);         // Main for keypresses
 
-        Gdx.input.setInputProcessor(multiplexer);
+        Gdx.input.setInputProcessor(multiplexer);*/
 
 
     }
@@ -67,8 +67,15 @@ public class Main extends InputAdapter implements ApplicationListener {
         draw();
         ui.draw();
 
-        ui.toggleInventory();
 
+
+
+
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.I)) {
+            Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
+            Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
+            InventoryUI inventory = new InventoryUI(inventoryTexture, slotTexture, 2.5f, 4, 7);
+        }
 
     }
 
