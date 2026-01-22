@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.InputMultiplexer;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener {
@@ -34,7 +35,13 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         player = new Player(swordTexture);
         ui = new GameUI(spriteBatch);
-        Gdx.input.setInputProcessor(ui.getStage());
+        ui.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(ui.getStage()); // Stage first
+        multiplexer.addProcessor(this);         // Main for keypresses
+
+        Gdx.input.setInputProcessor(multiplexer);
 
 
     }
@@ -59,6 +66,10 @@ public class Main extends InputAdapter implements ApplicationListener {
         ui.update(delta);
         draw();
         ui.draw();
+
+        ui.toggleInventory();
+
+
     }
 
     @Override
