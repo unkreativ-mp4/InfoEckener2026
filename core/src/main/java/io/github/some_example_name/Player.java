@@ -8,13 +8,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Player {
-
-    private Sprite playerSprite;
+    Sprite up, down, left, right;
+    Sprite currentSprite;
     private float playerSpeed;
 
-    public Player(Texture texture) {
-        playerSprite = new Sprite(texture);
-        playerSprite.setSize(1, 1);
+    public Player(Texture upTex, Texture downTex, Texture leftTex, Texture rightTex) {
+        up = new Sprite(upTex);
+        down = new Sprite (downTex);
+        left = new Sprite (leftTex);
+        right = new Sprite (rightTex);
+        currentSprite = down;
+        currentSprite.setSize(1, 1);
+        /*playerSprite = new Sprite(texture);
+        */
     }
 
 
@@ -23,29 +29,35 @@ public class Player {
         float delta = Gdx.graphics.getDeltaTime();
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            playerSprite.translateX(speed * delta);
-            playerSprite.setFlip(false, false);
+            currentSprite.translateX(speed * delta);
+            currentSprite = right;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            playerSprite.translateX(-speed * delta);
-            playerSprite.setFlip(true, false);
+            currentSprite.translateX(-speed * delta);
+            currentSprite = left;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            playerSprite.translateY(speed * delta);
-            playerSprite.setFlip(true, false);
+            currentSprite.translateY(speed * delta);
+            currentSprite = up;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            playerSprite.translateY(-speed * delta);
-            playerSprite.setFlip(false, true);
+            currentSprite.translateY(-speed * delta);
+            currentSprite = down;
         }
     }
-
+    private void switchSprite(Sprite newSprite){
+        newSprite.setPosition(
+            currentSprite.getX(),
+            currentSprite.getY()
+        );
+        currentSprite = newSprite;
+    }
     public void dontGoPastScreen(float worldWidth, float worldHeight) {
-        playerSprite.setX(MathUtils.clamp(playerSprite.getX(), 0, worldWidth - playerSprite.getWidth()));
-        playerSprite.setY(MathUtils.clamp(playerSprite.getY(), 0, worldHeight - playerSprite.getHeight()));
+        currentSprite.setX(MathUtils.clamp(currentSprite.getX(), 0, worldWidth - currentSprite.getWidth()));
+        currentSprite.setY(MathUtils.clamp(currentSprite.getY(), 0, worldHeight - currentSprite.getHeight()));
     }
 
     public void draw(SpriteBatch batch) {
-        playerSprite.draw(batch);
+        currentSprite.draw(batch);
     }
 }

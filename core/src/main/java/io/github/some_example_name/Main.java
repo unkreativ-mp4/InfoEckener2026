@@ -20,6 +20,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     FitViewport viewport;
 
     Texture backgroundTexture;
+    Texture up, down, left, right;
 
     Player player;
     GameUI ui;
@@ -31,9 +32,13 @@ public class Main extends InputAdapter implements ApplicationListener {
         viewport = new FitViewport(8, 5);
 
         backgroundTexture = new Texture("BackgroundTexture.jpg");
-        Texture swordTexture = new Texture("Diamond_Sword_Texture.png");
+        down = new Texture("Character_Sprite_Front.png");
+        up = new Texture("Character_Sprite_Back.png");
+        left = new Texture("Character_Sprite_Left.png");
+        right = new Texture ("Character_Sprite_Right.png");
 
-        player = new Player(swordTexture);
+
+        player = new Player(up, down, left, right);
         ui = new GameUI(spriteBatch);
         ui.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
