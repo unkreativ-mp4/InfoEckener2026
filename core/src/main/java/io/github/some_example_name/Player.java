@@ -12,6 +12,9 @@ public class Player {
     private Sprite playerSprite;
     private float playerSpeed;
 
+    private int health;
+    private int mana;
+
     public Player(Texture texture) {
         playerSprite = new Sprite(texture);
         playerSprite.setSize(1, 1);
@@ -43,6 +46,22 @@ public class Player {
     public void dontGoPastScreen(float worldWidth, float worldHeight) {
         playerSprite.setX(MathUtils.clamp(playerSprite.getX(), 0, worldWidth - playerSprite.getWidth()));
         playerSprite.setY(MathUtils.clamp(playerSprite.getY(), 0, worldHeight - playerSprite.getHeight()));
+    }
+
+    public void setHealth(int newHealth) {
+        health = newHealth;
+    }
+
+    public int getHealth() {
+        return mana;
+    }
+
+    public void setMana(int newMana) {
+        mana = newMana;
+    }
+
+    public int getMana() {
+        return mana;
     }
 
     public void draw(SpriteBatch batch) {

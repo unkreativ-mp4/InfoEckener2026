@@ -31,8 +31,8 @@ public class GameUI {
         rootTable.add(inventory).center();
     }
 
-    public void update(float delta) {
-        stage.act(delta);
+    public void update() {
+        stage.act(Gdx.graphics.getDeltaTime());
     }
 
     public void draw() {
