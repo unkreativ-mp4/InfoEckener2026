@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
-public class GameUI {
+public class GameUI extends Table {
 
     private Stage stage;
 
@@ -22,13 +22,8 @@ public class GameUI {
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
 
-        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
-        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
-        InventoryUI inventory = new InventoryUI(inventoryTexture, slotTexture, 2.5f, 4, 7);
-
         rootTable.setDebug(true);
-        inventory.setDebug(true);
-        rootTable.add(inventory).center();
+
     }
 
     public void update(float delta) {

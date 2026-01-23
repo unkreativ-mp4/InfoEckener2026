@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener {
@@ -23,10 +25,13 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     Player player;
     GameUI ui;
+    InventoryUI inventory;
+    private Stage stage;
 
     @Override
     public void create() {
 
+        stage = new Stage(new ScreenViewport(), spriteBatch);
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(8, 5);
 
@@ -37,11 +42,17 @@ public class Main extends InputAdapter implements ApplicationListener {
         ui = new GameUI(spriteBatch);
         ui.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-       /* InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(ui.getStage()); // Stage first
+        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
+        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
+        inventory = new InventoryUI(inventoryTexture, slotTexture, 2.5f, 4, 7);
+        inventory.setDebug(true);
+        stage.addActor(inventory);
+
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage); // Stage first
         multiplexer.addProcessor(this);         // Main for keypresses
 
-        Gdx.input.setInputProcessor(multiplexer);*/
+        Gdx.input.setInputProcessor(multiplexer);
 
 
     }
@@ -62,21 +73,12 @@ public class Main extends InputAdapter implements ApplicationListener {
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
 
         float delta = Gdx.graphics.getDeltaTime();
+        stage.act(delta);
+        stage.draw();
 
-        ui.update(delta);
+
+
         draw();
-        ui.draw();
-
-
-
-
-
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.I)) {
-            Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
-            Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
-            InventoryUI inventory = new InventoryUI(inventoryTexture, slotTexture, 2.5f, 4, 7);
-        }
-
     }
 
     @Override
@@ -104,5 +106,11 @@ public class Main extends InputAdapter implements ApplicationListener {
         player.draw(spriteBatch);
 
         spriteBatch.end();
+
+        inventory.openInventory();
+
+
+
+
     }
 }

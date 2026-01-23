@@ -1,13 +1,19 @@
 package io.github.some_example_name;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class InventoryUI extends Table{
+public class InventoryUI extends Table {
 
-
+    private Stage stage;
     static final float BASE_SLOT_SIZE = 48f;
     static final float BASE_SLOT_PAD  = 4f;
     static final float BASE_INV_PAD   = 12f;
@@ -15,12 +21,28 @@ public class InventoryUI extends Table{
     private final int rows;
     private final int cols;
 
+    private boolean inventoryVisible;
+
     public InventoryUI(Texture inventoryTexture, Texture slotTexture, float uiScale, int rows, int cols){
 
         this.rows = rows;
         this.cols = cols;
 
+        buildRootTable(new SpriteBatch());
         buildInventoryUI(inventoryTexture, slotTexture, uiScale);
+
+    }
+
+    public void buildRootTable(SpriteBatch batch) {
+        stage = new Stage(new ScreenViewport(), batch);
+
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        stage.addActor(rootTable);
+
+        rootTable.setDebug(true);
+
+
     }
 
     private void buildInventoryUI(Texture inventoryTexture, Texture slotTexture, float uiScale) {
@@ -32,11 +54,9 @@ public class InventoryUI extends Table{
         NinePatch inventoryTexturePatch = new NinePatch(inventoryTexture, 40, 40, 40, 40);
         setBackground(new NinePatchDrawable(inventoryTexturePatch));
 
-        // Layout
         pad(invPad);
         defaults().size(slotSize).pad(slotPad);
 
-        // Grid
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
                 add(createSlot(slotTexture));
@@ -49,6 +69,30 @@ public class InventoryUI extends Table{
         NinePatch InventorySlotPatch = new NinePatch(slotTexture, 6, 6, 6, 6);
         slot.setBackground(new NinePatchDrawable(InventorySlotPatch));
         return slot;
+    }
+
+    public void draw() {
+        stage.draw();
+    }
+
+    public void clear() {
+        stage.clear();
+    }
+
+    public void openInventory() {
+        if(Gdx.input.isKeyPressed(Input.Keys.I) || !inventoryVisible) {
+            inventoryVisible = !inventoryVisible;
+            draw();
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.I) || inventoryVisible) {
+            inventoryVisible = !inventoryVisible;
+            clear();
+
+        }
+
+    }
+    public boolean getInventoryVisible() {
+        return inventoryVisible;
     }
 
    /* private void buildInventoryUI{
