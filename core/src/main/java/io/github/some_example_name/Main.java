@@ -30,9 +30,8 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void create() {
-
-        stage = new Stage(new ScreenViewport(), spriteBatch);
         spriteBatch = new SpriteBatch();
+        stage = new Stage(new ScreenViewport(), spriteBatch);
         viewport = new FitViewport(8, 5);
 
         backgroundTexture = new Texture("BackgroundTexture.jpg");
@@ -44,14 +43,13 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
-        inventory = new InventoryUI(inventoryTexture, slotTexture, 2.5f, 4, 7);
+        inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 2.5f, 4, 7);
         inventory.setDebug(true);
         stage.addActor(inventory);
 
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage); // Stage first
         multiplexer.addProcessor(this);         // Main for keypresses
-
         Gdx.input.setInputProcessor(multiplexer);
 
 
@@ -69,6 +67,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
+        //System.out.println("RENDER");
         player.playerMovement();
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
 
@@ -94,6 +93,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     }
 
     private void draw() {
+        //System.out.println("DRAW (Main)");
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
@@ -107,10 +107,21 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         spriteBatch.end();
 
-        inventory.openInventory();
 
 
 
 
+    }
+
+    @Override
+    public boolean keyTyped(char keycode) {
+        System.out.println("ASDF");
+        System.out.println(keycode);
+        if(keycode == 'i') {
+            System.out.println("i pressed");
+            inventory.openInventory();
+        }
+
+        return true;
     }
 }

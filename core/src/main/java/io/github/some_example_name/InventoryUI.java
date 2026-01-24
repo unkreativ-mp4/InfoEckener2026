@@ -23,24 +23,28 @@ public class InventoryUI extends Table {
 
     private boolean inventoryVisible;
 
-    public InventoryUI(Texture inventoryTexture, Texture slotTexture, float uiScale, int rows, int cols){
+    public InventoryUI(Stage stage, Texture inventoryTexture, Texture slotTexture, float uiScale, int rows, int cols){
+        this.stage = stage;
 
         this.rows = rows;
         this.cols = cols;
 
-        buildRootTable(new SpriteBatch());
+
+
+        buildRootTable();
         buildInventoryUI(inventoryTexture, slotTexture, uiScale);
 
     }
 
-    public void buildRootTable(SpriteBatch batch) {
-        stage = new Stage(new ScreenViewport(), batch);
+    public void buildRootTable() {
 
         Table rootTable = new Table();
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
 
         rootTable.setDebug(true);
+        rootTable.addActor(this);
+        setFillParent(true);
 
 
     }
@@ -63,6 +67,7 @@ public class InventoryUI extends Table {
             }
             row();
         }
+
     }
     private Table createSlot(Texture slotTexture) {
         Table slot = new Table();
@@ -80,15 +85,10 @@ public class InventoryUI extends Table {
     }
 
     public void openInventory() {
-        if(Gdx.input.isKeyPressed(Input.Keys.I) || !inventoryVisible) {
-            inventoryVisible = !inventoryVisible;
-            draw();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.I) || inventoryVisible) {
-            inventoryVisible = !inventoryVisible;
-            clear();
+        inventoryVisible = !inventoryVisible;
+        if(!inventoryVisible) draw();
+        else clear();
 
-        }
 
     }
     public boolean getInventoryVisible() {

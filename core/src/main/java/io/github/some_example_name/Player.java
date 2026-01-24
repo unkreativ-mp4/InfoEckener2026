@@ -46,6 +46,7 @@ public class Player {
     }
 
     public void draw(SpriteBatch batch) {
+        //System.out.println("Draw (Player)");
         playerSprite.draw(batch);
     }
 }
