@@ -27,7 +27,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     Texture backgroundTexture;
 
     Player player;
-    //GameUI ui;
     InventoryUI inventory;
     private Stage stage;
 
@@ -45,8 +44,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         Texture swordTexture = new Texture("Diamond_Sword_Texture.png");
 
         player = new Player(swordTexture);
-        //ui = new GameUI(spriteBatch);
-        //ui.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
@@ -68,7 +65,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         if(width <= 0 || height <= 0) return;
 
         viewport.update(width, height, true);
-        //ui.resize(width, height);
     }
 
     @Override
@@ -77,7 +73,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         float delta = Gdx.graphics.getDeltaTime();
-        //System.out.println("RENDER");
 
         player.playerMovement();
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
@@ -121,7 +116,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         float worldHeight = viewport.getWorldHeight();
 
         player.setHealth(10); player.setMana(20);
-        //standardFont.draw(spriteBatch, "Player Health: "+player.getHealth(), 10, 0);
+        standardFont.draw(spriteBatch, "Player Health: "+player.getHealth(), 10, 0);
         standardFont.draw(spriteBatch, "Player Mana: "+player.getMana(), 10, 20);
 
         spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
@@ -133,10 +128,8 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public boolean keyDown(int keycode) {
-        //System.out.println("ASDF");
-        System.out.println(keycode);
+        System.out.println(keycode+" Taste wurde gedrückt (Keycode)");
         if(keycode == Input.Keys.I) {
-            System.out.println("i pressed");
             inventory.openInventory();
             return true;
         }

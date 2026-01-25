@@ -83,8 +83,6 @@ public class InventoryUI extends Table {
 
     public void openInventory() {
         inventoryVisible = !inventoryVisible;
-        //if(inventoryVisible) setVisible(inventoryVisible);
-        //else stage.clear();
         setVisible(inventoryVisible);
         setTouchable(inventoryVisible ? Touchable.enabled : Touchable.disabled);
 

@@ -48,16 +48,16 @@ public class Player {
         playerSprite.setY(MathUtils.clamp(playerSprite.getY(), 0, worldHeight - playerSprite.getHeight()));
     }
 
-    public void setHealth(int newHealth) {
-        health = newHealth;
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public int getHealth() {
         return mana;
     }
 
-    public void setMana(int newMana) {
-        mana = newMana;
+    public void setMana(int mana) {
+        this.mana = mana;
     }
 
     public int getMana() {
