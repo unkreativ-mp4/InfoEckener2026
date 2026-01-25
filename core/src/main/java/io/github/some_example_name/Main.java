@@ -5,8 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,6 +22,8 @@ public class Main extends InputAdapter implements ApplicationListener {
     SpriteBatch spriteBatch;
     FitViewport viewport;
 
+    BitmapFont standardFont;
+
     Texture backgroundTexture;
 
     Player player;
@@ -30,9 +33,13 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void create() {
+
         spriteBatch = new SpriteBatch();
         stage = new Stage(new ScreenViewport(), spriteBatch);
         viewport = new FitViewport(8, 5);
+
+        standardFont = new BitmapFont();
+        standardFont.setColor(Color.RED);
 
         backgroundTexture = new Texture("BackgroundTexture.jpg");
         Texture swordTexture = new Texture("Diamond_Sword_Texture.png");
@@ -66,6 +73,9 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         float delta = Gdx.graphics.getDeltaTime();
         //System.out.println("RENDER");
 
@@ -109,6 +119,10 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
+
+        player.setHealth(10); player.setMana(20);
+        //standardFont.draw(spriteBatch, "Player Health: "+player.getHealth(), 10, 0);
+        standardFont.draw(spriteBatch, "Player Mana: "+player.getMana(), 10, 20);
 
         spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
         player.draw(spriteBatch);
