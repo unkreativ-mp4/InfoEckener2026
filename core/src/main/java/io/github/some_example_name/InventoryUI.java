@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -29,7 +30,7 @@ public class InventoryUI extends Table {
         this.rows = rows;
         this.cols = cols;
 
-
+        this.setVisible(false);
 
         buildRootTable();
         buildInventoryUI(inventoryTexture, slotTexture, uiScale);
@@ -42,9 +43,12 @@ public class InventoryUI extends Table {
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
 
-        rootTable.setDebug(true);
+        rootTable.setDebug(false);
+        rootTable.center();
+        rootTable.add(this);
         rootTable.addActor(this);
-        setFillParent(true);
+
+        //setFillParent(true);
 
 
     }
@@ -55,85 +59,40 @@ public class InventoryUI extends Table {
         float slotPad  = BASE_SLOT_PAD  * uiScale;
         float invPad   = BASE_INV_PAD   * uiScale;
 
-        NinePatch inventoryTexturePatch = new NinePatch(inventoryTexture, 40, 40, 40, 40);
+        NinePatch inventoryTexturePatch = new NinePatch(inventoryTexture, 11, 11, 11, 11);
         setBackground(new NinePatchDrawable(inventoryTexturePatch));
-
         pad(invPad);
         defaults().size(slotSize).pad(slotPad);
 
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
                 add(createSlot(slotTexture));
+                pack();
             }
             row();
         }
-
+        pack();
     }
     private Table createSlot(Texture slotTexture) {
         Table slot = new Table();
-        NinePatch InventorySlotPatch = new NinePatch(slotTexture, 6, 6, 6, 6);
+        NinePatch InventorySlotPatch = new NinePatch(slotTexture, 2, 2, 3, 2);
         slot.setBackground(new NinePatchDrawable(InventorySlotPatch));
         return slot;
     }
 
-    public void draw() {
-        stage.draw();
-    }
-
-    public void clear() {
-        stage.clear();
-    }
 
     public void openInventory() {
         inventoryVisible = !inventoryVisible;
-        if(!inventoryVisible) draw();
-        else clear();
-
+        //if(inventoryVisible) setVisible(inventoryVisible);
+        //else stage.clear();
+        setVisible(inventoryVisible);
+        setTouchable(inventoryVisible ? Touchable.enabled : Touchable.disabled);
 
     }
     public boolean getInventoryVisible() {
         return inventoryVisible;
     }
 
-   /* private void buildInventoryUI{
 
-        float slotSize = BASE_SLOT_SIZE * inventoryScale;
-        float slotPad  = BASE_SLOT_PAD  * inventoryScale;
-        float invPad   = BASE_INV_PAD   * inventoryScale;
-
-
-
-        inventoryTable.pad(invPad);
-        inventoryTable.defaults().size(slotSize).pad(slotPad);
-
-        inventoryTable.setDebug(false);
-
-        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
-        NinePatch inventoryTexturePatch = new NinePatch(inventoryTexture, 40, 40, 40, 40);
-        inventoryTable.setBackground(new NinePatchDrawable(inventoryTexturePatch));
-
-        rootTable.add(inventoryTable).center();
-
-    int rows = 4;
-    int cols = 7;
-
-        for (int y = 0; y < rows; y++) {
-        for (int x = 0; x < cols; x++) {
-            Table slot = createSlot();
-            inventoryTable.add(createSlot());
-        }
-        inventoryTable.row();
-    }
-    private Table createSlot() {
-            Table slot = new Table();
-
-            Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
-            NinePatch InventorySlotPatch = new NinePatch(slotTexture, 6, 6, 6, 6);
-            slot.setBackground(new NinePatchDrawable(InventorySlotPatch));
-
-            slot.setDebug(true);
-            return slot;
-
-        } */
 }
 
