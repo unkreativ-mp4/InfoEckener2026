@@ -5,12 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
@@ -22,7 +21,8 @@ public class Main extends InputAdapter implements ApplicationListener {
     SpriteBatch spriteBatch;
     FitViewport viewport;
 
-    BitmapFont standardFont;
+    BitmapFont font;
+    Label healthLabel;
 
     Texture backgroundTexture;
 
@@ -37,13 +37,18 @@ public class Main extends InputAdapter implements ApplicationListener {
         stage = new Stage(new ScreenViewport(), spriteBatch);
         viewport = new FitViewport(8, 5);
 
-        standardFont = new BitmapFont();
-        standardFont.setColor(Color.RED);
+        font = new BitmapFont();
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = font;
+
+        healthLabel = new Label("Player Health: ", style);
+        healthLabel.setPosition(20, 20); // screen-space pixels
+        stage.addActor(healthLabel);
 
         backgroundTexture = new Texture("BackgroundTexture.jpg");
         Texture swordTexture = new Texture("Diamond_Sword_Texture.png");
 
-        player = new Player(swordTexture);
+        player = new Player(swordTexture, 100, 100);
 
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
@@ -69,8 +74,6 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         float delta = Gdx.graphics.getDeltaTime();
 
@@ -83,6 +86,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(backgroundTexture, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         player.draw(spriteBatch);
+        //font.draw(spriteBatch, "Player Health: ", 100, 100);
+        healthLabel.setText("Player Health: " + player.getHealth());
         spriteBatch.end();
 
         stage.act(delta);

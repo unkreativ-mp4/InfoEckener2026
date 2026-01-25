@@ -12,11 +12,16 @@ public class Player {
     private Sprite playerSprite;
     private float playerSpeed;
 
+    private final int maxHealth;
+    private final int maxMana;
+
     private int health;
     private int mana;
 
-    public Player(Texture texture) {
+    public Player(Texture texture, int maxHealth, int maxMana) {
         playerSprite = new Sprite(texture);
+        this.maxHealth = maxHealth;
+        this.maxMana = maxMana;
         playerSprite.setSize(1, 1);
     }
 
