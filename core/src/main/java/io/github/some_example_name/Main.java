@@ -27,7 +27,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     Texture backgroundTexture;
 
     Player player;
-    GameUI ui;
+    //GameUI ui;
     InventoryUI inventory;
     private Stage stage;
 
@@ -45,8 +45,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         Texture swordTexture = new Texture("Diamond_Sword_Texture.png");
 
         player = new Player(swordTexture);
-        ui = new GameUI(spriteBatch);
-        ui.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //ui = new GameUI(spriteBatch);
+        //ui.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
@@ -68,7 +68,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         if(width <= 0 || height <= 0) return;
 
         viewport.update(width, height, true);
-        ui.resize(width, height);
+        //ui.resize(width, height);
     }
 
     @Override
