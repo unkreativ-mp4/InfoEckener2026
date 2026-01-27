@@ -1,5 +1,8 @@
 package io.github.some_example_name;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+
 public class Zombie extends Enemy {
     private static final int baseHealth = 20;
     private static final int baseDamage = 3;
@@ -7,8 +10,8 @@ public class Zombie extends Enemy {
     private double attackCooldown;
     private double timeSinceLastAttack;
 
-    public Zombie(int xPos, int yPos) {
-        super(xPos, yPos, baseHealth);
+    public Zombie(int xPos, int yPos, Texture texture) {
+        super(xPos, yPos, baseHealth, texture);
         this.timeSinceLastAttack = 0;
     }
 
@@ -19,7 +22,7 @@ public class Zombie extends Enemy {
 
     @Override
     public void update() {
-
+        timeSinceLastAttack += Gdx.graphics.getDeltaTime();
     }
 
     @Override

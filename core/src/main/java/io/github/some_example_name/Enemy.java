@@ -1,5 +1,8 @@
 package io.github.some_example_name;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 public abstract class Enemy {
     protected int health;
     protected int maxHealth;
@@ -7,13 +10,17 @@ public abstract class Enemy {
 
     protected int xPos;
     protected int yPos;
+    protected Sprite EnemySprite;
 
-    public Enemy(int xPos, int yPos, int maxHealth) {
+    public Enemy(int xPos, int yPos, int maxHealth, Texture texture) {
         this.xPos = xPos;
         this.yPos = yPos;
 
         this.maxHealth = maxHealth;
         this.health = maxHealth;
+
+        EnemySprite = new Sprite(texture);
+        EnemySprite.setSize(1, 1);
     }
 
     public int getHealth() {
