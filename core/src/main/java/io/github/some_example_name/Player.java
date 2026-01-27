@@ -9,8 +9,8 @@ public class Player {
     Texture upTexture, downTexture, leftTexture, rightTexture;
     Sprite PlayerSprite;
     private float playerSpeed;
-    private final int maxHealth;
-    private final int maxMana;
+    private int maxHealth;
+    private int maxMana;
     private int health;
     private int mana;
 
