@@ -23,11 +23,11 @@ public class Main extends InputAdapter implements ApplicationListener {
     FitViewport viewport;
 
     BitmapFont font;
-    Label healthLabel;
-    Label manaLabel;
+    Label healthLabel, manaLabel;
 
     Texture backgroundTexture;
-    Texture up, down, left, right;
+    Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
+    Texture slotTexture, inventoryTexture;
 
     Player player;
     InventoryUI inventory;
@@ -55,16 +55,15 @@ public class Main extends InputAdapter implements ApplicationListener {
         stage.addActor(manaLabel);
 
         backgroundTexture = new Texture("BackgroundTexture.jpg");
-        down = new Texture("Character_Sprite_Front.png");
-        up = new Texture("Character_Sprite_Back.png");
-        left = new Texture("Character_Sprite_Left.png");
-        right = new Texture ("Character_Sprite_Right.png");
+        characterTextureDown = new Texture("Character_Texture_Front.png");
+        characterTextureUp = new Texture("Character_Texture_Back.png");
+        characterTextureLeft = new Texture("Character_Texture_Left.png");
+        characterTextureRight = new Texture ("Character_Texture_Right.png");
+        slotTexture = new Texture("Inventory_Slot_Texture.png");
+        inventoryTexture = new Texture("inventory_Background_Texture.png");
 
+        player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100);
 
-        player = new Player(up, down, left, right, 100, 100);
-
-        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
-        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
         inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
         inventory.setDebug(false);
 
@@ -118,10 +117,6 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         stage.act(delta);
         stage.draw();
-
-
-
-        //draw();
     }
 
     @Override
@@ -135,27 +130,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     @Override
     public void dispose() {
     }
-
-    /*private void draw() {
-        //System.out.println("DRAW (Main)");
-        ScreenUtils.clear(Color.BLACK);
-        viewport.apply();
-        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
-        spriteBatch.begin();
-
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
-
-        player.setHealth(10); player.setMana(20);
-        standardFont.draw(spriteBatch, "Player Health: "+player.getHealth(), 10, 0);
-        standardFont.draw(spriteBatch, "Player Mana: "+player.getMana(), 10, 20);
-
-        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
-        player.draw(spriteBatch);
-
-        spriteBatch.end();
-
-    } */
 
     @Override
     public boolean keyDown (int keycode) {
