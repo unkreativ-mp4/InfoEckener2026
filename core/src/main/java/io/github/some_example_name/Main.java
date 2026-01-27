@@ -54,11 +54,11 @@ public class Main extends InputAdapter implements ApplicationListener {
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
 
-        inventory = new Inventory(stage, 4, 7);
-
-        inventoryUI = new InventoryUI(inventory, inventoryTexture, slotTexture, 2.5f);
+        inventory = new Inventory(4, 7, 3.5f);
+        inventoryUI = new InventoryUI(inventory, inventoryTexture, slotTexture);
         stage.addActor(inventoryUI);
-        inventoryUI.setDebug(false);
+
+        //inventoryUI.setDebug(true);
 
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage); // Stage first
@@ -75,6 +75,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         if(width <= 0 || height <= 0) return;
 
         viewport.update(width, height, true);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -140,7 +141,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     public boolean keyDown(int keycode) {
         System.out.println(keycode+" Taste wurde gedrückt (Keycode)");
         if(keycode == Input.Keys.I) {
-            inventoryUI.openInventory();
+            inventoryUI.openInventory(inventory);
             return true;
         }
         return false;
