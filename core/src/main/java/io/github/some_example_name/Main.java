@@ -154,10 +154,10 @@ public class Main extends InputAdapter implements ApplicationListener {
                 inventory.openInventory();
             }
             if(keycode == Input.Keys.H) {
-                player.setHealth(player.getHealth()+1);
+                player.addHealth(1);
             }
             if(keycode == Input.Keys.M) {
-                player.setMana(player.getMana()+1);
+                player.addMana(1);
             }
         }
         return true;
@@ -172,10 +172,10 @@ public class Main extends InputAdapter implements ApplicationListener {
     private void onMultipleKeysDown (int mostRecentKeycode){
         //Keys that are currently down are in the IntSet.
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.M)){
-            player.setMana(player.getMana()-1);
+            player.addMana(-1);
         }
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
-            player.setHealth(player.getHealth()-1);
+            player.addHealth(-1);
         }
     }
 }

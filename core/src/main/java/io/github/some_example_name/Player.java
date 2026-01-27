@@ -57,12 +57,28 @@ public class Player {
         this.health = health;
     }
 
+    public void addHealth(int health) {
+        if (health+this.health >= maxHealth ) {
+            this.health = maxHealth;
+        } else {
+            this.health += health;
+        }
+    }
+
     public int getHealth() {
         return health;
     }
 
     public void setMana(int mana) {
         this.mana = mana;
+    }
+
+    public void addMana(int mana) {
+        if (mana+this.mana >= maxMana ) {
+            this.mana = maxMana;
+        } else {
+            this.mana += mana;
+        }
     }
 
     public int getMana() {
