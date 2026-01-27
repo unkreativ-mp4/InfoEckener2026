@@ -8,49 +8,73 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Player {
-
-    private Sprite playerSprite;
+    Texture up, down, left, right;
+    Sprite currentSprite;
     private float playerSpeed;
-
     private final int maxHealth;
     private final int maxMana;
-
     private int health;
     private int mana;
 
-    public Player(Texture texture, int maxHealth, int maxMana) {
-        playerSprite = new Sprite(texture);
+    public Player(Texture upTex,Texture downTex, Texture leftTex, Texture rightTex, int maxHealth, int maxMana) {
+        up = upTex;
+        down = downTex;
+        left = leftTex;
+        right = rightTex;
+        currentSprite = new Sprite(down);
+        currentSprite.setSize(1, 1);
         this.maxHealth = maxHealth;
         this.maxMana = maxMana;
-        playerSprite.setSize(1, 1);
+
+    }
+    public void moveLeft(float amount){
+        currentSprite.setTexture(left);
+        currentSprite.translateX(-amount);
+    }
+    public void moveRight(float amount){
+        currentSprite.setTexture(right);
+        currentSprite.translateX(amount);
+    }
+    public void moveUp(float amount){
+        currentSprite.setTexture(up);
+        currentSprite.translateY(amount);
+    }
+    public void moveDown(float amount){
+        currentSprite.setTexture(down);
+        currentSprite.translateY(-amount);
     }
 
-
-    public void playerMovement() {
+    /*public void playerMovement() {
         float speed = 4f;
         float delta = Gdx.graphics.getDeltaTime();
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            playerSprite.translateX(speed * delta);
-            playerSprite.setFlip(false, false);
+            currentSprite.translateX(speed * delta);
+            switchSprite(right);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            playerSprite.translateX(-speed * delta);
-            playerSprite.setFlip(true, false);
+            currentSprite.translateX(-speed * delta);
+            switchSprite(left);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            playerSprite.translateY(speed * delta);
-            playerSprite.setFlip(true, false);
+            currentSprite.translateY(speed * delta);
+            switchSprite(up);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            playerSprite.translateY(-speed * delta);
-            playerSprite.setFlip(false, true);
+            currentSprite.translateY(-speed * delta);
+            switchSprite(down);
         }
-    }
-
+    }*/
+    /*private void switchSprite(Sprite newSprite){
+        newSprite.setPosition(
+            currentSprite.getX(),
+            currentSprite.getY()
+        );
+        currentSprite = newSprite;
+    }*/
     public void dontGoPastScreen(float worldWidth, float worldHeight) {
-        playerSprite.setX(MathUtils.clamp(playerSprite.getX(), 0, worldWidth - playerSprite.getWidth()));
-        playerSprite.setY(MathUtils.clamp(playerSprite.getY(), 0, worldHeight - playerSprite.getHeight()));
+        currentSprite.setX(MathUtils.clamp(currentSprite.getX(), 0, worldWidth - currentSprite.getWidth()));
+        currentSprite.setY(MathUtils.clamp(currentSprite.getY(), 0, worldHeight - currentSprite.getHeight()));
     }
 
     public void setHealth(int health) {
@@ -85,8 +109,9 @@ public class Player {
         return mana;
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch spriteBatch) {
+        currentSprite.draw(spriteBatch);
         //System.out.println("Draw (Player)");
-        playerSprite.draw(batch);
+
     }
 }

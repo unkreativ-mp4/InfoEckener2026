@@ -27,6 +27,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     Label manaLabel;
 
     Texture backgroundTexture;
+    Texture up, down, left, right;
 
     Player player;
     InventoryUI inventory;
@@ -54,9 +55,13 @@ public class Main extends InputAdapter implements ApplicationListener {
         stage.addActor(manaLabel);
 
         backgroundTexture = new Texture("BackgroundTexture.jpg");
-        Texture swordTexture = new Texture("Diamond_Sword_Texture.png");
+        down = new Texture("Character_Sprite_Front.png");
+        up = new Texture("Character_Sprite_Back.png");
+        left = new Texture("Character_Sprite_Left.png");
+        right = new Texture ("Character_Sprite_Right.png");
 
-        player = new Player(swordTexture, 100, 100);
+
+        player = new Player(up, down, left, right, 100, 100);
 
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
@@ -83,9 +88,20 @@ public class Main extends InputAdapter implements ApplicationListener {
     @Override
     public void render() {
 
-        float delta = Gdx.graphics.getDeltaTime();
+        float delta = 4f * Gdx.graphics.getDeltaTime();
 
-        player.playerMovement();
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.moveRight(delta);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player.moveLeft(delta);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            player.moveUp(delta);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            player.moveDown(delta);
+        }
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
 
         ScreenUtils.clear(Color.BLACK);
