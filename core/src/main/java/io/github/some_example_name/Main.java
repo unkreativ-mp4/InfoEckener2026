@@ -22,12 +22,12 @@ public class Main extends InputAdapter implements ApplicationListener {
     SpriteBatch spriteBatch;
     FitViewport viewport;
 
-    BitmapFont font;
-    Label healthLabel, manaLabel;
-
     Texture backgroundTexture;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
     Texture slotTexture, inventoryTexture;
+
+    CustomLabel healthLabel;
+    CustomLabel manaLabel;
 
     Player player;
     InventoryUI inventory;
@@ -42,17 +42,10 @@ public class Main extends InputAdapter implements ApplicationListener {
         stage = new Stage(new ScreenViewport(), spriteBatch);
         viewport = new FitViewport(8, 5);
 
-        font = new BitmapFont();
-        Label.LabelStyle style = new Label.LabelStyle();
-        style.font = font;
-
-        healthLabel = new Label("Player Health: ", style);
-        healthLabel.setPosition(20, 20); // screen-space pixels
-        stage.addActor(healthLabel);
-
-        manaLabel = new Label("Player Mana: ", style);
-        manaLabel.setPosition(20, 40); // screen-space pixels
-        stage.addActor(manaLabel);
+        healthLabel = new CustomLabel("Player Health: ", 10, 25);
+        manaLabel = new CustomLabel("Player Mana: ", 10, 10);
+        stage.addActor(healthLabel.getLabel());
+        stage.addActor(manaLabel.getLabel());
 
         backgroundTexture = new Texture("BackgroundTexture.jpg");
         characterTextureDown = new Texture("Character_Texture_Front.png");
