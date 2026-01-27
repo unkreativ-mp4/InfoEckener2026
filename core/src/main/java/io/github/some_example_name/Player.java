@@ -21,6 +21,18 @@ public class Player {
         currentSprite.setSize(1, 1);
         /*playerSprite = new Sprite(texture);
         */
+        }
+    private final int maxHealth;
+    private final int maxMana;
+
+    private int health;
+    private int mana;
+
+    public Player(Texture texture, int maxHealth, int maxMana) {
+        playerSprite = new Sprite(texture);
+        this.maxHealth = maxHealth;
+        this.maxMana = maxMana;
+        playerSprite.setSize(1, 1);
     }
 
 
@@ -57,7 +69,25 @@ public class Player {
         currentSprite.setY(MathUtils.clamp(currentSprite.getY(), 0, worldHeight - currentSprite.getHeight()));
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHealth() {
+        return mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public int getMana() {
+        return mana;
+    }
+
     public void draw(SpriteBatch batch) {
         currentSprite.draw(batch);
+        //System.out.println("Draw (Player)");
+
     }
 }
