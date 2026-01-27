@@ -1,5 +1,7 @@
 package io.github.some_example_name;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,21 +27,24 @@ public class Player {
         this.maxMana = maxMana;
 
     }
-    public void moveLeft(float amount){
-        PlayerSprite.setTexture(leftTexture);
-        PlayerSprite.translateX(-amount);
-    }
-    public void moveRight(float amount){
-        PlayerSprite.setTexture(rightTexture);
-        PlayerSprite.translateX(amount);
-    }
-    public void moveUp(float amount){
-        PlayerSprite.setTexture(upTexture);
-        PlayerSprite.translateY(amount);
-    }
-    public void moveDown(float amount){
-        PlayerSprite.setTexture(downTexture);
-        PlayerSprite.translateY(-amount);
+
+    public void move(float deltaTime) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            PlayerSprite.setTexture(upTexture);
+            PlayerSprite.translateY(deltaTime);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            PlayerSprite.setTexture(leftTexture);
+            PlayerSprite.translateX(-deltaTime);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            PlayerSprite.setTexture(downTexture);
+            PlayerSprite.translateY(-deltaTime);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            PlayerSprite.setTexture(rightTexture);
+            PlayerSprite.translateX(deltaTime);
+        }
     }
 
     public void dontGoPastScreen(float worldWidth, float worldHeight) {

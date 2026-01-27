@@ -80,20 +80,9 @@ public class Main extends InputAdapter implements ApplicationListener {
     @Override
     public void render() {
 
-        float delta = 4f * Gdx.graphics.getDeltaTime();
+        float deltaTime = 4f * Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.moveRight(delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.moveLeft(delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.moveUp(delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.moveDown(delta);
-        }
+        player.move(deltaTime);
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
 
         ScreenUtils.clear(Color.BLACK);
@@ -108,7 +97,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         spriteBatch.end();
 
-        stage.act(delta);
+        stage.act(deltaTime);
         stage.draw();
     }
 
