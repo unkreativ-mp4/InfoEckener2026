@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
@@ -23,12 +24,15 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     BitmapFont font;
     Label healthLabel;
+    Label manaLabel;
 
     Texture backgroundTexture;
 
     Player player;
     InventoryUI inventory;
     private Stage stage;
+
+    private final IntSet downKeys = new IntSet(20);
 
     @Override
     public void create() {
@@ -44,6 +48,10 @@ public class Main extends InputAdapter implements ApplicationListener {
         healthLabel = new Label("Player Health: ", style);
         healthLabel.setPosition(20, 20); // screen-space pixels
         stage.addActor(healthLabel);
+
+        manaLabel = new Label("Player Mana: ", style);
+        manaLabel.setPosition(20, 40); // screen-space pixels
+        stage.addActor(manaLabel);
 
         backgroundTexture = new Texture("BackgroundTexture.jpg");
         Texture swordTexture = new Texture("Diamond_Sword_Texture.png");
@@ -86,8 +94,10 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(backgroundTexture, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         player.draw(spriteBatch);
-        //font.draw(spriteBatch, "Player Health: ", 100, 100);
+
         healthLabel.setText("Player Health: " + player.getHealth());
+        manaLabel.setText("Player Mana: " + player.getMana());
+
         spriteBatch.end();
 
         stage.act(delta);
@@ -132,12 +142,40 @@ public class Main extends InputAdapter implements ApplicationListener {
     } */
 
     @Override
-    public boolean keyDown(int keycode) {
-        System.out.println(keycode+" Taste wurde gedrückt (Keycode)");
-        if(keycode == Input.Keys.I) {
-            inventory.openInventory();
-            return true;
+    public boolean keyDown (int keycode) {
+        downKeys.add(keycode);
+        System.out.println(downKeys+" Tasten wurde gedrückt (Keycode)");
+
+        if (downKeys.size >= 2){
+            onMultipleKeysDown(keycode);
+        } else {
+
+            if(keycode == Input.Keys.I) {
+                inventory.openInventory();
+            }
+            if(keycode == Input.Keys.H) {
+                player.setHealth(player.getHealth()+1);
+            }
+            if(keycode == Input.Keys.M) {
+                player.setMana(player.getMana()+1);
+            }
         }
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean keyUp (int keycode) {
+        downKeys.remove(keycode);
+        return true;
+    }
+
+    private void onMultipleKeysDown (int mostRecentKeycode){
+        //Keys that are currently down are in the IntSet.
+        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.M)){
+            player.setMana(player.getMana()-1);
+        }
+        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
+            player.setHealth(player.getHealth()-1);
+        }
     }
 }

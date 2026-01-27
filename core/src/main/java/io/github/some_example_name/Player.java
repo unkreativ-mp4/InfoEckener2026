@@ -58,7 +58,7 @@ public class Player {
     }
 
     public int getHealth() {
-        return mana;
+        return health;
     }
 
     public void setMana(int mana) {
