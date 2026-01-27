@@ -53,9 +53,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         right = new Texture ("Character_Sprite_Right.png");
 
 
-        player = new Player(up, down, left, right);
-        ui = new GameUI(spriteBatch);
-        ui.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        player = new Player(up, down, left, right, 100, 100);
 
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
@@ -82,9 +80,20 @@ public class Main extends InputAdapter implements ApplicationListener {
     @Override
     public void render() {
 
-        float delta = Gdx.graphics.getDeltaTime();
+        float delta = 4f * Gdx.graphics.getDeltaTime();
 
-        player.playerMovement();
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.moveRight(delta);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player.moveLeft(delta);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            player.moveUp(delta);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            player.moveDown(delta);
+        }
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
 
         ScreenUtils.clear(Color.BLACK);
