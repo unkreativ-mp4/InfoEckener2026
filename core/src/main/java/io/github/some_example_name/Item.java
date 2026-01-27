@@ -11,14 +11,14 @@ public abstract class Item{
     private String itemID;
     private String itemName;
     private Texture itemTexture;
-    private int rarety;
+    private int rarity;
     private int maxStackSize;
 
-    public Item(String pItemID, String pItemName, Texture pItemTexture, int pRarety, int pMaxStackSize) {
+    public Item(String pItemID, String pItemName, Texture pItemTexture, int pRarity, int pMaxStackSize) {
         itemID = pItemID;
         itemName = pItemName;
         itemTexture = pItemTexture;
-        rarety = pRarety;
+        rarity = pRarity;
         maxStackSize = pMaxStackSize;
 
         NinePatch itemTexturePatch = new NinePatch(pItemTexture);
@@ -41,16 +41,16 @@ public abstract class Item{
         return itemTexture;
     }
 
-    public void setItemTexture(Texture pItemTexure) {
-        itemTexture = pItemTexure;
+    public void setItemTexture(Texture pItemTexture) {
+        itemTexture = pItemTexture;
     }
 
-    public int getRarety() {
-        return rarety;
+    public int getRarity() {
+        return rarity;
     }
 
-    public void setRarety(int pRarety) {
-        rarety = pRarety;
+    public void setRarity(int pRarity) {
+        rarity = pRarity;
     }
 
     public int getMaxStackSize() {
