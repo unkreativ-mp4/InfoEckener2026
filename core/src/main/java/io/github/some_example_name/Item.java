@@ -2,13 +2,10 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-
-import static com.badlogic.gdx.utils.compression.CRC.Table;
 
 public abstract class Item{
 
-    private String itemID;
+    private final String itemID;
     private String itemName;
     private Texture itemTexture;
     private int rarity;

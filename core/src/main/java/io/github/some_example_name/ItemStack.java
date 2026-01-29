@@ -10,10 +10,7 @@ public class ItemStack {
     }
 
     public boolean isEmpty() {
-        if(item == null || amount == 0) {
-            return true;
-        }
-        return false;
+        return item == null || amount == 0;
     }
 
     /*public void dontGoOverMaxStackSize() {

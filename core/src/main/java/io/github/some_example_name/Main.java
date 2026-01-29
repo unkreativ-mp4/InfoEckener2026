@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
@@ -22,14 +23,17 @@ public class Main extends InputAdapter implements ApplicationListener {
     FitViewport viewport;
 
     BitmapFont font;
-    Label healthLabel;
+    Label healthLabel, manaLabel;
 
     Texture backgroundTexture;
-    Texture up, down, left, right;
+    Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
+    Texture slotTexture, inventoryTexture;
 
     Player player;
     InventoryUI inventory;
     private Stage stage;
+
+    private final IntSet downKeys = new IntSet(20);
 
     @Override
     public void create() {
@@ -46,17 +50,20 @@ public class Main extends InputAdapter implements ApplicationListener {
         healthLabel.setPosition(20, 20); // screen-space pixels
         stage.addActor(healthLabel);
 
+        manaLabel = new Label("Player Mana: ", style);
+        manaLabel.setPosition(20, 40); // screen-space pixels
+        stage.addActor(manaLabel);
+
         backgroundTexture = new Texture("BackgroundTexture.jpg");
-        down = new Texture("Character_Sprite_Front.png");
-        up = new Texture("Character_Sprite_Back.png");
-        left = new Texture("Character_Sprite_Left.png");
-        right = new Texture ("Character_Sprite_Right.png");
+        characterTextureDown = new Texture("Character_Texture_Front.png");
+        characterTextureUp = new Texture("Character_Texture_Back.png");
+        characterTextureLeft = new Texture("Character_Texture_Left.png");
+        characterTextureRight = new Texture ("Character_Texture_Right.png");
+        slotTexture = new Texture("Inventory_Slot_Texture.png");
+        inventoryTexture = new Texture("inventory_Background_Texture.png");
 
+        player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100);
 
-        player = new Player(up, down, left, right, 100, 100);
-
-        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
-        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
         inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
         inventory.setDebug(false);
 
@@ -102,16 +109,14 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(backgroundTexture, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         player.draw(spriteBatch);
-        //font.draw(spriteBatch, "Player Health: ", 100, 100);
+
         healthLabel.setText("Player Health: " + player.getHealth());
+        manaLabel.setText("Player Mana: " + player.getMana());
+
         spriteBatch.end();
 
         stage.act(delta);
         stage.draw();
-
-
-
-        //draw();
     }
 
     @Override
@@ -126,34 +131,41 @@ public class Main extends InputAdapter implements ApplicationListener {
     public void dispose() {
     }
 
-    /*private void draw() {
-        //System.out.println("DRAW (Main)");
-        ScreenUtils.clear(Color.BLACK);
-        viewport.apply();
-        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
-        spriteBatch.begin();
+    @Override
+    public boolean keyDown (int keycode) {
+        downKeys.add(keycode);
+        System.out.println(downKeys+" Tasten wurde gedrückt (Keycode)");
 
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
+        if (downKeys.size >= 2){
+            onMultipleKeysDown(keycode);
+        } else {
 
-        player.setHealth(10); player.setMana(20);
-        standardFont.draw(spriteBatch, "Player Health: "+player.getHealth(), 10, 0);
-        standardFont.draw(spriteBatch, "Player Mana: "+player.getMana(), 10, 20);
-
-        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
-        player.draw(spriteBatch);
-
-        spriteBatch.end();
-
-    } */
+            if(keycode == Input.Keys.I) {
+                inventory.openInventory();
+            }
+            if(keycode == Input.Keys.H) {
+                player.addHealth(1);
+            }
+            if(keycode == Input.Keys.M) {
+                player.addMana(1);
+            }
+        }
+        return true;
+    }
 
     @Override
-    public boolean keyDown(int keycode) {
-        System.out.println(keycode+" Taste wurde gedrückt (Keycode)");
-        if(keycode == Input.Keys.I) {
-            inventory.openInventory();
-            return true;
+    public boolean keyUp (int keycode) {
+        downKeys.remove(keycode);
+        return true;
+    }
+
+    private void onMultipleKeysDown (int mostRecentKeycode){
+        //Keys that are currently down are in the IntSet.
+        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.M)){
+            player.addMana(-1);
         }
-        return false;
+        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
+            player.addHealth(-1);
+        }
     }
 }
