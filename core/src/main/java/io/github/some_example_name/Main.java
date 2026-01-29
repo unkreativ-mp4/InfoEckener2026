@@ -24,10 +24,13 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     Texture backgroundTexture;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
+    Texture woodenShovelTexture;
     Texture slotTexture, inventoryTexture;
 
     CustomLabel healthLabel;
     CustomLabel manaLabel;
+
+    Zombie zombie;
 
     Player player;
     InventoryUI inventory;
@@ -54,8 +57,11 @@ public class Main extends InputAdapter implements ApplicationListener {
         characterTextureRight = new Texture ("Character_Texture_Right.png");
         slotTexture = new Texture("Inventory_Slot_Texture.png");
         inventoryTexture = new Texture("inventory_Background_Texture.png");
+        woodenShovelTexture = new Texture("Wooden_Shovel_Texture.png");
 
         player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100);
+
+        zombie = new Zombie(1,1,woodenShovelTexture);
 
         inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
         inventory.setDebug(false);
@@ -102,6 +108,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(backgroundTexture, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         player.draw(spriteBatch);
+
+        zombie.draw(spriteBatch);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());

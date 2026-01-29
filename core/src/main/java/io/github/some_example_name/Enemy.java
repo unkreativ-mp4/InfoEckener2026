@@ -2,6 +2,7 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class Enemy {
     protected int health;
@@ -44,6 +45,10 @@ public abstract class Enemy {
 
     protected void heal(int amount) {
         health = Math.min(maxHealth, health + amount);
+    }
+
+    protected void draw(SpriteBatch spriteBatch) {
+        EnemySprite.draw(spriteBatch);
     }
 
     protected abstract void onDeath();
