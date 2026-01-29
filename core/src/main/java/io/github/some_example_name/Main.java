@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -26,6 +27,9 @@ public class Main extends InputAdapter implements ApplicationListener {
     Label healthLabel, manaLabel;
 
     Texture backgroundTexture;
+    Array<Texture> backgrounds = new Array<>();
+    int currentBackground = 0;
+    Texture backgroundTextureClay;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
     Texture slotTexture, inventoryTexture;
 
@@ -34,11 +38,16 @@ public class Main extends InputAdapter implements ApplicationListener {
     private Stage stage;
 
     private final IntSet downKeys = new IntSet(20);
+    public void loadBackgrounds(){
+        backgrounds.add(new Texture("BackgroundTexture.jpg"));
+        backgrounds.add(new Texture("Background2.png"));
+    }
 
     @Override
     public void create() {
 
         spriteBatch = new SpriteBatch();
+        loadBackgrounds();
         stage = new Stage(new ScreenViewport(), spriteBatch);
         viewport = new FitViewport(8, 5);
 
@@ -54,7 +63,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         manaLabel.setPosition(20, 40); // screen-space pixels
         stage.addActor(manaLabel);
 
-        backgroundTexture = new Texture("BackgroundTexture.jpg");
         characterTextureDown = new Texture("Character_Texture_Front.png");
         characterTextureUp = new Texture("Character_Texture_Back.png");
         characterTextureLeft = new Texture("Character_Texture_Left.png");
@@ -62,7 +70,13 @@ public class Main extends InputAdapter implements ApplicationListener {
         slotTexture = new Texture("Inventory_Slot_Texture.png");
         inventoryTexture = new Texture("inventory_Background_Texture.png");
 
-        player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100);
+        player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100, viewport, new BackgroundChanger(){
+            @Override
+            public void changeBackground(){
+                currentBackground++;
+                if(currentBackground >= backgrounds.size) {currentBackground = 0;}
+            }
+        });
 
         inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
         inventory.setDebug(false);
@@ -101,14 +115,15 @@ public class Main extends InputAdapter implements ApplicationListener {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
             player.moveDown(delta);
         }
-        player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
+        player.dontGoPastScreen(viewport.getWorldHeight());
+        player.update(delta);
 
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
         spriteBatch.begin();
-        spriteBatch.draw(backgroundTexture, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-        player.draw(spriteBatch);
+        spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        player.getPlayerSprite().draw(spriteBatch);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
@@ -168,4 +183,6 @@ public class Main extends InputAdapter implements ApplicationListener {
             player.addHealth(-1);
         }
     }
+
+
 }
