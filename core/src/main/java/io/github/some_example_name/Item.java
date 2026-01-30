@@ -11,11 +11,11 @@ public abstract class Item{
     private int rarity;
     private int maxStackSize;
 
-    public Item(String pItemID, String pItemName, Texture pItemTexture, int pRarety, int pMaxStackSize) {
+    public Item(String pItemID, String pItemName, Texture pItemTexture, int pRarity, int pMaxStackSize) {
         itemID = pItemID;
         itemName = pItemName;
         itemTexture = pItemTexture;
-        rarity = pRarety;
+        rarity = pRarity;
         maxStackSize = pMaxStackSize;
 
         NinePatch itemTexturePatch = new NinePatch(pItemTexture);
