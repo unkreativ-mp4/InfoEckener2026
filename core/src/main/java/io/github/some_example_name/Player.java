@@ -65,17 +65,17 @@ public class Player {
             PlayerSprite.setTexture(upTexture);
             PlayerSprite.translateY(deltaTime);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            PlayerSprite.setTexture(rightTexture);
-            PlayerSprite.translateX(deltaTime);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            PlayerSprite.setTexture(leftTexture);
+            PlayerSprite.translateX(-deltaTime);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
             PlayerSprite.setTexture(downTexture);
             PlayerSprite.translateY(-deltaTime);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            PlayerSprite.setTexture(leftTexture);
-            PlayerSprite.translateX(-deltaTime);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            PlayerSprite.setTexture(rightTexture);
+            PlayerSprite.translateX(deltaTime);
         }
     }
 
