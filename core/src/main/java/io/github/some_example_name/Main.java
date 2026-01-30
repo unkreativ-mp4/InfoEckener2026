@@ -105,6 +105,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
 
         zombie.update(delta);
+        player.update(delta);
 
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();

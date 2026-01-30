@@ -13,6 +13,9 @@ public class Player {
     private int maxMana;
     private int health;
     private int mana;
+    private float timeSinceLastDamage;
+    private float damageCooldown = 0.5F;
+
 
     public Player(Texture upTexture,Texture downTexture, Texture leftTexture, Texture rightTexture, int maxHealth, int maxMana) {
         this.upTexture = upTexture;
@@ -59,7 +62,9 @@ public class Player {
         if(health >= 0) {
             this.health = Math.min(maxHealth, this.health += health);
         } else {
+            if(timeSinceLastDamage < damageCooldown) {return;}
             this.health = Math.max(0, this.health += health);
+            timeSinceLastDamage = 0;
         }
     }
 
@@ -89,5 +94,9 @@ public class Player {
 
     public void draw(SpriteBatch spriteBatch) {
         PlayerSprite.draw(spriteBatch);
+    }
+
+    public void update(float deltaTime) {
+        timeSinceLastDamage += deltaTime;
     }
 }

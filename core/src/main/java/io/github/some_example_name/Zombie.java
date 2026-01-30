@@ -23,7 +23,7 @@ public class Zombie extends Enemy {
     @Override
     public void update(float deltaTime) {
         timeSinceLastAttack += deltaTime;
-        System.out.println(timeSinceLastAttack);
+        //System.out.println(timeSinceLastAttack);
     }
 
     @Override
