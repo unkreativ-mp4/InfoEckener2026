@@ -56,10 +56,10 @@ public class Player {
     }
 
     public void addHealth(int health) {
-        if (health+this.health >= maxHealth ) {
-            this.health = maxHealth;
+        if(health >= 0) {
+            this.health = Math.min(maxHealth, this.health += health);
         } else {
-            this.health += health;
+            this.health = Math.max(0, this.health += health);
         }
     }
 
@@ -72,10 +72,10 @@ public class Player {
     }
 
     public void addMana(int mana) {
-        if (mana+this.mana >= maxMana ) {
-            this.mana = maxMana;
+        if(mana >= 0) {
+            this.mana = Math.min(maxMana, this.mana += mana);
         } else {
-            this.mana += mana;
+            this.mana = Math.max(0, this.mana += mana);
         }
     }
 

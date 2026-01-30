@@ -7,7 +7,7 @@ public class Zombie extends Enemy {
     private static final int baseHealth = 20;
     private static final int baseDamage = 3;
 
-    private double attackCooldown;
+    private double attackCooldown = 1.5;
     private double timeSinceLastAttack;
 
     public Zombie(int xPos, int yPos, Texture texture) {
@@ -21,26 +21,29 @@ public class Zombie extends Enemy {
     }
 
     @Override
-    public void update() {
-        timeSinceLastAttack += Gdx.graphics.getDeltaTime();
+    public void update(float deltaTime) {
+        timeSinceLastAttack += deltaTime;
+        System.out.println(timeSinceLastAttack);
     }
 
     @Override
     public void attack(Player player) {
-        timeSinceLastAttack = 0;
+        if(timeSinceLastAttack < attackCooldown) {return;}
         double distance = Math.sqrt(   Math.pow(EnemySprite.getX()- player.getX(),2)   + Math.pow(EnemySprite.getY()- player.getY(),2)    );
         if(distance <= 5) {
             player.addHealth(-baseDamage);
         }
+        timeSinceLastAttack = 0;
     }
 
     @Override
     public void attack(Enemy enemy) {
-        timeSinceLastAttack = 0;
+        if(timeSinceLastAttack < attackCooldown) {return;}
         double distance = Math.sqrt(   Math.pow(this.EnemySprite.getX()- enemy.xPos,2)   + Math.pow(this.EnemySprite.getY()- enemy.yPos,2)    );
         if(distance <= 5) {
             enemy.takeDamage(baseDamage);
         }
+        timeSinceLastAttack = 0;
     }
 
     private boolean canAttack() {

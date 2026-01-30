@@ -86,21 +86,25 @@ public class Main extends InputAdapter implements ApplicationListener {
     @Override
     public void render() {
 
-        float delta = 4f * Gdx.graphics.getDeltaTime();
+        float delta = Gdx.graphics.getDeltaTime();
+        float movementDelta = 4f * delta ;
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.moveRight(delta);
+            player.moveRight(movementDelta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.moveLeft(delta);
+            player.moveLeft(movementDelta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.moveUp(delta);
+            player.moveUp(movementDelta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.moveDown(delta);
+            player.moveDown(movementDelta);
         }
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
+
+        zombie.update(delta);
 
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();

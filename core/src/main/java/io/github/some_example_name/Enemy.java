@@ -53,7 +53,7 @@ public abstract class Enemy {
 
     protected abstract void onDeath();
 
-    public abstract void update();
+    public abstract void update(float deltaTime);
 
     public abstract void attack(Player player);
     public abstract void attack(Enemy enemy);
