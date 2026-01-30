@@ -40,7 +40,7 @@ public class Player {
     public Sprite getPlayerSprite(){
         return PlayerSprite;
     }
-    public void update(float amount){
+    public void update(){
         handleScreenTransition();
     }
     public void handleScreenTransition(){
@@ -66,16 +66,16 @@ public class Player {
             PlayerSprite.translateY(deltaTime);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            PlayerSprite.setTexture(leftTexture);
-            PlayerSprite.translateX(-deltaTime);
+            PlayerSprite.setTexture(rightTexture);
+            PlayerSprite.translateX(deltaTime);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
             PlayerSprite.setTexture(downTexture);
             PlayerSprite.translateY(-deltaTime);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            PlayerSprite.setTexture(rightTexture);
-            PlayerSprite.translateX(deltaTime);
+            PlayerSprite.setTexture(leftTexture);
+            PlayerSprite.translateX(-deltaTime);
         }
     }
 

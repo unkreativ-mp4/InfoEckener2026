@@ -26,7 +26,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     Texture backgroundTexture;
     Array<Texture> backgrounds = new Array<>();
     int currentBackground = 0;
-    Texture backgroundTextureClay;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
     Texture slotTexture, inventoryTexture;
 
@@ -97,21 +96,24 @@ public class Main extends InputAdapter implements ApplicationListener {
         float deltaTime = 4f * Gdx.graphics.getDeltaTime();
 
         player.move(deltaTime);
+        /*
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.moveRight(delta);
+            player.moveRight(deltaTime);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.moveLeft(delta);
+            player.moveLeft(deltaTime);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.moveUp(delta);
+            player.moveUp(deltaTime);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.moveDown(delta);
+            player.moveDown(deltaTime);
         }
+
+         */
         player.dontGoPastScreen(viewport.getWorldHeight());
-        player.update(delta);
+        player.update();
 
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();
