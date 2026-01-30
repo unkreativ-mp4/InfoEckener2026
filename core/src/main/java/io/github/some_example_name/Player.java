@@ -79,6 +79,14 @@ public class Player {
         }
     }
 
+    public float getX() {
+        return PlayerSprite.getX();
+    }
+
+    public float getY() {
+        return PlayerSprite.getY();
+    }
+
     public void draw(SpriteBatch spriteBatch) {
         PlayerSprite.draw(spriteBatch);
     }

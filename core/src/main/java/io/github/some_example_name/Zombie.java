@@ -27,12 +27,20 @@ public class Zombie extends Enemy {
 
     @Override
     public void attack(Player player) {
-
+        timeSinceLastAttack = 0;
+        double distance = Math.sqrt(   Math.pow(EnemySprite.getX()- player.getX(),2)   + Math.pow(EnemySprite.getY()- player.getY(),2)    );
+        if(distance <= 5) {
+            player.addHealth(-baseDamage);
+        }
     }
 
     @Override
     public void attack(Enemy enemy) {
-
+        timeSinceLastAttack = 0;
+        double distance = Math.sqrt(   Math.pow(this.EnemySprite.getX()- enemy.xPos,2)   + Math.pow(this.EnemySprite.getY()- enemy.yPos,2)    );
+        if(distance <= 5) {
+            enemy.takeDamage(baseDamage);
+        }
     }
 
     private boolean canAttack() {

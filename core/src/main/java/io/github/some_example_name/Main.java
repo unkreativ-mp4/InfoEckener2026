@@ -150,6 +150,9 @@ public class Main extends InputAdapter implements ApplicationListener {
             if(keycode == Input.Keys.M) {
                 player.addMana(1);
             }
+            if(keycode == Input.Keys.C) {
+                zombie.attack(player);
+            }
         }
         return true;
     }
