@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 import static com.badlogic.gdx.utils.compression.CRC.Table;
 
-public abstract class Item{
+public class Item{
 
     private String itemID;
     private String itemName;

@@ -53,12 +53,33 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
+        Texture woodenSwordTexture = new Texture("Wooden_Sword_Texture.png");
 
-        inventory = new Inventory(4, 7, 3.5f);
-        inventoryUI = new InventoryUI(inventory, inventoryTexture, slotTexture);
+        Item woodenSword = new Item("wooden_sword", "Wooden Sword", woodenSwordTexture, 1, 64);
+
+        inventory = new Inventory(5, 6);
+
+        for(int i = 0; i < inventory.getInventorySize() - 5 ; i++) {
+            ItemStack woodenSwordStack = new ItemStack(woodenSword, 3);
+            inventory.fillInventoryWithItemStack(woodenSwordStack);
+        }
+
+        ItemStack woodenSwordStack = new ItemStack(woodenSword, 5);
+        inventory.addItemStack(woodenSwordStack, 4, 3);
+
+        inventory.printInventory(inventory);  
+
+        inventoryUI = new InventoryUI(inventory, inventoryTexture, slotTexture, 2.5f);
         stage.addActor(inventoryUI);
 
-        //inventoryUI.setDebug(true);
+        stage.setDebugAll(true);
+
+
+
+
+
+
+
 
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage); // Stage first
