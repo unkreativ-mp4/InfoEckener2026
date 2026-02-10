@@ -1,6 +1,8 @@
 package io.github.some_example_name;
 
 public class ItemStack {
+
+
     private Item item;
     private int amount;
 
@@ -13,10 +15,12 @@ public class ItemStack {
         return item == null || amount == 0;
     }
 
-    /*public void dontGoOverMaxStackSize() {
-        if(amount > item.getMaxStackSize()) {
+    public Item getItem() {
+        return item;
+    }
 
-        }
-    } */
+    public int getAmount() {
+        return amount;
+    }
 
 }

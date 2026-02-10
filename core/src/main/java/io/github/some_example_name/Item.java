@@ -3,7 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 
-public abstract class Item{
+public class Item{
 
     private final String itemID;
     private String itemName;

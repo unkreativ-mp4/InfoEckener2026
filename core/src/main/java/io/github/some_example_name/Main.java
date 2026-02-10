@@ -23,7 +23,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     SpriteBatch spriteBatch;
     FitViewport viewport;
 
-    Texture backgroundTexture;
     Array<Texture> backgrounds = new Array<>();
     int currentBackground = 0;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
@@ -36,7 +35,8 @@ public class Main extends InputAdapter implements ApplicationListener {
     Zombie zombie;
 
     Player player;
-    InventoryUI inventory;
+    Inventory inventory;
+    InventoryUI inventoryUI;
     private Stage stage;
 
     private final IntSet downKeys = new IntSet(20);
@@ -75,6 +75,28 @@ public class Main extends InputAdapter implements ApplicationListener {
             }
         });
 
+        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
+        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
+        Texture woodenSwordTexture = new Texture("Wooden_Sword_Texture.png");
+
+        Item woodenSword = new Item("wooden_sword", "Wooden Sword", woodenSwordTexture, 1, 64);
+
+        inventory = new Inventory(5, 6);
+
+        for(int i = 0; i < inventory.getInventorySize() - 5 ; i++) {
+            ItemStack woodenSwordStack = new ItemStack(woodenSword, 3);
+            inventory.fillInventoryWithItemStack(woodenSwordStack);
+        }
+
+        ItemStack woodenSwordStack = new ItemStack(woodenSword, 5);
+        inventory.addItemStack(woodenSwordStack, 4, 3);
+
+        inventory.printInventory(inventory);
+
+        inventoryUI = new InventoryUI(inventory, inventoryTexture, slotTexture, 2.5f);
+        stage.addActor(inventoryUI);
+
+        stage.setDebugAll(true);
         zombie = new Zombie(1,1,woodenShovelTexture, woodenHoeTexture);
 
         inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
@@ -94,6 +116,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         if(width <= 0 || height <= 0) return;
 
         viewport.update(width, height, true);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -148,7 +171,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         } else {
 
             if(keycode == Input.Keys.I) {
-                inventory.openInventory();
+                inventoryUI.openInventory(inventory);
             }
             if(keycode == Input.Keys.H) {
                 player.addHealth(1);
