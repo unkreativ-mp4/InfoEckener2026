@@ -1,8 +1,8 @@
-package io.github.some_example_name.lwjgl3;
+package net.eckener.dungeon_crawler.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import io.github.some_example_name.Main;
+import net.eckener.dungeon_crawler.Main;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {

@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package net.eckener.dungeon_crawler;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;

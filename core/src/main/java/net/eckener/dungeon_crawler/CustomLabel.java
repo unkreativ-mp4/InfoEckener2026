@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package net.eckener.dungeon_crawler;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
