@@ -2,7 +2,6 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,8 +24,8 @@ public class Player {
     private FitViewport viewport;
 
     public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
-        this.upTexture = Assets.get(Assets.PLAYER_BACK);
-        this.downTexture = Assets.get(Assets.PLAYER_FRONT);;
+        this.upTexture = Assets.get(Assets.PLAYER_UP);
+        this.downTexture = Assets.get(Assets.PLAYER_DOWN);;
         this.leftTexture = Assets.get(Assets.PLAYER_LEFT);;
         this.rightTexture = Assets.get(Assets.PLAYER_RIGHT);;
         this.maxHealth = maxHealth;

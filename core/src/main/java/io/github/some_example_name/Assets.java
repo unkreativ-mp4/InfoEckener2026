@@ -8,8 +8,8 @@ public final class Assets {
     public static final AssetManager manager = new AssetManager();
 
     // Asset paths (single source of truth)
-    public static final String PLAYER_FRONT  = "textures/entities/player_front.png";
-    public static final String PLAYER_BACK  = "textures/entities/player_back.png";
+    public static final String PLAYER_DOWN = "textures/entities/player_down.png";
+    public static final String PLAYER_UP = "textures/entities/player_up.png";
     public static final String PLAYER_LEFT  = "textures/entities/player_left.png";
     public static final String PLAYER_RIGHT  = "textures/entities/player_right.png";
     public static final String INVENTORY_SLOT  = "textures/gui/inventory/inventory_slot.png";
@@ -41,8 +41,8 @@ public final class Assets {
     private Assets() {} // prevent instantiation
 
     public static void load() {
-        manager.load(PLAYER_FRONT, Texture.class);
-        manager.load(PLAYER_BACK , Texture.class);
+        manager.load(PLAYER_DOWN, Texture.class);
+        manager.load(PLAYER_UP, Texture.class);
         manager.load(PLAYER_LEFT , Texture.class);
         manager.load(PLAYER_RIGHT, Texture.class);
         manager.load(INVENTORY_SLOT, Texture.class);
