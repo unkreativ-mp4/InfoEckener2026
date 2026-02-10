@@ -6,10 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -25,9 +23,6 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     Array<Texture> backgrounds = new Array<>();
     int currentBackground = 0;
-    Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
-    Texture woodenShovelTexture, woodenHoeTexture;
-    Texture slotTexture, inventoryTexture;
 
     CustomLabel healthLabel;
     CustomLabel manaLabel;
@@ -41,12 +36,15 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     private final IntSet downKeys = new IntSet(20);
     public void loadBackgrounds(){
-        backgrounds.add(new Texture("BackgroundTexture.jpg"));
-        backgrounds.add(new Texture("Background2.png"));
+        backgrounds.add(Assets.get(Assets.BACKGROUND_PLACEHOLDER));
+        backgrounds.add(Assets.get(Assets.BACKGROUND_ORANGE));
     }
 
     @Override
     public void create() {
+
+        Assets.load();
+        Assets.finishLoading();
 
         spriteBatch = new SpriteBatch();
         loadBackgrounds();
@@ -58,19 +56,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         stage.addActor(healthLabel.getLabel());
         stage.addActor(manaLabel.getLabel());
 
-        characterTextureDown = new Texture("Character_Texture_Front.png");
-        characterTextureUp = new Texture("Character_Texture_Back.png");
-        characterTextureLeft = new Texture("Character_Texture_Left.png");
-        characterTextureRight = new Texture ("Character_Texture_Right.png");
-        slotTexture = new Texture("Inventory_Slot_Texture.png");
-        inventoryTexture = new Texture("inventory_Background_Texture.png");
-        woodenShovelTexture = new Texture("Wooden_Shovel_Texture.png");
-        woodenHoeTexture = new Texture("Wooden_Hoe_Texture.png");
-        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
-        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
-        Texture woodenSwordTexture = new Texture("Wooden_Sword_Texture.png");
-
-        player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100, viewport, new BackgroundChanger(){
+        player = new Player(100, 100, viewport, new BackgroundChanger(){
             @Override
             public void changeBackground(){
                 currentBackground++;
@@ -78,7 +64,7 @@ public class Main extends InputAdapter implements ApplicationListener {
             }
         });
 
-        Item woodenSword = new Item("wooden_sword", "Wooden Sword", woodenSwordTexture, 1, 64);
+        Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
 
         inventory = new Inventory(5, 6);
 
@@ -92,11 +78,11 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         inventory.printInventory(inventory);
 
-        inventoryUI = new InventoryUI(inventory, inventoryTexture, slotTexture, 2.5f);
+        inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2.5f);
         stage.addActor(inventoryUI);
 
         stage.setDebugAll(true);
-        zombie = new Zombie(1,1,woodenShovelTexture, woodenHoeTexture);
+        zombie = new Zombie(1,1,Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
 
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage); // Stage first
@@ -115,6 +101,10 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
+      /*if (!Assets.isFinished()) {
+            Assets.update();   // keep loading
+            return;            // optionally render loading screen
+        } */
 
         float deltaTime = Gdx.graphics.getDeltaTime();
 
@@ -152,6 +142,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
+        Assets.dispose();
     }
 
     @Override
