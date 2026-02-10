@@ -24,11 +24,11 @@ public class Player {
     private boolean transitioning;
     private FitViewport viewport;
 
-    public Player(Texture upTexture,Texture downTexture, Texture leftTexture, Texture rightTexture, int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
-        this.upTexture = upTexture;
-        this.downTexture = downTexture;
-        this.leftTexture = leftTexture;
-        this.rightTexture = rightTexture;
+    public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
+        this.upTexture = Assets.get(Assets.PLAYER_BACK);
+        this.downTexture = Assets.get(Assets.PLAYER_FRONT);;
+        this.leftTexture = Assets.get(Assets.PLAYER_LEFT);;
+        this.rightTexture = Assets.get(Assets.PLAYER_RIGHT);;
         this.maxHealth = maxHealth;
         this.maxMana = maxMana;
         this.viewport = viewport;
@@ -64,6 +64,7 @@ public class Player {
     }
 
     public void move(float delta) {
+        delta *= 4;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             PlayerSprite.setTexture(upTexture);
             PlayerSprite.translateY(delta);
