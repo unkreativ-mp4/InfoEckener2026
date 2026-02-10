@@ -66,6 +66,9 @@ public class Main extends InputAdapter implements ApplicationListener {
         inventoryTexture = new Texture("inventory_Background_Texture.png");
         woodenShovelTexture = new Texture("Wooden_Shovel_Texture.png");
         woodenHoeTexture = new Texture("Wooden_Hoe_Texture.png");
+        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
+        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
+        Texture woodenSwordTexture = new Texture("Wooden_Sword_Texture.png");
 
         player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100, viewport, new BackgroundChanger(){
             @Override
@@ -74,10 +77,6 @@ public class Main extends InputAdapter implements ApplicationListener {
                 if(currentBackground >= backgrounds.size) {currentBackground = 0;}
             }
         });
-
-        Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
-        Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
-        Texture woodenSwordTexture = new Texture("Wooden_Sword_Texture.png");
 
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", woodenSwordTexture, 1, 64);
 
@@ -99,15 +98,10 @@ public class Main extends InputAdapter implements ApplicationListener {
         stage.setDebugAll(true);
         zombie = new Zombie(1,1,woodenShovelTexture, woodenHoeTexture);
 
-        inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
-        inventory.setDebug(false);
-
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage); // Stage first
         multiplexer.addProcessor(this);         // Main for keypresses
         Gdx.input.setInputProcessor(multiplexer);
-
-
     }
 
     @Override
