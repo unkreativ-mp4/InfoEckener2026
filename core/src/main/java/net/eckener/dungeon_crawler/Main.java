@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,12 +15,15 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import net.eckener.dungeon_crawler.debug.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener {
 
     SpriteBatch spriteBatch;
     FitViewport viewport;
+
+    DebugOverlay debug;
 
     Array<Texture> backgrounds = new Array<>();
     int currentBackground = 0;
@@ -43,50 +47,90 @@ public class Main extends InputAdapter implements ApplicationListener {
     @Override
     public void create() {
 
+        // ───────────────────────────────
+        // Asset loading
+        // ───────────────────────────────
         Assets.load();
         Assets.finishLoading();
 
+        // ───────────────────────────────
+        // Rendering & Viewports
+        // ───────────────────────────────
         spriteBatch = new SpriteBatch();
-        loadBackgrounds();
-        stage = new Stage(new ScreenViewport(), spriteBatch);
-        viewport = new FitViewport(8, 5);
 
-        healthLabel = new CustomLabel("Player Health: ", 10, 25);
-        manaLabel = new CustomLabel("Player Mana: ", 10, 10);
+        viewport = new FitViewport(8, 5);
+        stage = new Stage(new ScreenViewport(), spriteBatch);
+
+        loadBackgrounds();
+
+        // ───────────────────────────────
+        // UI Labels
+        // ───────────────────────────────
+        healthLabel = new CustomLabel("Player Health:", 10, 25);
+        manaLabel   = new CustomLabel("Player Mana:",   10, 10);
+
         stage.addActor(healthLabel.getLabel());
         stage.addActor(manaLabel.getLabel());
 
-        player = new Player(100, 100, viewport, new BackgroundChanger(){
-            @Override
-            public void changeBackground(){
+        // ───────────────────────────────
+        // Player
+        // ───────────────────────────────
+        player = new Player(100, 100, viewport, () -> {
                 currentBackground++;
-                if(currentBackground >= backgrounds.size) {currentBackground = 0;}
+                if (currentBackground >= backgrounds.size) {
+                    currentBackground = 0;
+                }
             }
-        });
+        );
 
+        // ───────────────────────────────
+        // Debug Overlay
+        // ───────────────────────────────
+        OrthographicCamera camera = (OrthographicCamera) viewport.getCamera();
+
+        DebugStats stats     = new DebugStats(camera);
+        DebugLayout layout  = new DebugLayout(stats);
+        DebugRenderer debugRenderer = new DebugRenderer(spriteBatch);
+        DebugInput debugInput = new DebugInput();
+
+        debug = new DebugOverlay(layout, debugRenderer, debugInput);
+
+        // ───────────────────────────────
+        // Items & Inventory
+        // ───────────────────────────────
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
 
         inventory = new Inventory(5, 6);
 
-        for(int i = 0; i < inventory.getInventorySize() - 5 ; i++) {
-            ItemStack woodenSwordStack = new ItemStack(woodenSword, 3);
-            inventory.fillInventoryWithItemStack(woodenSwordStack);
+        for (int i = 0; i < inventory.getInventorySize() - 5; i++) {
+            inventory.fillInventoryWithItemStack(new ItemStack(woodenSword, 3));
         }
 
-        ItemStack woodenSwordStack = new ItemStack(woodenSword, 5);
-        inventory.addItemStack(woodenSwordStack, 4, 3);
-
+        inventory.addItemStack(new ItemStack(woodenSword, 5), 4, 3);
         inventory.printInventory(inventory);
 
         inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2.5f);
+
         stage.addActor(inventoryUI);
 
+        // ───────────────────────────────
+        // Debug flags
+        // ───────────────────────────────
         stage.setDebugAll(true);
-        zombie = new Zombie(1,1,Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
 
+        // ───────────────────────────────
+        // Enemies
+        // ───────────────────────────────
+        zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
+
+        // ───────────────────────────────
+        // Input Handling
+        // ───────────────────────────────
         InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage); // Stage first
-        multiplexer.addProcessor(this);         // Main for keypresses
+        multiplexer.addProcessor(debug.input());
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
+
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -101,34 +145,44 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-      /*if (!Assets.isFinished()) {
-            Assets.update();   // keep loading
-            return;            // optionally render loading screen
-        } */
+        float delta = Gdx.graphics.getDeltaTime();
 
-        float deltaTime = Gdx.graphics.getDeltaTime();
-
-        player.move(deltaTime);
-        player.dontGoPastScreen(viewport.getWorldHeight());
-
-        zombie.update(deltaTime, player);
-        player.update(deltaTime);
-
-        ScreenUtils.clear(Color.BLACK);
-        viewport.apply();
-        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
-        spriteBatch.begin();
-        spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-        player.getPlayerSprite().draw(spriteBatch);
-
-        zombie.draw(spriteBatch);
+        // --- UPDATE ---
+        player.move(delta);
+        zombie.update(delta, player);
+        player.update(delta);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
 
+        // --- CLEAR ---
+        ScreenUtils.clear(Color.BLACK);
+
+        // =========================
+        // WORLD RENDER (game space)
+        // =========================
+        viewport.apply();
+        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+
+        spriteBatch.begin();
+        spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+
+        player.getPlayerSprite().draw(spriteBatch);
+        zombie.draw(spriteBatch);
         spriteBatch.end();
 
-        stage.act(deltaTime);
+        // ======================
+        // UI + DEBUG (screen space)
+        // ======================
+        stage.getViewport().apply();
+        spriteBatch.setProjectionMatrix(stage.getCamera().combined);
+
+        spriteBatch.begin();
+        debug.render();   // draw text only
+        spriteBatch.end();
+
+        // --- STAGE ---
+        stage.act(delta);
         stage.draw();
     }
 
