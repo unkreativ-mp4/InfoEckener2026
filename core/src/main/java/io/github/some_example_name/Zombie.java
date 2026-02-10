@@ -10,10 +10,11 @@ public class Zombie extends Enemy {
     private double attackCooldown = 1.5;
     private double timeSinceLastAttack;
 
-    public Zombie(int xPos, int yPos, Texture aliveTexture, Texture deathTexture) {
+    public Zombie(float xPos, float yPos, Texture aliveTexture, Texture deathTexture) {
         super(xPos, yPos, baseHealth, aliveTexture);
         this.timeSinceLastAttack = 0;
         this.deathTexture = deathTexture;
+        this.speed = 1;
     }
 
     @Override
@@ -23,8 +24,11 @@ public class Zombie extends Enemy {
     }
 
     @Override
-    public void update(float deltaTime) {
+    public void update(float deltaTime, Player player) {
         timeSinceLastAttack += deltaTime;
+        xPos = EnemySprite.getX();
+        yPos = EnemySprite.getY();
+        move(player, deltaTime);
     }
 
     @Override
@@ -45,6 +49,29 @@ public class Zombie extends Enemy {
             enemy.takeDamage(baseDamage);
         }
         timeSinceLastAttack = 0;
+    }
+
+    public void move(Player player, float delta) {
+        float playerXPos = player.getX();
+        float playerYPos = player.getY();
+
+        float movementDelta = delta * speed;
+        //System.out.print("Player X: "+ playerXPos+ "     Zombie X: "+xPos);
+        if (playerXPos > xPos) {
+            EnemySprite.translateX(movementDelta);
+            //System.out.println("+x");
+        } else {
+            EnemySprite.translateX(-movementDelta);
+            //System.out.println("-x");
+        }
+        if (playerYPos > yPos) {
+            EnemySprite.translateY(movementDelta);
+            //System.out.println("+y");
+        } else {
+            EnemySprite.translateY(-movementDelta);
+            //System.out.println("-y");
+        }
+
     }
 
     private boolean canAttack() {

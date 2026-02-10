@@ -34,7 +34,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     Zombie zombie;
 
-    Player player;
+    public Player player;
     Inventory inventory;
     InventoryUI inventoryUI;
     private Stage stage;
@@ -122,7 +122,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         player.move(movementDelta);
         player.dontGoPastScreen(viewport.getWorldHeight());
 
-        zombie.update(deltaTime);
+        zombie.update(deltaTime, player);
         player.update(deltaTime);
 
         ScreenUtils.clear(Color.BLACK);

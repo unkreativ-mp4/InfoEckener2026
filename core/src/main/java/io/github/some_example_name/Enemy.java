@@ -9,12 +9,12 @@ public abstract class Enemy {
     protected int maxHealth;
     protected int speed;
 
-    protected int xPos;
-    protected int yPos;
+    protected float xPos;
+    protected float yPos;
     protected Sprite EnemySprite;
     protected boolean isAlive = true;
 
-    public Enemy(int xPos, int yPos, int maxHealth, Texture aliveTexture) {
+    public Enemy(float xPos, float yPos, int maxHealth, Texture aliveTexture) {
         this.xPos = xPos;
         this.yPos = yPos;
 
@@ -54,7 +54,7 @@ public abstract class Enemy {
 
     protected abstract void onDeath();
 
-    public abstract void update(float deltaTime);
+    public abstract void update(float deltaTime, Player player);
 
     public abstract void attack(Player player);
     public abstract void attack(Enemy enemy);
