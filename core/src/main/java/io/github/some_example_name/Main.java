@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import static java.lang.Thread.currentThread;
+import static java.lang.Thread.sleep;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener {
 
@@ -73,18 +76,21 @@ public class Main extends InputAdapter implements ApplicationListener {
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
         Texture woodenSwordTexture = new Texture("Wooden_Sword_Texture.png");
+        Texture coinTexture= new Texture("coin.png");
 
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", woodenSwordTexture, 1, 64);
+        Item coin = new Item("coin", "Coin", coinTexture, 5, 67);
 
         inventory = new Inventory(5, 6);
 
         for(int i = 0; i < inventory.getInventorySize() - 5 ; i++) {
+
             ItemStack woodenSwordStack = new ItemStack(woodenSword, 3);
             inventory.fillInventoryWithItemStack(woodenSwordStack);
         }
 
-        ItemStack woodenSwordStack = new ItemStack(woodenSword, 5);
-        inventory.addItemStack(woodenSwordStack, 4, 3);
+        ItemStack coinStack = new ItemStack(coin, 5);
+        inventory.addItemStack(coinStack, 4, 3);
 
         inventory.printInventory(inventory);
 

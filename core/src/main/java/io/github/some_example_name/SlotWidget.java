@@ -6,10 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-public class SlotWidget extends Stack {
+public class SlotWidget extends Table {
 
     private ItemStack itemStack;
     private Image slotItemTexture;
@@ -17,7 +18,7 @@ public class SlotWidget extends Stack {
 
     public SlotWidget(ItemStack pItemStack, BitmapFont font) {
 
-        itemStack = pItemStack;
+        this.itemStack = pItemStack;
         slotItemTexture = new Image();
         slotItemTexture.setVisible(false);
 
@@ -32,12 +33,12 @@ public class SlotWidget extends Stack {
         setStack(pItemStack);
     }
 
-        public void clearStack() {
-            slotItemTexture.setDrawable(null);
-            slotItemTexture.setVisible(false);
-            itemAmount.setText("");
-            itemAmount.setVisible(false);
-        }
+    public void clearStack() {
+        slotItemTexture.setDrawable(null);
+        slotItemTexture.setVisible(false);
+        itemAmount.setText("");
+        itemAmount.setVisible(false);
+    }
 
     public void setStack(ItemStack stack) {
         if (stack == null) {
@@ -45,7 +46,6 @@ public class SlotWidget extends Stack {
             return;
         }
 
-        // Assuming Item has getTexture() returning Texture
         TextureRegion region = new TextureRegion(stack.getItem().getItemTexture());
         slotItemTexture.setDrawable(new TextureRegionDrawable(region));
         slotItemTexture.setVisible(true);
@@ -57,4 +57,7 @@ public class SlotWidget extends Stack {
             itemAmount.setVisible(false);
         }
     }
+
+
+
 }

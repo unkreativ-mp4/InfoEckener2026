@@ -3,9 +3,11 @@ package io.github.some_example_name;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import org.w3c.dom.Text;
@@ -54,6 +56,26 @@ public class InventoryUI extends Table {
                 cell.setBackground(new NinePatchDrawable(slotBackgroundPatch));
 
                 SlotWidget slot = new SlotWidget(inventory.getItemStack(row,col), new BitmapFont());
+                final int r = row;
+                final int c = col;
+
+                slot.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    ItemStack itemStack = inventory.getItemStack(r, c);
+
+                    if (itemStack == null) {
+                        System.out.println("Clicked empty slot: " + r + "," + c);
+                    } else {
+                        System.out.println("Clicked item: " + itemStack.getItem().getItemName() + " at " + r + "," + c);
+                    }
+
+                    event.stop(); // optional: prevents the click bubbling up
+                }
+                });
+
+
+
+
                 cell.add(slot).grow();
 
                 inventory.add(cell).size(slotSize).pad(slotPad);
@@ -75,5 +97,12 @@ public class InventoryUI extends Table {
     public boolean getInventoryVisible() {
         return inventoryVisible;
     }
+
+    public void refresh(Inventory inventory, int row, int col) {
+
+        if(inventory.getItemStack(row, col) != null) add(new Image(inventory.getItemStack(row, col).getItem().getItemTexture())).grow();
+        else add().grow();
+    }
+
 }
 
