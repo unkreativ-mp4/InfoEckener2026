@@ -24,7 +24,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     Texture backgroundTexture;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
-    Texture woodenShovelTexture;
+    Texture woodenShovelTexture, woodenHoeTexture;
     Texture slotTexture, inventoryTexture;
 
     CustomLabel healthLabel;
@@ -58,10 +58,11 @@ public class Main extends InputAdapter implements ApplicationListener {
         slotTexture = new Texture("Inventory_Slot_Texture.png");
         inventoryTexture = new Texture("inventory_Background_Texture.png");
         woodenShovelTexture = new Texture("Wooden_Shovel_Texture.png");
+        woodenHoeTexture = new Texture("Wooden_Hoe_Texture.png");
 
         player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100);
 
-        zombie = new Zombie(1,1,woodenShovelTexture);
+        zombie = new Zombie(1,1,woodenShovelTexture, woodenHoeTexture);
 
         inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
         inventory.setDebug(false);
@@ -157,6 +158,9 @@ public class Main extends InputAdapter implements ApplicationListener {
             }
             if(keycode == Input.Keys.C) {
                 zombie.attack(player);
+            }
+            if(keycode == Input.Keys.P) {
+                player.attack(zombie,9);
             }
         }
         return true;

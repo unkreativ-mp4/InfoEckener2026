@@ -50,14 +50,6 @@ public class Player {
         PlayerSprite.setY(MathUtils.clamp(PlayerSprite.getY(), 0, worldHeight - PlayerSprite.getHeight()));
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
     public void addHealth(int health) {
         if(health >= 0) {
             this.health = Math.min(maxHealth, this.health += health);
@@ -68,20 +60,32 @@ public class Player {
         }
     }
 
-    public void setMana(int mana) {
-        this.mana = mana;
-    }
-
-    public int getMana() {
-        return mana;
-    }
-
     public void addMana(int mana) {
         if(mana >= 0) {
             this.mana = Math.min(maxMana, this.mana += mana);
         } else {
             this.mana = Math.max(0, this.mana += mana);
         }
+    }
+
+    public void attack(Enemy enemy, int damage) {
+        enemy.takeDamage(damage);
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public int getMana() {
+        return mana;
     }
 
     public float getX() {

@@ -6,18 +6,21 @@ import com.badlogic.gdx.graphics.Texture;
 public class Zombie extends Enemy {
     private static final int baseHealth = 20;
     private static final int baseDamage = 3;
+    private final Texture deathTexture;
 
     private double attackCooldown = 1.5;
     private double timeSinceLastAttack;
 
-    public Zombie(int xPos, int yPos, Texture texture) {
-        super(xPos, yPos, baseHealth, texture);
+    public Zombie(int xPos, int yPos, Texture aliveTexture, Texture deathTexture) {
+        super(xPos, yPos, baseHealth, aliveTexture);
         this.timeSinceLastAttack = 0;
+        this.deathTexture = deathTexture;
     }
 
     @Override
     protected void onDeath() {
-
+        isAlive=false;
+        EnemySprite.setTexture(deathTexture);
     }
 
     @Override

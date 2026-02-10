@@ -12,15 +12,16 @@ public abstract class Enemy {
     protected int xPos;
     protected int yPos;
     protected Sprite EnemySprite;
+    protected boolean isAlive = true;
 
-    public Enemy(int xPos, int yPos, int maxHealth, Texture texture) {
+    public Enemy(int xPos, int yPos, int maxHealth, Texture aliveTexture) {
         this.xPos = xPos;
         this.yPos = yPos;
 
         this.maxHealth = maxHealth;
         this.health = maxHealth;
 
-        EnemySprite = new Sprite(texture);
+        EnemySprite = new Sprite(aliveTexture);
         EnemySprite.setSize(1, 1);
     }
 
