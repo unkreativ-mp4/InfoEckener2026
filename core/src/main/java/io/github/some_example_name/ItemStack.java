@@ -23,4 +23,8 @@ public class ItemStack {
         return amount;
     }
 
+    public void setAmount(int pAmount) {
+        amount = pAmount;
+    }
+
 }

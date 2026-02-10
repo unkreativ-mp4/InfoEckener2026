@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-public class SlotWidget extends Table {
+public class SlotWidget extends Stack {
 
     private ItemStack itemStack;
     private Image slotItemTexture;

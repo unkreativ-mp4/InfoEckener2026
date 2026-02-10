@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import org.w3c.dom.Text;
+
+import java.util.Objects;
 
 public class InventoryUI extends Table {
 
@@ -30,6 +33,7 @@ public class InventoryUI extends Table {
         float slotPad = 4f * uiScale;
 
         NinePatch invPatch = new NinePatch(inventoryTexture, 11, 11, 11, 11);
+        invPatch.scale(uiScale, uiScale);
         Table invPanel = new Table();
         invPanel.setBackground(new NinePatchDrawable(invPatch));
         invPanel.pad(12f);
@@ -37,7 +41,7 @@ public class InventoryUI extends Table {
         buildInventoryUI(inventory, slotBackgroundTexture, slotSize, slotPad);
 
         invPanel.add(inventory).center();
-        add(invPanel).center();
+        add(invPanel).expand().center();
 
         pack();
     }
@@ -48,7 +52,6 @@ public class InventoryUI extends Table {
         inventory.defaults().size(slotSize).pad(slotPad);
 
         NinePatch slotBackgroundPatch = new NinePatch(slotBackgroundTexture, 3, 3, 3, 3);
-        Drawable slotBackground = new NinePatchDrawable(slotBackgroundPatch);
 
         for (int row = 0; row < inventory.getRows(); row++) {
             for (int col = 0; col < inventory.getCols(); col++) {
@@ -56,30 +59,31 @@ public class InventoryUI extends Table {
                 cell.setBackground(new NinePatchDrawable(slotBackgroundPatch));
 
                 SlotWidget slot = new SlotWidget(inventory.getItemStack(row,col), new BitmapFont());
+                slot.setUserObject(new GridPoint2(col, row));
                 final int r = row;
                 final int c = col;
 
                 slot.addListener(new ClickListener() {
-                public void clicked(InputEvent event, float x, float y) {
                     ItemStack itemStack = inventory.getItemStack(r, c);
+                    public void clicked(InputEvent event, float x, float y) {
+                        if (itemStack != null) {
+                            System.out.println("Clicked item: " + itemStack.getItem().getItemName() + " at " + r + "," + c);
+                        } else {
+                            System.out.println("Clicked empty slot: " + r + "," + c);
+                        }
 
-                    if (itemStack == null) {
-                        System.out.println("Clicked empty slot: " + r + "," + c);
-                    } else {
-                        System.out.println("Clicked item: " + itemStack.getItem().getItemName() + " at " + r + "," + c);
+                        event.stop();
                     }
 
-                    event.stop(); // optional: prevents the click bubbling up
-                }
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                        GridPoint2
+                    }
                 });
 
 
-
-
                 cell.add(slot).grow();
-
                 inventory.add(cell).size(slotSize).pad(slotPad);
-
                 if(col == inventory.getCols() - 1) {
                     inventory.row();
                 }
@@ -102,6 +106,16 @@ public class InventoryUI extends Table {
 
         if(inventory.getItemStack(row, col) != null) add(new Image(inventory.getItemStack(row, col).getItem().getItemTexture())).grow();
         else add().grow();
+    }
+
+    private SlotWidget findSlotUnderPointer(float stageX, float stageY) {   //chatgpt hat gekocht
+        if (getStage() == null) return null;
+
+        var hit = getStage().hit(stageX, stageY, true);
+        while (hit != null && !(hit instanceof SlotWidget)) {
+            hit = hit.getParent();
+        }
+        return (SlotWidget) hit;
     }
 
 }

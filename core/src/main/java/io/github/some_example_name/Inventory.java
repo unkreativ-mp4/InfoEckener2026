@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import org.w3c.dom.Text;
 
+import java.util.Objects;
+
 public class Inventory extends Table {
 
     private final int rows;
@@ -73,6 +75,25 @@ public class Inventory extends Table {
             System.out.println(" ");
         }
 
+    }
+
+    public void moveItemtoSlot(ItemStack[][] itemStacks, ItemStack itemStack, int newRow, int newCol, int orgRow, int orgCol) {
+
+        if(itemStacks[newRow][newCol] != null) {
+            if(Objects.equals(itemStacks[newRow][newCol].getItem().getItemID(), itemStack.getItem().getItemID())) {
+                itemStacks[newRow][newCol].setAmount(itemStacks[newRow][newCol].getAmount() + itemStack.getAmount());
+                itemStacks[orgRow][orgCol] = null;
+                System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol );
+            }
+            else {
+                System.out.println("Inventory Slot occupied!");
+            }
+        }
+        else {
+            itemStacks[newRow][newCol] = itemStack;
+            itemStacks[orgRow][orgCol] = null;
+            System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol );
+        }
     }
 
 }
