@@ -27,10 +27,13 @@ public class Main extends InputAdapter implements ApplicationListener {
     Array<Texture> backgrounds = new Array<>();
     int currentBackground = 0;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
+    Texture woodenShovelTexture, woodenHoeTexture;
     Texture slotTexture, inventoryTexture;
 
     CustomLabel healthLabel;
     CustomLabel manaLabel;
+
+    Zombie zombie;
 
     Player player;
     InventoryUI inventory;
@@ -61,6 +64,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         characterTextureRight = new Texture ("Character_Texture_Right.png");
         slotTexture = new Texture("Inventory_Slot_Texture.png");
         inventoryTexture = new Texture("inventory_Background_Texture.png");
+        woodenShovelTexture = new Texture("Wooden_Shovel_Texture.png");
+        woodenHoeTexture = new Texture("Wooden_Hoe_Texture.png");
 
         player = new Player(characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight, 100, 100, viewport, new BackgroundChanger(){
             @Override
@@ -69,6 +74,8 @@ public class Main extends InputAdapter implements ApplicationListener {
                 if(currentBackground >= backgrounds.size) {currentBackground = 0;}
             }
         });
+
+        zombie = new Zombie(1,1,woodenShovelTexture, woodenHoeTexture);
 
         inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
         inventory.setDebug(false);
@@ -93,27 +100,31 @@ public class Main extends InputAdapter implements ApplicationListener {
     @Override
     public void render() {
 
-        float deltaTime = 4f * Gdx.graphics.getDeltaTime();
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        float movementDelta = 4f * delta ;
 
         player.move(deltaTime);
         /*
         player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.moveRight(deltaTime);
+            player.moveRight(delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.moveLeft(deltaTime);
+            player.moveLeft(delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.moveUp(deltaTime);
+            player.moveUp(delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.moveDown(deltaTime);
+            player.moveDown(delta);
         }
 
          */
         player.dontGoPastScreen(viewport.getWorldHeight());
         player.update();
+
+        zombie.update(delta);
+        player.update(delta);
 
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();
@@ -121,6 +132,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         player.getPlayerSprite().draw(spriteBatch);
+
+        zombie.draw(spriteBatch);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
@@ -161,6 +174,12 @@ public class Main extends InputAdapter implements ApplicationListener {
             if(keycode == Input.Keys.M) {
                 player.addMana(1);
             }
+            if(keycode == Input.Keys.C) {
+                zombie.attack(player);
+            }
+            if(keycode == Input.Keys.P) {
+                player.attack(zombie,9);
+            }
         }
         return true;
     }
@@ -180,6 +199,4 @@ public class Main extends InputAdapter implements ApplicationListener {
             player.addHealth(-1);
         }
     }
-
-
 }

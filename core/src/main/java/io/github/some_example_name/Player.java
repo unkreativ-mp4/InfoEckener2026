@@ -14,10 +14,13 @@ public class Player {
     Texture upTexture, downTexture, leftTexture, rightTexture;
     private Sprite PlayerSprite;
     private float playerSpeed;
-    private final int maxHealth;
-    private final int maxMana;
+    private int maxHealth;
+    private int maxMana;
     private int health;
     private int mana;
+    private float timeSinceLastDamage;
+    private float damageCooldown = 0.5F;
+
     private boolean transitioning;
     private FitViewport viewport;
 
@@ -85,20 +88,34 @@ public class Player {
     }
 
 
+    public void addHealth(int health) {
+        if(health >= 0) {
+            this.health = Math.min(maxHealth, this.health += health);
+        } else {
+            if(timeSinceLastDamage < damageCooldown) {return;}
+            this.health = Math.max(0, this.health += health);
+            timeSinceLastDamage = 0;
+        }
+    }
+
+    public void addMana(int mana) {
+        if(mana >= 0) {
+            this.mana = Math.min(maxMana, this.mana += mana);
+        } else {
+            this.mana = Math.max(0, this.mana += mana);
+        }
+    }
+
+    public void attack(Enemy enemy, int damage) {
+        enemy.takeDamage(damage);
+    }
+
     public void setHealth(int health) {
         this.health = health;
     }
 
     public int getHealth() {
         return health;
-    }
-
-    public void addHealth(int health) {
-        if (health+this.health >= maxHealth ) {
-            this.health = maxHealth;
-        } else {
-            this.health += health;
-        }
     }
 
     public void setMana(int mana) {
@@ -109,15 +126,19 @@ public class Player {
         return mana;
     }
 
-    public void addMana(int mana) {
-        if (mana+this.mana >= maxMana ) {
-            this.mana = maxMana;
-        } else {
-            this.mana += mana;
-        }
+    public float getX() {
+        return PlayerSprite.getX();
+    }
+
+    public float getY() {
+        return PlayerSprite.getY();
     }
 
     public void draw(SpriteBatch spriteBatch) {
         PlayerSprite.draw(spriteBatch);
+    }
+
+    public void update(float deltaTime) {
+        timeSinceLastDamage += deltaTime;
     }
 }
