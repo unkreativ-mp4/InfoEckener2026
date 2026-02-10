@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -12,7 +11,7 @@ public class Player {
     private BackgroundChanger bgChanger;
     private Texture upTexture, downTexture, leftTexture, rightTexture;
     private Sprite PlayerSprite;
-    private float playerSpeed;
+    private float playerSpeed = 4;
     private int maxHealth;
     private int maxMana;
     private int health;
@@ -25,9 +24,9 @@ public class Player {
 
     public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
         this.upTexture = Assets.get(Assets.PLAYER_UP);
-        this.downTexture = Assets.get(Assets.PLAYER_DOWN);;
-        this.leftTexture = Assets.get(Assets.PLAYER_LEFT);;
-        this.rightTexture = Assets.get(Assets.PLAYER_RIGHT);;
+        this.downTexture = Assets.get(Assets.PLAYER_DOWN);
+        this.leftTexture = Assets.get(Assets.PLAYER_LEFT);
+        this.rightTexture = Assets.get(Assets.PLAYER_RIGHT);
         this.maxHealth = maxHealth;
         this.maxMana = maxMana;
         this.viewport = viewport;
@@ -39,10 +38,6 @@ public class Player {
 
     private void changeBackground(){
         bgChanger.changeBackground();
-    }
-
-    public Sprite getPlayerSprite(){
-        return PlayerSprite;
     }
 
     public void handleScreenTransition(){
@@ -63,7 +58,7 @@ public class Player {
     }
 
     public void move(float delta) {
-        delta *= 4;
+        delta *= playerSpeed;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             PlayerSprite.setTexture(upTexture);
             PlayerSprite.translateY(delta);
@@ -134,8 +129,8 @@ public class Player {
         return PlayerSprite.getY();
     }
 
-    public void draw(SpriteBatch spriteBatch) {
-        PlayerSprite.draw(spriteBatch);
+    public Sprite getPlayerSprite(){
+        return PlayerSprite;
     }
 
     public void update(float deltaTime) {

@@ -35,22 +35,24 @@ public class Zombie extends Enemy {
 
     @Override
     public void attack(Player player) {
-        if(timeSinceLastAttack < attackCooldown) {return;}
-        double distance = Math.sqrt(   Math.pow(EnemySprite.getX()- player.getX(),2)   + Math.pow(EnemySprite.getY()- player.getY(),2)    );
-        if(distance <= 5) {
-            player.addHealth(-baseDamage);
+        if(canAttack()) {
+            double distance = Math.sqrt(   Math.pow(EnemySprite.getX()- player.getX(),2)   + Math.pow(EnemySprite.getY()- player.getY(),2)    );
+            if(distance <= 5) {
+                player.addHealth(-baseDamage);
+            }
+            timeSinceLastAttack = 0;
         }
-        timeSinceLastAttack = 0;
+
     }
 
     @Override
     public void attack(Enemy enemy) {
-        if(timeSinceLastAttack < attackCooldown) {return;}
-        double distance = Math.sqrt(   Math.pow(this.EnemySprite.getX()- enemy.xPos,2)   + Math.pow(this.EnemySprite.getY()- enemy.yPos,2)    );
-        if(distance <= 5) {
-            enemy.takeDamage(baseDamage);
+        if(canAttack()) {double distance = Math.sqrt(   Math.pow(this.EnemySprite.getX()- enemy.xPos,2)   + Math.pow(this.EnemySprite.getY()- enemy.yPos,2)    );
+            if(distance <= 5) {
+                enemy.takeDamage(baseDamage);
+            }
+            timeSinceLastAttack = 0;
         }
-        timeSinceLastAttack = 0;
     }
 
     public void move(Player player, float delta) {
