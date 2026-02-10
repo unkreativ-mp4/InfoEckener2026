@@ -23,7 +23,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     SpriteBatch spriteBatch;
     FitViewport viewport;
 
-    Texture backgroundTexture;
     Array<Texture> backgrounds = new Array<>();
     int currentBackground = 0;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
@@ -71,8 +70,6 @@ public class Main extends InputAdapter implements ApplicationListener {
             }
         });
 
-        player = new Player(swordTexture, 100, 100);
-
         Texture slotTexture = new Texture("Inventory_Slot_Texture.png");
         Texture inventoryTexture = new Texture("inventory_Background_Texture.png");
         Texture woodenSwordTexture = new Texture("Wooden_Sword_Texture.png");
@@ -95,15 +92,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         stage.addActor(inventoryUI);
 
         stage.setDebugAll(true);
-
-
-
-
-
-
-
-        inventory = new InventoryUI(stage, inventoryTexture, slotTexture, 1.3f, 4, 7);
-        inventory.setDebug(false);
 
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage); // Stage first
@@ -190,7 +178,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         } else {
 
             if(keycode == Input.Keys.I) {
-                inventory.openInventory();
+                inventoryUI.openInventory(inventory);
             }
             if(keycode == Input.Keys.H) {
                 player.addHealth(1);
