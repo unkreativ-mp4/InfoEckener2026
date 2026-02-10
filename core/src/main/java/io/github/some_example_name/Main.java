@@ -117,9 +117,8 @@ public class Main extends InputAdapter implements ApplicationListener {
     public void render() {
 
         float deltaTime = Gdx.graphics.getDeltaTime();
-        float movementDelta = 4f * deltaTime ;
 
-        player.move(movementDelta);
+        player.move(deltaTime);
         player.dontGoPastScreen(viewport.getWorldHeight());
 
         zombie.update(deltaTime, player);

@@ -64,6 +64,7 @@ public class Player {
     }
 
     public void move(float delta) {
+        delta *= 4;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             PlayerSprite.setTexture(upTexture);
             PlayerSprite.translateY(delta);

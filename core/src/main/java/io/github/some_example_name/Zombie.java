@@ -1,11 +1,13 @@
 package io.github.some_example_name;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 
 public class Zombie extends Enemy {
     private static final int baseHealth = 20;
     private static final int baseDamage = 3;
     private final Texture deathTexture;
+    private final Vector2 direction = new Vector2();
 
     private double attackCooldown = 1.5;
     private double timeSinceLastAttack;
@@ -55,23 +57,12 @@ public class Zombie extends Enemy {
         float playerXPos = player.getX();
         float playerYPos = player.getY();
 
-        float movementDelta = delta * speed;
-        //System.out.print("Player X: "+ playerXPos+ "     Zombie X: "+xPos);
-        if (playerXPos > xPos) {
-            EnemySprite.translateX(movementDelta);
-            //System.out.println("+x");
-        } else {
-            EnemySprite.translateX(-movementDelta);
-            //System.out.println("-x");
-        }
-        if (playerYPos > yPos) {
-            EnemySprite.translateY(movementDelta);
-            //System.out.println("+y");
-        } else {
-            EnemySprite.translateY(-movementDelta);
-            //System.out.println("-y");
-        }
+        direction.set(playerXPos - xPos, playerYPos - yPos);
 
+        if (direction.len2() > 0f) {
+            direction.nor().scl(speed * delta);
+            EnemySprite.translate(direction.x, direction.y);
+        }
     }
 
     private boolean canAttack() {
