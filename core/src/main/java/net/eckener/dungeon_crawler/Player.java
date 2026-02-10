@@ -75,6 +75,7 @@ public class Player {
             PlayerSprite.setTexture(rightTexture);
             PlayerSprite.translateX(delta);
         }
+        dontGoPastScreen(viewport.getWorldHeight());
     }
 
     public void dontGoPastScreen(float worldHeight) {
