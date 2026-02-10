@@ -1,6 +1,5 @@
 package io.github.some_example_name;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Zombie extends Enemy {
@@ -26,7 +25,6 @@ public class Zombie extends Enemy {
     @Override
     public void update(float deltaTime) {
         timeSinceLastAttack += deltaTime;
-        //System.out.println(timeSinceLastAttack);
     }
 
     @Override

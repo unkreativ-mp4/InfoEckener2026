@@ -90,7 +90,6 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-
         viewport.update(width, height, true);
         if(width <= 0 || height <= 0) return;
 
@@ -101,30 +100,13 @@ public class Main extends InputAdapter implements ApplicationListener {
     public void render() {
 
         float deltaTime = Gdx.graphics.getDeltaTime();
-        float movementDelta = 4f * delta ;
+        float movementDelta = 4f * deltaTime ;
 
-        player.move(deltaTime);
-        /*
-        player.dontGoPastScreen(viewport.getWorldWidth(), viewport.getWorldHeight());
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.moveRight(delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.moveLeft(delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.moveUp(delta);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.moveDown(delta);
-        }
-
-         */
+        player.move(movementDelta);
         player.dontGoPastScreen(viewport.getWorldHeight());
-        player.update();
 
-        zombie.update(delta);
-        player.update(delta);
+        zombie.update(deltaTime);
+        player.update(deltaTime);
 
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();

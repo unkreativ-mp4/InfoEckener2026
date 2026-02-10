@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Player {
     private BackgroundChanger bgChanger;
-    Texture upTexture, downTexture, leftTexture, rightTexture;
+    private Texture upTexture, downTexture, leftTexture, rightTexture;
     private Sprite PlayerSprite;
     private float playerSpeed;
     private int maxHealth;
@@ -29,23 +29,23 @@ public class Player {
         this.downTexture = downTexture;
         this.leftTexture = leftTexture;
         this.rightTexture = rightTexture;
-        PlayerSprite = new Sprite(this.downTexture);
-        PlayerSprite.setSize(1, 1);
         this.maxHealth = maxHealth;
         this.maxMana = maxMana;
         this.viewport = viewport;
         this.bgChanger = bgChanger;
 
+        PlayerSprite = new Sprite(this.downTexture);
+        PlayerSprite.setSize(1, 1);
     }
+
     private void changeBackground(){
         bgChanger.changeBackground();
     }
+
     public Sprite getPlayerSprite(){
         return PlayerSprite;
     }
-    public void update(){
-        handleScreenTransition();
-    }
+
     public void handleScreenTransition(){
         if(!transitioning) {
             if (PlayerSprite.getX() + PlayerSprite.getX() + PlayerSprite.getWidth() < 0) {
@@ -63,22 +63,22 @@ public class Player {
         }
     }
 
-    public void move(float deltaTime) {
+    public void move(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             PlayerSprite.setTexture(upTexture);
-            PlayerSprite.translateY(deltaTime);
+            PlayerSprite.translateY(delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             PlayerSprite.setTexture(leftTexture);
-            PlayerSprite.translateX(-deltaTime);
+            PlayerSprite.translateX(-delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
             PlayerSprite.setTexture(downTexture);
-            PlayerSprite.translateY(-deltaTime);
+            PlayerSprite.translateY(-delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             PlayerSprite.setTexture(rightTexture);
-            PlayerSprite.translateX(deltaTime);
+            PlayerSprite.translateX(delta);
         }
     }
 
@@ -140,5 +140,6 @@ public class Player {
 
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
+        handleScreenTransition();
     }
 }
