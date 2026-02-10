@@ -56,14 +56,13 @@ public class Zombie extends Enemy {
     }
 
     public void move(Player player, float delta) {
-        float playerXPos = player.getX();
-        float playerYPos = player.getY();
+        if(isAlive) {
+            direction.set(player.getX() - xPos, player.getY() - yPos);
 
-        direction.set(playerXPos - xPos, playerYPos - yPos);
-
-        if (direction.len2() > 0f) {
-            direction.nor().scl(speed * delta);
-            EnemySprite.translate(direction.x, direction.y);
+            if (direction.len2() > 0f) {
+                direction.nor().scl(speed * delta);
+                EnemySprite.translate(direction.x, direction.y);
+            }
         }
     }
 

@@ -34,7 +34,7 @@ public abstract class Enemy {
     }
 
     public boolean isAlive() {
-        return health > 0;
+        return isAlive;
     }
 
     public void takeDamage(int damage) {
