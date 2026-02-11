@@ -86,11 +86,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         );
 
         // ───────────────────────────────
-        // GUI
-        // ───────────────────────────────
-        manaOrb = new ManaOrb(player,3,3);
-
-        // ───────────────────────────────
         // Debug Overlay
         // ───────────────────────────────
         OrthographicCamera camera = (OrthographicCamera) viewport.getCamera();
@@ -103,6 +98,11 @@ public class Main extends InputAdapter implements ApplicationListener {
         debug = new DebugOverlay(layout, debugRenderer, debugInput);
 
         stage.setDebugAll(true);
+
+        // ───────────────────────────────
+        // GUI
+        // ───────────────────────────────
+        manaOrb = new ManaOrb(player, 500,50);
 
         // ───────────────────────────────
         // Items & Inventory
@@ -170,7 +170,6 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         spriteBatch.begin();
         spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-        manaOrb.draw(spriteBatch);
 
         player.getPlayerSprite().draw(spriteBatch);
         zombie.draw(spriteBatch);
@@ -183,6 +182,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.setProjectionMatrix(stage.getCamera().combined);
 
         spriteBatch.begin();
+        manaOrb.draw(spriteBatch);
         debug.render();   // draw text only
         spriteBatch.end();
 
@@ -217,10 +217,10 @@ public class Main extends InputAdapter implements ApplicationListener {
                 inventoryUI.openInventory(inventory);
             }
             if(keycode == Input.Keys.H) {
-                player.addHealth(1);
+                player.addHealth(5);
             }
             if(keycode == Input.Keys.M) {
-                player.addMana(1);
+                player.addMana(5);
             }
             if(keycode == Input.Keys.C) {
                 zombie.attack(player);
@@ -241,10 +241,10 @@ public class Main extends InputAdapter implements ApplicationListener {
     private void onMultipleKeysDown (int mostRecentKeycode){
         //Keys that are currently down are in the IntSet.
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.M)){
-            player.addMana(-1);
+            player.addMana(-5);
         }
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
-            player.addHealth(-1);
+            player.addHealth(-5);
         }
     }
 }
