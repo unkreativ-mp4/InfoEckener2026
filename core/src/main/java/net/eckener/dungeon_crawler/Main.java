@@ -23,6 +23,8 @@ public class Main extends InputAdapter implements ApplicationListener {
     SpriteBatch spriteBatch;
     FitViewport viewport;
 
+    ManaOrb manaOrb;
+
     DebugOverlay debug;
 
     Array<Texture> backgrounds = new Array<>();
@@ -84,6 +86,11 @@ public class Main extends InputAdapter implements ApplicationListener {
         );
 
         // ───────────────────────────────
+        // GUI
+        // ───────────────────────────────
+        manaOrb = new ManaOrb(player,3,3);
+
+        // ───────────────────────────────
         // Debug Overlay
         // ───────────────────────────────
         OrthographicCamera camera = (OrthographicCamera) viewport.getCamera();
@@ -94,6 +101,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         DebugInput debugInput = new DebugInput();
 
         debug = new DebugOverlay(layout, debugRenderer, debugInput);
+
+        stage.setDebugAll(true);
 
         // ───────────────────────────────
         // Items & Inventory
@@ -112,11 +121,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2.5f);
 
         stage.addActor(inventoryUI);
-
-        // ───────────────────────────────
-        // Debug flags
-        // ───────────────────────────────
-        stage.setDebugAll(true);
 
         // ───────────────────────────────
         // Enemies
@@ -166,6 +170,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         spriteBatch.begin();
         spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        manaOrb.draw(spriteBatch);
 
         player.getPlayerSprite().draw(spriteBatch);
         zombie.draw(spriteBatch);

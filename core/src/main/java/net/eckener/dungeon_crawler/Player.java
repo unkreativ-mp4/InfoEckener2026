@@ -102,6 +102,10 @@ public class Player {
         }
     }
 
+    public float getManaPercent() {
+        return (float) mana / maxMana;
+    }
+
     public void attack(Enemy enemy, int damage) {
         enemy.takeDamage(damage);
     }
