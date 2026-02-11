@@ -18,8 +18,12 @@ import java.util.Objects;
 public class InventoryUI extends Table {
 
     private boolean inventoryVisible;
+    private float slotSize = 48f;
+    private float slotPad = 4f;
+    private Texture slotBackgroundTexture;
 
-    public InventoryUI(Inventory inventory, Texture inventoryTexture, Texture slotBackgroundTexture, float uiScale){
+
+    public InventoryUI(Inventory inventory, Texture inventoryTexture, Texture pSlotBackgroundTexture, float uiScale){
 
         this.setFillParent(true);
 
@@ -29,8 +33,9 @@ public class InventoryUI extends Table {
 
         center();
 
-        float slotSize = 48f * uiScale;
-        float slotPad = 4f * uiScale;
+        slotSize = slotSize * uiScale;
+        slotPad = slotPad * uiScale;
+        slotBackgroundTexture = pSlotBackgroundTexture;
 
         NinePatch invPatch = new NinePatch(inventoryTexture, 11, 11, 11, 11);
         invPatch.scale(uiScale, uiScale);
@@ -38,7 +43,7 @@ public class InventoryUI extends Table {
         invPanel.setBackground(new NinePatchDrawable(invPatch));
         invPanel.pad(12f);
 
-        buildInventoryUI(inventory, slotBackgroundTexture, slotSize, slotPad);
+        buildInventoryUI(inventory);
 
         invPanel.add(inventory).center();
         add(invPanel).expand().center();
@@ -46,7 +51,7 @@ public class InventoryUI extends Table {
         pack();
     }
 
-    private void buildInventoryUI(Inventory inventory, Texture slotBackgroundTexture, float slotSize, float slotPad) {
+    private void buildInventoryUI(Inventory inventory) {
 
         inventory.clearChildren();
         inventory.defaults().size(slotSize).pad(slotPad);
@@ -68,6 +73,8 @@ public class InventoryUI extends Table {
                     public void clicked(InputEvent event, float x, float y) {
                         if (itemStack != null) {
                             System.out.println("Clicked item: " + itemStack.getItem().getItemName() + " at " + r + "," + c);
+                            inventory.moveItemtoSlot(inventory.getItemStacks(), inventory.getItemStack(r, c), r, c + 1, r, c );
+                            buildInventoryUI(inventory);
                         } else {
                             System.out.println("Clicked empty slot: " + r + "," + c);
                         }
@@ -75,10 +82,7 @@ public class InventoryUI extends Table {
                         event.stop();
                     }
 
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-                        GridPoint2
-                    }
                 });
 
 
@@ -92,11 +96,13 @@ public class InventoryUI extends Table {
     }
 
     public void openInventory(Inventory inventory) {
+        buildInventoryUI(inventory);
         inventoryVisible = !inventoryVisible;
         setVisible(inventoryVisible);
         inventory.setVisible(inventoryVisible);
         setTouchable(inventoryVisible ? Touchable.enabled : Touchable.disabled);
     }
+
 
     public boolean getInventoryVisible() {
         return inventoryVisible;

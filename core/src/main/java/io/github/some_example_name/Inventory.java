@@ -79,21 +79,40 @@ public class Inventory extends Table {
 
     public void moveItemtoSlot(ItemStack[][] itemStacks, ItemStack itemStack, int newRow, int newCol, int orgRow, int orgCol) {
 
-        if(itemStacks[newRow][newCol] != null) {
-            if(Objects.equals(itemStacks[newRow][newCol].getItem().getItemID(), itemStack.getItem().getItemID())) {
-                itemStacks[newRow][newCol].setAmount(itemStacks[newRow][newCol].getAmount() + itemStack.getAmount());
-                itemStacks[orgRow][orgCol] = null;
-                System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol );
+        if(itemStacks[orgRow][orgCol] == null) {
+            System.out.println("No Item to move at this slot");
+        }
+
+        ItemStack targetStack = itemStacks[newRow][newCol];
+
+        if (targetStack == null) {
+            itemStacks[newRow][newCol] = itemStack;
+            itemStack.setAmount(1);
+            if(itemStacks[orgRow][orgCol].getAmount() > 1) {
+                itemStacks[orgRow][orgCol].setAmount(itemStacks[orgRow][orgCol].getAmount() - 1);
             }
             else {
-                System.out.println("Inventory Slot occupied!");
+                itemStacks[orgRow][orgCol] = null;
             }
+            System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol);
+            return;
         }
-        else {
-            itemStacks[newRow][newCol] = itemStack;
-            itemStacks[orgRow][orgCol] = null;
-            System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol );
+
+        boolean sameItem = Objects.equals(targetStack.getItem().getItemID(), itemStack.getItem().getItemID());
+
+        if (sameItem) {
+            targetStack.setAmount(targetStack.getAmount() + 1);
+            if(itemStacks[orgRow][orgCol].getAmount() > 1) {
+                itemStacks[orgRow][orgCol].setAmount(itemStacks[orgRow][orgCol].getAmount() - 1);
+            }
+            else {
+                itemStacks[orgRow][orgCol] = null;
+            }
+
+            System.out.println("Moved " + itemStack.getItem().getItemName()
+                + " to pos: " + newRow + ", " + newCol);
+        } else {
+            System.out.println("Inventory Slot occupied!");
         }
     }
-
 }
