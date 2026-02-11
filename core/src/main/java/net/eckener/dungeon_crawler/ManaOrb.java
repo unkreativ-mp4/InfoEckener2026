@@ -2,18 +2,16 @@ package net.eckener.dungeon_crawler;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ManaOrb {
 
-    private float x, y;
+    private final float x;
+    private final float y;
     private final Player player;
-    //private AbstractMap.SimpleEntry<Integer, Texture>[] indicators;
-    private Map<Integer, Texture> indicators = new HashMap<>();
+    private final Map<Integer, Texture> indicators = new HashMap<>();
 
     public ManaOrb(Player player, float x, float y) {
         this.player = player;
