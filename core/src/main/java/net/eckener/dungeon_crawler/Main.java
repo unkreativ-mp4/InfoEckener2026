@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
@@ -22,11 +23,16 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     SpriteBatch spriteBatch;
     FitViewport viewport;
+    private OrthographicCamera camera;
 
     DebugOverlay debug;
 
-    Array<Texture> backgrounds = new Array<>();
+    //Array<Texture> backgrounds = new Array<>();
+    Array<Room> rooms = new Array<>();
+    Room currentRoom;
     int currentBackground = 0;
+    private boolean transitioning;
+    private int currentRoomIndex = 0;
 
     CustomLabel healthLabel;
     CustomLabel manaLabel;
@@ -34,14 +40,78 @@ public class Main extends InputAdapter implements ApplicationListener {
     Zombie zombie;
 
     public Player player;
+    Sprite PlayerSprite;
     Inventory inventory;
     InventoryUI inventoryUI;
     private Stage stage;
 
     private final IntSet downKeys = new IntSet(20);
-    public void loadBackgrounds(){
+    /*public void loadBackgrounds(){
         backgrounds.add(Assets.get(Assets.BACKGROUND_PLACEHOLDER));
         backgrounds.add(Assets.get(Assets.BACKGROUND_ORANGE));
+    }*/
+    public void loadRooms() {
+        rooms.add(new Room(
+            Assets.get(Assets.BACKGROUND_PLACEHOLDER),
+            800, 480,
+            100, 100
+        ));
+
+        rooms.add(new Room(
+            Assets.get(Assets.BACKGROUND_ORANGE),
+            800, 480,
+            200, 150
+        ));
+    }
+    private void changeRoom(int newIndex) {
+
+        if (newIndex < 0 || newIndex >= rooms.size) return;
+
+        currentRoomIndex = newIndex;
+        currentRoom = rooms.get(currentRoomIndex);
+    }
+
+
+        public void loadRoom(Room room) {
+        currentRoom = room;
+        player.setPosition(room.spawnX, room.spawnY);
+    }
+    public void setRoom(int index){
+        currentRoom = rooms.get(index);
+        player.setPosition(currentRoom.spawnX, currentRoom.spawnY);
+    }
+    public void handleScreenTransition(){
+
+        if(transitioning) return;
+
+        float playerLeft = PlayerSprite.getX();
+        float playerRight = PlayerSprite.getX() + PlayerSprite.getWidth();
+
+        // Player exits LEFT
+        if(playerRight < 0) {
+
+            transitioning = true;
+
+            int nextRoom = currentRoomIndex - 1;
+            changeRoom(nextRoom);
+
+            PlayerSprite.setX(currentRoom.width - PlayerSprite.getWidth());
+
+            transitioning = false;
+        }
+
+        // Player exits RIGHT
+        if(playerLeft > currentRoom.width) {
+
+            transitioning = true;
+
+            int nextRoom = currentRoomIndex + 1;
+            changeRoom(nextRoom);
+
+            PlayerSprite.setX(0);
+
+            transitioning = false;
+        }
     }
 
     @Override
@@ -61,7 +131,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         viewport = new FitViewport(8, 5);
         stage = new Stage(new ScreenViewport(), spriteBatch);
 
-        loadBackgrounds();
+        //loadBackgrounds();
+        loadRooms();
 
         // ───────────────────────────────
         // UI Labels
@@ -75,12 +146,19 @@ public class Main extends InputAdapter implements ApplicationListener {
         // ───────────────────────────────
         // Player
         // ───────────────────────────────
-        player = new Player(100, 100, viewport, () -> {
+        /*player = new Player(100, 100, viewport, () -> {
                 currentBackground++;
                 if (currentBackground >= backgrounds.size) {
                     currentBackground = 0;
                 }
             }
+        );*/
+        player = new Player(100, 100, viewport, () -> {
+            currentRoom++;
+            if (currentRoom >= rooms.size) {
+                currentRoom = 0;
+            }
+        }
         );
 
         // ───────────────────────────────
@@ -151,6 +229,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         player.move(delta);
         zombie.update(delta, player);
         player.update(delta);
+        handleScreenTransition();
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
@@ -165,7 +244,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
-        spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        spriteBatch.draw(currentRoom.background,0, 0, currentRoom.width, currentRoom.height);
+        //spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
         player.getPlayerSprite().draw(spriteBatch);
         zombie.draw(spriteBatch);

@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class Player {
     private BackgroundChanger bgChanger;
     private Texture upTexture, downTexture, leftTexture, rightTexture;
-    private Sprite PlayerSprite;
+    public Sprite PlayerSprite;
     private float playerSpeed = 4;
     private int maxHealth;
     private int maxMana;
@@ -18,6 +18,8 @@ public class Player {
     private int mana;
     private float timeSinceLastDamage;
     private float damageCooldown = 0.5F;
+    float x, y;
+
 
     private boolean transitioning;
     private FitViewport viewport;
@@ -36,26 +38,25 @@ public class Player {
         PlayerSprite.setSize(1, 1);
     }
 
-    private void changeBackground(){
-        bgChanger.changeBackground();
-    }
+    //private void changeBackground(){bgChanger.changeBackground();}
 
-    public void handleScreenTransition(){
+
+    /*public void handleScreenTransition(){
         if(!transitioning) {
             if (PlayerSprite.getX() + PlayerSprite.getX() + PlayerSprite.getWidth() < 0) {
                 transitioning = true;
-                changeBackground();
-                PlayerSprite.setX(viewport.getWorldWidth() - PlayerSprite.getWidth());
+                //changeBackground();
+                PlayerSprite.setX(currentRoom.width - PlayerSprite.getWidth());
                 transitioning = false;
             }
-            if (PlayerSprite.getX() > viewport.getWorldWidth()) {
+            if (PlayerSprite.getX() > currentRoom.width) {
                 transitioning = true;
-                changeBackground();
+                //changeBackground();
                 PlayerSprite.setX(0);
                 transitioning = false;
             }
         }
-    }
+    }*/
 
     public void move(float delta) {
         delta *= playerSpeed;
@@ -82,7 +83,10 @@ public class Player {
         //PlayerSprite.setX(MathUtils.clamp(PlayerSprite.getX(), 0, worldWidth - PlayerSprite.getWidth()));
         PlayerSprite.setY(MathUtils.clamp(PlayerSprite.getY(), 0, worldHeight - PlayerSprite.getHeight()));
     }
-
+    public void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
 
     public void addHealth(int health) {
         if(health >= 0) {
@@ -136,6 +140,6 @@ public class Player {
 
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
-        handleScreenTransition();
+        //handleScreenTransition();
     }
 }
