@@ -20,7 +20,7 @@ public class Player {
     private float timeSinceLastAttack;
     private final float baseDamageCooldown = 0.5F;
     private final float baseAttackCooldown = 1.0F;
-    private ItemStack selectedWeapon; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
+    private ItemStack selectedItem; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
 
     private boolean transitioning;
     private FitViewport viewport;
@@ -40,7 +40,7 @@ public class Player {
 
 
         Weapon weapon = new Weapon("schwert", "Ultra Krasses Testschwert", Assets.get(Assets.DIAMOND_SWORD),1,1,11,2.0F);
-        selectedWeapon = new ItemStack(weapon,1);
+        selectedItem = new ItemStack(weapon,1);
     }
 
     private void changeBackground(){
@@ -114,8 +114,8 @@ public class Player {
     }
 
     public void attack(Enemy enemy) {
-        if(timeSinceLastAttack <= baseAttackCooldown) {
-            enemy.takeDamage(selectedWeapon.getWeapon().getDamage());
+        if(timeSinceLastAttack <= baseAttackCooldown && selectedItem.isWeapon()) {
+            enemy.takeDamage(selectedItem.getWeapon().getDamage());
             timeSinceLastAttack = 0;
         }
     }

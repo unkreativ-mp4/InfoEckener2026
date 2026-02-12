@@ -32,4 +32,8 @@ public class ItemStack {
     public Weapon getWeapon() {
         return weapon;
     }
+
+    public boolean isWeapon() {
+        return weapon != null;
+    }
 }
