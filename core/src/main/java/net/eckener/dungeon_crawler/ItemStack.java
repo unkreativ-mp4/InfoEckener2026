@@ -4,11 +4,17 @@ public class ItemStack {
 
 
     private Item item;
+    private Weapon weapon;
     private int amount;
 
     public ItemStack(Item pItem, int pAmount) {
         item = pItem;
         amount = pAmount;
+    }
+
+    public ItemStack(Weapon weapon, int amount) {
+        this.weapon = weapon;
+        this.amount = amount;
     }
 
     public boolean isEmpty() {
@@ -23,4 +29,7 @@ public class ItemStack {
         return amount;
     }
 
+    public Weapon getWeapon() {
+        return weapon;
+    }
 }
