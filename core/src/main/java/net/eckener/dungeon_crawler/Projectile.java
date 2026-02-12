@@ -1,29 +1,35 @@
 package net.eckener.dungeon_crawler;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Projectile {
 
-    private final Texture texture;
-    private Vector2 direction;
-    private float xPos;
-    private float yPos;
+    protected final Sprite sprite;
+    protected float direction;
+    protected float xPos;
+    protected float yPos;
 
-    public Projectile(Texture texture,float xPos, float yPos, Vector2 direction ) {
-        this.texture = texture;
+    public Projectile(Texture texture,float xPos, float yPos, float direction ) {
+        sprite = new Sprite(texture);
+        sprite.setSize(1,1);
         this.xPos = xPos;
         this.yPos = yPos;
         this.direction = direction;
     }
 
     public Texture getTexture() {
-        return texture;
+        return sprite.getTexture();
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 
     public void draw(SpriteBatch spriteBatch) {
-        spriteBatch.draw(texture, xPos, yPos);
+        sprite.draw(spriteBatch);
     }
 
     public float getXPos() {
@@ -34,9 +40,11 @@ public abstract class Projectile {
         return yPos;
     }
 
-    public abstract void move();
+    public abstract void move(float deltaTime);
 
-    public Vector2 getDirection() {
+    public float getDirection() {
         return direction;
     }
+
+    public abstract void update(float deltaTime);
 }

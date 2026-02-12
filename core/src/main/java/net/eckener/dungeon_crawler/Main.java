@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
@@ -22,6 +24,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     SpriteBatch spriteBatch;
     FitViewport viewport;
+    OrthographicCamera camera;
 
     ManaOrb manaOrb;
 
@@ -34,6 +37,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     CustomLabel manaLabel;
 
     Zombie zombie;
+    Arrow arrow;
 
     public Player player;
     Inventory inventory;
@@ -88,7 +92,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         // ───────────────────────────────
         // Debug Overlay
         // ───────────────────────────────
-        OrthographicCamera camera = (OrthographicCamera) viewport.getCamera();
+        camera = (OrthographicCamera) viewport.getCamera();
 
         DebugStats stats     = new DebugStats(camera);
         DebugLayout layout  = new DebugLayout(stats);
@@ -127,6 +131,10 @@ public class Main extends InputAdapter implements ApplicationListener {
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
 
+        Vector2 vector = new Vector2();
+        vector.set(1,1);
+        arrow = new Arrow(Assets.get(Assets.COIN),1,1,0F);
+
         // ───────────────────────────────
         // Input Handling
         // ───────────────────────────────
@@ -155,6 +163,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         player.move(delta);
         zombie.update(delta, player);
         player.update(delta);
+        arrow.update(delta);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
@@ -173,6 +182,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         player.getPlayerSprite().draw(spriteBatch);
         zombie.draw(spriteBatch);
+        arrow.draw(spriteBatch);
         spriteBatch.end();
 
         // ======================
@@ -228,6 +238,21 @@ public class Main extends InputAdapter implements ApplicationListener {
             if(keycode == Input.Keys.P) {
                 player.attack(zombie);
             }
+            if(keycode== Input.Keys.L) {
+
+                Vector3 vector3 = new Vector3();
+                camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+
+                float cx = arrow.getSprite().getX() + arrow.getSprite().getWidth() * 0.5f;
+                float cy = arrow.getSprite().getY() + arrow.getSprite().getHeight() * 0.5f;
+
+                float dx = vector3.x - cx;
+                float dy = vector3.y - cy;
+
+                float angleDeg = (float) Math.toDegrees(Math.atan2(dy, dx)) -90F;
+                arrow = new Arrow(Assets.get(Assets.ARROW), player.getX(), player.getY(), angleDeg);
+            }
+
         }
         return true;
     }

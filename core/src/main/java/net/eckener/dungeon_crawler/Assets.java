@@ -34,6 +34,7 @@ public final class Assets {
     public static final String MANA_INDICATOR_80  = "textures/gui/mana/indicator_80.png";
     public static final String MANA_INDICATOR_90  = "textures/gui/mana/indicator_90.png";
     public static final String MANA_INDICATOR_100 = "textures/gui/mana/indicator_100.png";
+    public static final String ARROW = "textures/placeholders/arrow.png";
 
 
 
@@ -67,6 +68,7 @@ public final class Assets {
         manager.load(MANA_INDICATOR_80, Texture.class);
         manager.load(MANA_INDICATOR_90, Texture.class);
         manager.load(MANA_INDICATOR_100, Texture.class);
+        manager.load(ARROW, Texture.class);
 
 
     }
