@@ -17,7 +17,10 @@ public class Player {
     private int health;
     private int mana;
     private float timeSinceLastDamage;
-    private float damageCooldown = 0.5F;
+    private float timeSinceLastAttack;
+    private final float baseDamageCooldown = 0.5F;
+    private final float baseAttackCooldown = 1.0F;
+    private ItemStack selectedWeapon; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
 
     private boolean transitioning;
     private FitViewport viewport;
@@ -34,6 +37,10 @@ public class Player {
 
         PlayerSprite = new Sprite(this.downTexture);
         PlayerSprite.setSize(1, 1);
+
+
+        Weapon weapon = new Weapon("schwert", "Ultra Krasses Testschwert", Assets.get(Assets.DIAMOND_SWORD),1,1,11,2.0F);
+        selectedWeapon = new ItemStack(weapon,1);
     }
 
     private void changeBackground(){
@@ -88,7 +95,7 @@ public class Player {
         if(health >= 0) {
             this.health = Math.min(maxHealth, this.health += health);
         } else {
-            if(timeSinceLastDamage < damageCooldown) {return;}
+            if(timeSinceLastDamage < baseDamageCooldown) {return;}
             this.health = Math.max(0, this.health += health);
             timeSinceLastDamage = 0;
         }
@@ -106,8 +113,11 @@ public class Player {
         return (float) mana / maxMana;
     }
 
-    public void attack(Enemy enemy, int damage) {
-        enemy.takeDamage(damage);
+    public void attack(Enemy enemy) {
+        if(timeSinceLastAttack <= baseAttackCooldown) {
+            enemy.takeDamage(selectedWeapon.getWeapon().getDamage());
+            timeSinceLastAttack = 0;
+        }
     }
 
     public void setHealth(int health) {
@@ -140,6 +150,7 @@ public class Player {
 
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
+        timeSinceLastAttack += deltaTime;
         handleScreenTransition();
     }
 }

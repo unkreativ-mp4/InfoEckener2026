@@ -226,7 +226,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 zombie.attack(player);
             }
             if(keycode == Input.Keys.P) {
-                player.attack(zombie,9);
+                player.attack(zombie);
             }
         }
         return true;
