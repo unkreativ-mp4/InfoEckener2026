@@ -30,11 +30,13 @@ public class Arrow extends Projectile{
         directionVector.set(1,1);
         directionVector.setAngleDeg(direction);
         sprite.translate(directionVector.nor().scl(deltaTime).x, directionVector.nor().scl(deltaTime).y);
-        System.out.println(direction);
     }
 
     @Override
     public void update(float deltaTime) {
         move(deltaTime);
     }
+
+    @Override
+    public void update(float delta, Player player) {    }
 }

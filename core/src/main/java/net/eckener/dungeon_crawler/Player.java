@@ -122,6 +122,16 @@ public class Player extends LivingEntity{
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
         timeSinceLastAttack += deltaTime;
+        move(deltaTime);
         handleScreenTransition();
     }
+
+    /**
+     * Never use, because it makes no sense
+     * @param delta
+     * @param player
+     */
+
+    @Override
+    public void update(float delta, Player player) {}
 }

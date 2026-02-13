@@ -17,9 +17,13 @@ public final class EntityRegistry {
         entities.removeValue(entity, true);
     }
 
-    public static void updateAll(float delta) {
+    public static void updateAll(float delta, Player player) {
         for (Entity entity : entities) {
-            entity.update(delta);
+            if(entity instanceof Zombie) {
+                entity.update(delta, player);
+            } else {
+                entity.update(delta);
+            }
         }
     }
 

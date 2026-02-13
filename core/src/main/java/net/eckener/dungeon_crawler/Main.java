@@ -88,6 +88,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 }
             }
         );
+        EntityRegistry.register(player);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -132,6 +133,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         // Enemies
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
+        EntityRegistry.register(zombie);
 
         // ───────────────────────────────
         // Input Handling
@@ -158,9 +160,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         float delta = Gdx.graphics.getDeltaTime();
 
         // --- UPDATE ---
-        player.move(delta);
-        zombie.update(delta, player);
-        player.update(delta);
+        EntityRegistry.updateAll(delta, player);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
@@ -177,8 +177,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
-        player.draw(spriteBatch);
-        zombie.draw(spriteBatch);
+        EntityRegistry.renderAll(spriteBatch);
         spriteBatch.end();
 
         // ======================
