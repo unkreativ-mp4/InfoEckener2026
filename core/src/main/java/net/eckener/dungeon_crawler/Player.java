@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Player {
     private BackgroundChanger bgChanger;
-    private Texture upTexture, downTexture, leftTexture, rightTexture;
     private Sprite PlayerSprite;
     private float playerSpeed = 4;
     private int maxHealth;
@@ -26,16 +25,12 @@ public class Player {
     private FitViewport viewport;
 
     public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
-        this.upTexture = Assets.get(Assets.PLAYER_UP);
-        this.downTexture = Assets.get(Assets.PLAYER_DOWN);
-        this.leftTexture = Assets.get(Assets.PLAYER_LEFT);
-        this.rightTexture = Assets.get(Assets.PLAYER_RIGHT);
         this.maxHealth = maxHealth;
         this.maxMana = maxMana;
         this.viewport = viewport;
         this.bgChanger = bgChanger;
 
-        PlayerSprite = new Sprite(this.downTexture);
+        PlayerSprite = new Sprite(Assets.get(Assets.PLAYER_DOWN));
         PlayerSprite.setSize(1, 1);
 
 
@@ -67,19 +62,19 @@ public class Player {
     public void move(float delta) {
         delta *= playerSpeed;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            PlayerSprite.setTexture(upTexture);
+            PlayerSprite.setTexture(Assets.get(Assets.PLAYER_UP));
             PlayerSprite.translateY(delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            PlayerSprite.setTexture(leftTexture);
+            PlayerSprite.setTexture(Assets.get(Assets.PLAYER_LEFT));
             PlayerSprite.translateX(-delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            PlayerSprite.setTexture(downTexture);
+            PlayerSprite.setTexture(Assets.get(Assets.PLAYER_DOWN));
             PlayerSprite.translateY(-delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            PlayerSprite.setTexture(rightTexture);
+            PlayerSprite.setTexture(Assets.get(Assets.PLAYER_RIGHT));
             PlayerSprite.translateX(delta);
         }
         dontGoPastScreen(viewport.getWorldHeight());
@@ -114,7 +109,7 @@ public class Player {
     }
 
     public void attack(Enemy enemy) {
-        if(timeSinceLastAttack <= baseAttackCooldown && selectedItem.isWeapon()) {
+        if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
             enemy.takeDamage(selectedItem.getWeapon().getDamage());
             timeSinceLastAttack = 0;
         }
