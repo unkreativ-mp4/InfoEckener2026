@@ -111,6 +111,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         // Items & Inventory
         // ───────────────────────────────
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
+        Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 5, 67);
 
         inventory = new Inventory(5, 6);
 
@@ -118,11 +119,13 @@ public class Main extends InputAdapter implements ApplicationListener {
             inventory.fillInventoryWithItemStack(new ItemStack(woodenSword, 3));
         }
 
+        ItemStack coinStack = new ItemStack(coin, 5);
+        inventory.addItemStack(coinStack, 4, 3);
+
         inventory.addItemStack(new ItemStack(woodenSword, 5), 4, 3);
         inventory.printInventory(inventory);
 
-        inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2.5f);
-
+        inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 3.5f);
         stage.addActor(inventoryUI);
 
         // ───────────────────────────────
