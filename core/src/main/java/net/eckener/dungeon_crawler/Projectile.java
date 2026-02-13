@@ -12,12 +12,11 @@ public abstract class Projectile {
     protected float xPos;
     protected float yPos;
 
-    public Projectile(Texture texture,float xPos, float yPos, float direction ) {
+    public Projectile(Texture texture,float xPos, float yPos) {
         sprite = new Sprite(texture);
         sprite.setSize(1,1);
         this.xPos = xPos;
         this.yPos = yPos;
-        this.direction = direction;
     }
 
     public Texture getTexture() {

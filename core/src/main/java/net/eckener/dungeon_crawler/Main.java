@@ -37,7 +37,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     CustomLabel manaLabel;
 
     Zombie zombie;
-    Arrow arrow;
 
     public Player player;
     Inventory inventory;
@@ -131,10 +130,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
 
-        Vector2 vector = new Vector2();
-        vector.set(1,1);
-        arrow = new Arrow(Assets.get(Assets.COIN),1,1,0F);
-
         // ───────────────────────────────
         // Input Handling
         // ───────────────────────────────
@@ -163,7 +158,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         player.move(delta);
         zombie.update(delta, player);
         player.update(delta);
-        arrow.update(delta);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
@@ -182,7 +176,6 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         player.getPlayerSprite().draw(spriteBatch);
         zombie.draw(spriteBatch);
-        arrow.draw(spriteBatch);
         spriteBatch.end();
 
         // ======================
@@ -237,20 +230,6 @@ public class Main extends InputAdapter implements ApplicationListener {
             }
             if(keycode == Input.Keys.P) {
                 player.attack(zombie);
-            }
-            if(keycode== Input.Keys.L) {
-
-                Vector3 vector3 = new Vector3();
-                camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
-                float cx = arrow.getSprite().getX() + arrow.getSprite().getWidth() * 0.5f;
-                float cy = arrow.getSprite().getY() + arrow.getSprite().getHeight() * 0.5f;
-
-                float dx = vector3.x - cx;
-                float dy = vector3.y - cy;
-
-                float angleDeg = (float) Math.toDegrees(Math.atan2(dy, dx)) ;
-                arrow = new Arrow(Assets.get(Assets.ARROW), player.getX(), player.getY(), angleDeg);
             }
 
         }
