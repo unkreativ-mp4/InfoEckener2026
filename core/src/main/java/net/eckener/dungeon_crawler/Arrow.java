@@ -15,9 +15,11 @@ public class Arrow extends Projectile{
 
     @Override
     public void move(float deltaTime) {
+        directionVector.set(1,1);
         directionVector.setAngleDeg(direction);
         sprite.translate(directionVector.nor().scl(deltaTime).x, directionVector.nor().scl(deltaTime).y);
-        System.out.println(directionVector.nor().x);
+        //System.out.println(directionVector.nor().x+"    "+directionVector.x);
+        System.out.println(direction);
     }
 
     @Override

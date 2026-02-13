@@ -249,7 +249,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 float dx = vector3.x - cx;
                 float dy = vector3.y - cy;
 
-                float angleDeg = (float) Math.toDegrees(Math.atan2(dy, dx)) -90F;
+                float angleDeg = (float) Math.toDegrees(Math.atan2(dy, dx)) ;
                 arrow = new Arrow(Assets.get(Assets.ARROW), player.getX(), player.getY(), angleDeg);
             }
 
