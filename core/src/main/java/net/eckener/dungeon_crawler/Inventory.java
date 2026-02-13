@@ -2,6 +2,8 @@ package net.eckener.dungeon_crawler;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import java.util.Objects;
+
 public class Inventory extends Table {
 
     private final int rows;
@@ -72,4 +74,43 @@ public class Inventory extends Table {
 
     }
 
+    public void moveItemtoSlot(ItemStack[][] itemStacks, ItemStack itemStack, int newRow, int newCol, int orgRow, int orgCol) {
+
+        if(itemStacks[orgRow][orgCol] == null) {
+            System.out.println("No Item to move at this slot");
+            return;
+        }
+
+        ItemStack targetStack = itemStacks[newRow][newCol];
+
+        if (targetStack == null) {
+            ItemStack movedStack = new ItemStack(itemStack.getItem(), 1);
+            itemStacks[newRow][newCol] = movedStack;
+            if(itemStacks[orgRow][orgCol].getAmount() > 1) {
+                itemStacks[orgRow][orgCol].setAmount(itemStacks[orgRow][orgCol].getAmount() - 1);
+            }
+            else {
+                itemStacks[orgRow][orgCol] = null;
+            }
+            System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol);
+            return;
+        }
+
+        boolean sameItem = Objects.equals(targetStack.getItem().getItemID(), itemStack.getItem().getItemID());
+
+        if (sameItem) {
+            targetStack.setAmount(targetStack.getAmount() + 1);
+            if(itemStacks[orgRow][orgCol].getAmount() > 1) {
+                itemStacks[orgRow][orgCol].setAmount(itemStacks[orgRow][orgCol].getAmount() - 1);
+            }
+            else {
+                itemStacks[orgRow][orgCol] = null;
+            }
+
+            System.out.println("Moved " + itemStack.getItem().getItemName()
+                + " to pos: " + newRow + ", " + newCol);
+        } else {
+            System.out.println("Inventory Slot occupied!");
+        }
+    }
 }

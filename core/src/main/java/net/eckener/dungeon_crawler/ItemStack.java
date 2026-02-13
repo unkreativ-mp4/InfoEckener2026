@@ -29,6 +29,10 @@ public class ItemStack {
         return amount;
     }
 
+    public void setAmount(int pAmount) {
+        amount = pAmount;
+    }
+
     public Weapon getWeapon() {
         return weapon;
     }
