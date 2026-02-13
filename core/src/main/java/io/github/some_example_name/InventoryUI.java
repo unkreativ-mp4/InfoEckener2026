@@ -77,7 +77,7 @@ public class InventoryUI extends Table {
                 SlotWidget slot = new SlotWidget(inventory.getItemStack(row,col), new BitmapFont());
                 cell.setUserObject(slot);
                 slot.setTouchable(Touchable.enabled);
-                cell.setTouchable(Touchable.disabled);
+
                 slot.setUserObject(new GridPoint2(col, row));
                 final int r = row;
                 final int c = col;

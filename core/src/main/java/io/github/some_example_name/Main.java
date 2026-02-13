@@ -92,14 +92,15 @@ public class Main extends InputAdapter implements ApplicationListener {
         ItemStack coinStack = new ItemStack(coin, 5);
         inventory.addItemStack(coinStack, 4, 3);
 
-        inventory.moveItemtoSlot(inventory.getItemStacks(), inventory.getItemStack(4, 3), 4, 4, 4, 3);
-        inventory.moveItemtoSlot(inventory.getItemStacks(), inventory.getItemStack(4, 4), 3, 4, 4, 3);
-        inventory.moveItemtoSlot(inventory.getItemStacks(), inventory.getItemStack(2, 3), 2, 4, 2, 3);
+        inventory.moveItemtoSlot(inventory.getItemStacks(), inventory.getItemStack(4, 0), 4, 1, 4, 0);
+        //inventory.moveItemtoSlot(inventory.getItemStacks(), inventory.getItemStack(4, 4), 3, 4, 4, 3);
+        //inventory.moveItemtoSlot(inventory.getItemStacks(), inventory.getItemStack(2, 3), 2, 4, 2, 3);
 
         inventory.printInventory(inventory);
 
         inventoryUI = new InventoryUI(inventory, inventoryTexture, slotTexture, 3.5f);
         stage.addActor(inventoryUI);
+
 
         stage.setDebugAll(false);
 
