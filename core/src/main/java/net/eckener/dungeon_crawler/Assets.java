@@ -2,12 +2,19 @@ package net.eckener.dungeon_crawler;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+/**
+ * {@link AssetManager} for the clean registry of assets, so {@link Main} isn't clogged up
+ */
 
 public final class Assets {
 
     public static final AssetManager manager = new AssetManager();
 
-    // Asset paths (single source of truth)
+    /**
+     * Connecting identifier-strings to their respective texture/asset paths
+     */
     public static final String PLAYER_DOWN = "textures/entities/player_down.png";
     public static final String PLAYER_UP = "textures/entities/player_up.png";
     public static final String PLAYER_LEFT  = "textures/entities/player_left.png";
@@ -24,13 +31,11 @@ public final class Assets {
     public static final String MANA_INDICATOR_0   = "textures/gui/mana/indicator_0.png";
     public static final String MANA_INDICATOR_10  = "textures/gui/mana/indicator_10.png";
     public static final String MANA_INDICATOR_20  = "textures/gui/mana/indicator_20.png";
-    //public static final String MANA_INDICATOR_25  = "textures/gui/mana/indicator_25.png";
     public static final String MANA_INDICATOR_30  = "textures/gui/mana/indicator_30.png";
     public static final String MANA_INDICATOR_40  = "textures/gui/mana/indicator_40.png";
     public static final String MANA_INDICATOR_50  = "textures/gui/mana/indicator_50.png";
     public static final String MANA_INDICATOR_60  = "textures/gui/mana/indicator_60.png";
     public static final String MANA_INDICATOR_70  = "textures/gui/mana/indicator_70.png";
-    //public static final String MANA_INDICATOR_75  = "textures/gui/mana/indicator_75.png";
     public static final String MANA_INDICATOR_80  = "textures/gui/mana/indicator_80.png";
     public static final String MANA_INDICATOR_90  = "textures/gui/mana/indicator_90.png";
     public static final String MANA_INDICATOR_100 = "textures/gui/mana/indicator_100.png";
@@ -40,6 +45,10 @@ public final class Assets {
 
 
     private Assets() {} // prevent instantiation
+
+    /**
+     * Loading the assets into the LibGDX provided {@link AssetManager}
+     */
 
     public static void load() {
         manager.load(PLAYER_DOWN, Texture.class);
@@ -58,13 +67,11 @@ public final class Assets {
         manager.load(MANA_INDICATOR_0, Texture.class);
         manager.load(MANA_INDICATOR_10, Texture.class);
         manager.load(MANA_INDICATOR_20, Texture.class);
-        //manager.load(MANA_INDICATOR_25, Texture.class);
         manager.load(MANA_INDICATOR_30, Texture.class);
         manager.load(MANA_INDICATOR_40, Texture.class);
         manager.load(MANA_INDICATOR_50, Texture.class);
         manager.load(MANA_INDICATOR_60, Texture.class);
         manager.load(MANA_INDICATOR_70, Texture.class);
-        //manager.load(MANA_INDICATOR_75, Texture.class);
         manager.load(MANA_INDICATOR_80, Texture.class);
         manager.load(MANA_INDICATOR_90, Texture.class);
         manager.load(MANA_INDICATOR_100, Texture.class);
@@ -73,22 +80,39 @@ public final class Assets {
 
     }
 
+    /**
+     * Needed for an async asset loading setup
+     */
     public static void update() {
         manager.update(); // async loading step
     }
 
+    /**
+     * @return if the {@link AssetManager} has finished loading yet
+     */
     public static boolean isFinished() {
         return manager.isFinished();
     }
 
+    /**
+     * Finishes the loading of assets
+     */
     public static void finishLoading() {
         manager.finishLoading();
     }
 
+    /**
+     * Gets the actual texture from an asset path
+     * @param path the path providing the file
+     * @return {@link Texture}
+     */
     public static Texture get(String path) {
         return manager.get(path, Texture.class);
     }
 
+    /**
+     * I don't know disposes all assets or some shit
+     */
     public static void dispose() {
         manager.dispose();
     }

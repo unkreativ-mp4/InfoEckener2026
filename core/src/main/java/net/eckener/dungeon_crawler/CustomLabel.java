@@ -3,6 +3,9 @@ package net.eckener.dungeon_crawler;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+/**
+ * Honestly hopefully soon deletable, as this shits cursed and kinda useless
+ */
 public class CustomLabel {
     private String text;
     private final Label label;

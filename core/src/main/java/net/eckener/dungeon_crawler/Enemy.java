@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * {@link LivingEntity} but with the possibility to attack
+ */
 public abstract class Enemy extends LivingEntity {
 
     public Enemy(float xPos, float yPos, int maxHealth, Texture aliveTexture, int speed) {
@@ -13,6 +16,7 @@ public abstract class Enemy extends LivingEntity {
     public abstract void update(float deltaTime, Player player);
 
     public abstract void attack(Player player);
+
     public abstract void attack(Enemy enemy);
 
 }

@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Aesthetically pleasing way of displaying {@code mana}
+ */
 public class ManaOrb {
 
     private final float x;
@@ -31,6 +34,9 @@ public class ManaOrb {
         indicators.put(100,Assets.get(Assets.MANA_INDICATOR_100));
     }
 
+    /** Draws the ManaOrb with its correct fill level
+     * @param batch the {@link SpriteBatch} in which to draw
+     */
     public void draw(SpriteBatch batch) {
 
         int value = ((int)(player.getManaPercent() * 10)) * 10;

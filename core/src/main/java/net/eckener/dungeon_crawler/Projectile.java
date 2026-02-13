@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Abstract Projectile class
+ */
 public abstract class Projectile extends Entity {
 
     protected float direction;
@@ -15,6 +18,9 @@ public abstract class Projectile extends Entity {
 
     public abstract void move(float deltaTime);
 
+    /**
+     * @return the direction the Projectile is facing/heading in
+     */
     public float getDirection() {
         return direction;
     }

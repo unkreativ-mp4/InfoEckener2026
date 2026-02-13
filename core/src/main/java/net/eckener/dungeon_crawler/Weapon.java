@@ -3,6 +3,10 @@ package net.eckener.dungeon_crawler;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+
+/**
+ * Expands {@link Item} by things like a {@code damage} attribute
+ */
 public abstract class Weapon extends Item{
     private final int damage;
     private final float cooldownModifier;
@@ -13,10 +17,16 @@ public abstract class Weapon extends Item{
         this.cooldownModifier = cooldownModifier;
     }
 
+    /**
+     * @return the {@code damage} of the Weapon
+     */
     public int getDamage() {
         return damage;
     }
 
+    /**
+     * @return the {@code cooldownModifier} of the Weapon
+     */
     public float getCooldownModifier() {
         return cooldownModifier;
     }
