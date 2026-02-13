@@ -113,4 +113,35 @@ public class Inventory extends Table {
             System.out.println("Inventory Slot occupied!");
         }
     }
+
+    public void moveWholeItemStacktoSlot(ItemStack[][] itemStacks, ItemStack itemStack, int stackAmount, int newRow, int newCol, int orgRow, int orgCol) {
+        stackAmount = itemStacks[orgRow][orgCol].getAmount();
+
+        if(itemStacks[orgRow][orgCol] == null) {
+            System.out.println("No Item to move at this slot");
+            return;
+        }
+
+        ItemStack targetStack = itemStacks[newRow][newCol];
+
+        if (targetStack == null) {
+            ItemStack movedStack = new ItemStack(itemStack.getItem(), stackAmount);
+            itemStacks[newRow][newCol] = movedStack;
+            itemStacks[orgRow][orgCol] = null;
+            System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol);
+            return;
+        }
+
+        boolean sameItem = Objects.equals(targetStack.getItem().getItemID(), itemStack.getItem().getItemID());
+
+        if (sameItem) {
+            targetStack.setAmount(targetStack.getAmount() + stackAmount);
+            itemStacks[orgRow][orgCol] = null;
+
+            System.out.println("Moved " + itemStack.getItem().getItemName()
+                + " to pos: " + newRow + ", " + newCol);
+        } else {
+            System.out.println("Inventory Slot occupied!");
+        }
+    }
 }

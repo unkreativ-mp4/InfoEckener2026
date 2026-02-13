@@ -1,5 +1,7 @@
 package net.eckener.dungeon_crawler;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -83,8 +85,10 @@ public class InventoryUI extends Table {
 
                 slot.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener()  {
 
+
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
                         // Only start dragging if slot has an item
                         ItemStack stackHere = inventory.getItemStack(r, c);
                         if (stackHere == null) return false;
@@ -107,6 +111,7 @@ public class InventoryUI extends Table {
 
                         event.stop();
                         return true; // we handle the drag
+
                     }
                     @Override
                     public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -117,6 +122,8 @@ public class InventoryUI extends Table {
                     }
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        boolean shiftClicked = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
+
                         if (!dragging) return;
 
                         // Hide ghost
@@ -137,12 +144,25 @@ public class InventoryUI extends Table {
                             // Ignore dropping back on same slot if you want
                             if (!(newRow == orgRow && newCol == orgCol)) {
                                 // Move ONE item using your current moveItemtoSlot implementation
-                                inventory.moveItemtoSlot(
-                                    inventory.getItemStacks(),
-                                    inventory.getItemStack(orgRow, orgCol),
-                                    newRow, newCol,
-                                    orgRow, orgCol
-                                );
+                                if(!shiftClicked) {
+                                    System.out.println(shiftClicked);
+                                    inventory.moveItemtoSlot(
+                                        inventory.getItemStacks(),
+                                        inventory.getItemStack(orgRow, orgCol),
+                                        newRow, newCol,
+                                        orgRow, orgCol
+
+                                    );
+                                }
+                                else {
+                                    System.out.println(shiftClicked);
+                                    inventory.moveWholeItemStacktoSlot(
+                                        inventory.getItemStacks(),
+                                        inventory.getItemStack(orgRow, orgCol), inventory.getItemStack(orgRow, orgCol).getAmount(),
+                                        newRow, newCol,
+                                        orgRow, orgCol
+                                    );
+                                }
                             }
                         }
 

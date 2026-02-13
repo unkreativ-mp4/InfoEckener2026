@@ -121,8 +121,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         ItemStack coinStack = new ItemStack(coin, 5);
         inventory.addItemStack(coinStack, 4, 3);
-
-        inventory.addItemStack(new ItemStack(woodenSword, 5), 4, 3);
+        
         inventory.printInventory(inventory);
 
         inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 3.5f);
