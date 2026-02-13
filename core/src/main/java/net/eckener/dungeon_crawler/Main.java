@@ -1,25 +1,20 @@
 package net.eckener.dungeon_crawler;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import net.eckener.dungeon_crawler.debug.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
-public class Main extends InputAdapter implements ApplicationListener {
+public class Main extends InputAdapter implements ApplicationListener, RoomChanger{
 
     SpriteBatch spriteBatch;
     FitViewport viewport;
@@ -30,7 +25,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     //Array<Texture> backgrounds = new Array<>();
     Array<Room> rooms = new Array<>();
     Room currentRoom;
-    int currentBackground = 0;
+    //int currentBackground = 0;
     private boolean transitioning;
     private int currentRoomIndex = 0;
 
@@ -40,7 +35,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     Zombie zombie;
 
     public Player player;
-    Sprite PlayerSprite;
     Inventory inventory;
     InventoryUI inventoryUI;
     private Stage stage;
@@ -51,7 +45,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         backgrounds.add(Assets.get(Assets.BACKGROUND_ORANGE));
     }*/
     public void loadRooms() {
-        rooms.add(new Room(
+        rooms.add(new Room (
             Assets.get(Assets.BACKGROUND_PLACEHOLDER),
             800, 480,
             100, 100
@@ -63,56 +57,37 @@ public class Main extends InputAdapter implements ApplicationListener {
             200, 150
         ));
     }
-    private void changeRoom(int newIndex) {
 
-        if (newIndex < 0 || newIndex >= rooms.size) return;
-
-        currentRoomIndex = newIndex;
-        currentRoom = rooms.get(currentRoomIndex);
-    }
-
-
-        public void loadRoom(Room room) {
-        currentRoom = room;
-        player.setPosition(room.spawnX, room.spawnY);
-    }
     public void setRoom(int index){
+        currentRoomIndex = index;
         currentRoom = rooms.get(index);
-        player.setPosition(currentRoom.spawnX, currentRoom.spawnY);
+        player.setWorldWidth(currentRoom.width);
     }
     public void handleScreenTransition(){
+        if (transitioning) return;
 
-        if(transitioning) return;
-
-        float playerLeft = PlayerSprite.getX();
-        float playerRight = PlayerSprite.getX() + PlayerSprite.getWidth();
+        float playerLeft = player.getX();
+        float playerRight = player.getX() + player.getWidth();
 
         // Player exits LEFT
-        if(playerRight < 0) {
-
+        if (playerRight < 0) {
             transitioning = true;
 
-            int nextRoom = currentRoomIndex - 1;
-            changeRoom(nextRoom);
-
-            PlayerSprite.setX(currentRoom.width - PlayerSprite.getWidth());
+            changeRoom(Direction.LEFT);
 
             transitioning = false;
         }
 
         // Player exits RIGHT
-        if(playerLeft > currentRoom.width) {
-
+        if (playerLeft > currentRoom.width) {
             transitioning = true;
 
-            int nextRoom = currentRoomIndex + 1;
-            changeRoom(nextRoom);
-
-            PlayerSprite.setX(0);
+            changeRoom(Direction.RIGHT);
 
             transitioning = false;
         }
     }
+
 
     @Override
     public void create() {
@@ -134,6 +109,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         //loadBackgrounds();
         loadRooms();
 
+
         // ───────────────────────────────
         // UI Labels
         // ───────────────────────────────
@@ -153,13 +129,12 @@ public class Main extends InputAdapter implements ApplicationListener {
                 }
             }
         );*/
-        player = new Player(100, 100, viewport, () -> {
-            currentRoom++;
-            if (currentRoom >= rooms.size) {
-                currentRoom = 0;
-            }
-        }
-        );
+        player = new Player(100, 100, viewport, this);
+
+        player.setWorldWidth(currentRoom.width);
+
+        setRoom(0);
+        player.setPosition(currentRoom.spawnX, currentRoom.spawnY);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -210,6 +185,22 @@ public class Main extends InputAdapter implements ApplicationListener {
         multiplexer.addProcessor(this);
 
         Gdx.input.setInputProcessor(multiplexer);
+    }
+    @Override
+    public void changeRoom(Direction direction) {
+        int nextIndex = currentRoomIndex;
+
+        if (direction == Direction.LEFT) nextIndex--;
+        if (direction == Direction.RIGHT) nextIndex++;
+
+        if (nextIndex < 0 || nextIndex >= rooms.size) return;
+
+        currentRoomIndex = nextIndex;
+        currentRoom = rooms.get(currentRoomIndex);
+
+        // reposition player based on direction
+        if (direction == Direction.LEFT) player.setX(currentRoom.width - player.getWidth());
+        if (direction == Direction.RIGHT) player.setX(0);
     }
 
     @Override

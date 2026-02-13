@@ -8,7 +8,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Player {
-    private BackgroundChanger bgChanger;
+    //private BackgroundChanger bgChanger;
+    private RoomChanger roomChanger;
     private Texture upTexture, downTexture, leftTexture, rightTexture;
     public Sprite PlayerSprite;
     private float playerSpeed = 4;
@@ -19,12 +20,13 @@ public class Player {
     private float timeSinceLastDamage;
     private float damageCooldown = 0.5F;
     float x, y;
+    private float worldWidth;
 
 
     private boolean transitioning;
     private FitViewport viewport;
 
-    public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
+    public Player(int maxHealth, int maxMana, FitViewport viewport, RoomChanger roomChanger) {
         this.upTexture = Assets.get(Assets.PLAYER_UP);
         this.downTexture = Assets.get(Assets.PLAYER_DOWN);
         this.leftTexture = Assets.get(Assets.PLAYER_LEFT);
@@ -32,10 +34,27 @@ public class Player {
         this.maxHealth = maxHealth;
         this.maxMana = maxMana;
         this.viewport = viewport;
-        this.bgChanger = bgChanger;
+        this.roomChanger = roomChanger;
+        //this.bgChanger = bgChanger;
 
         PlayerSprite = new Sprite(this.downTexture);
         PlayerSprite.setSize(1, 1);
+    }
+    public void setWorldWidth(float worldWidth) {
+        this.worldWidth = worldWidth;
+    }
+    private void checkRoomExit() {
+
+        float left = PlayerSprite.getX();
+        float right = left + PlayerSprite.getWidth();
+
+        if (right < 0) {
+            roomChanger.changeRoom(Direction.LEFT);
+        }
+
+        if (left > worldWidth) {
+            roomChanger.changeRoom(Direction.RIGHT);
+        }
     }
 
     //private void changeBackground(){bgChanger.changeBackground();}
@@ -88,6 +107,7 @@ public class Player {
         this.y = y;
     }
 
+
     public void addHealth(int health) {
         if(health >= 0) {
             this.health = Math.min(maxHealth, this.health += health);
@@ -134,12 +154,17 @@ public class Player {
         return PlayerSprite.getY();
     }
 
+    public void setX(float newX) { x = newX; }
+    public void setY(float newY) { y = newY; }
+    public float getWidth() {return PlayerSprite.getWidth();}
+
     public Sprite getPlayerSprite(){
         return PlayerSprite;
     }
 
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
+        checkRoomExit();
         //handleScreenTransition();
     }
 }
