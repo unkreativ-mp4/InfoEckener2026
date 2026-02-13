@@ -114,7 +114,7 @@ public class Player {
     }
 
     public void attack(Enemy enemy) {
-        if(timeSinceLastAttack <= baseAttackCooldown && selectedItem.isWeapon()) {
+        if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
             enemy.takeDamage(selectedItem.getWeapon().getDamage());
             timeSinceLastAttack = 0;
         }
