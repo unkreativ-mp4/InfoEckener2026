@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
+import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
@@ -121,7 +122,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         ItemStack coinStack = new ItemStack(coin, 5);
         inventory.addItemStack(coinStack, 4, 3);
-        
+
         inventory.printInventory(inventory);
 
         inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 3.5f);
@@ -176,7 +177,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
-        player.getPlayerSprite().draw(spriteBatch);
+        player.draw(spriteBatch);
         zombie.draw(spriteBatch);
         spriteBatch.end();
 
@@ -222,7 +223,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 inventoryUI.openInventory(inventory);
             }
             if(keycode == Input.Keys.H) {
-                player.addHealth(5);
+                player.heal(5);
             }
             if(keycode == Input.Keys.M) {
                 player.addMana(5);
@@ -250,7 +251,7 @@ public class Main extends InputAdapter implements ApplicationListener {
             player.addMana(-5);
         }
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
-            player.addHealth(-5);
+            player.takeDamage(5);
         }
     }
 }

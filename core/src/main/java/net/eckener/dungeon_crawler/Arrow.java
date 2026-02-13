@@ -10,8 +10,6 @@ public class Arrow extends Projectile{
     Vector2 directionVector = new Vector2();
     public Arrow(Texture texture, float xPos, float yPos, OrthographicCamera camera) {
         super(texture, xPos, yPos);
-        sprite.setX(xPos);
-        sprite.setY(yPos);
 
         Vector3 vector3 = new Vector3();
         camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -32,7 +30,6 @@ public class Arrow extends Projectile{
         directionVector.set(1,1);
         directionVector.setAngleDeg(direction);
         sprite.translate(directionVector.nor().scl(deltaTime).x, directionVector.nor().scl(deltaTime).y);
-        //System.out.println(directionVector.nor().x+"    "+directionVector.x);
         System.out.println(direction);
     }
 

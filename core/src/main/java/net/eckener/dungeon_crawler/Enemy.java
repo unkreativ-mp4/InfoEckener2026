@@ -4,55 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public abstract class Enemy {
-    protected int health;
-    protected int maxHealth;
-    protected int speed;
+public abstract class Enemy extends LivingEntity {
 
-    protected float xPos;
-    protected float yPos;
-    protected Sprite EnemySprite;
-    protected boolean isAlive = true;
-
-    public Enemy(float xPos, float yPos, int maxHealth, Texture aliveTexture) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-
-        this.maxHealth = maxHealth;
-        this.health = maxHealth;
-
-        EnemySprite = new Sprite(aliveTexture);
-        EnemySprite.setSize(1, 1);
+    public Enemy(float xPos, float yPos, int maxHealth, Texture aliveTexture, int speed) {
+        super(xPos,yPos, aliveTexture,maxHealth, speed);
     }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    public void takeDamage(int damage) {
-        health = Math.max(0, health - damage);
-        if (health == 0) {
-            onDeath();
-        }
-    }
-
-    protected void heal(int amount) {
-        health = Math.min(maxHealth, health + amount);
-    }
-
-    protected void draw(SpriteBatch spriteBatch) {
-        EnemySprite.draw(spriteBatch);
-    }
-
-    protected abstract void onDeath();
 
     public abstract void update(float deltaTime, Player player);
 

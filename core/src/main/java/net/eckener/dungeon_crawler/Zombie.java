@@ -13,32 +13,28 @@ public class Zombie extends Enemy {
     private double timeSinceLastAttack;
 
     public Zombie(float xPos, float yPos, Texture aliveTexture, Texture deathTexture) {
-        super(xPos, yPos, baseHealth, aliveTexture);
+        super(xPos, yPos, baseHealth, aliveTexture,1);
         this.timeSinceLastAttack = 0;
         this.deathTexture = deathTexture;
-        this.speed = 1;
     }
 
-    @Override
-    protected void onDeath() {
-        isAlive=false;
-        EnemySprite.setTexture(deathTexture);
-    }
+    public void move(Player player, float delta) {
+        if(isAlive) {
+            direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
 
-    @Override
-    public void update(float deltaTime, Player player) {
-        timeSinceLastAttack += deltaTime;
-        xPos = EnemySprite.getX();
-        yPos = EnemySprite.getY();
-        move(player, deltaTime);
+            if (direction.len2() > 0f) {
+                direction.nor().scl(speed * delta);
+                sprite.translate(direction.x, direction.y);
+            }
+        }
     }
 
     @Override
     public void attack(Player player) {
         if(canAttack()) {
-            double distance = Math.sqrt(   Math.pow(EnemySprite.getX()- player.getX(),2)   + Math.pow(EnemySprite.getY()- player.getY(),2)    );
+            double distance = Math.sqrt(   Math.pow(sprite.getX()- player.getxPos(),2)   + Math.pow(sprite.getY()- player.getyPos(),2)    );
             if(distance <= 5) {
-                player.addHealth(-baseDamage);
+                player.takeDamage(baseDamage);
             }
             timeSinceLastAttack = 0;
         }
@@ -47,7 +43,7 @@ public class Zombie extends Enemy {
 
     @Override
     public void attack(Enemy enemy) {
-        if(canAttack()) {double distance = Math.sqrt(   Math.pow(this.EnemySprite.getX()- enemy.xPos,2)   + Math.pow(this.EnemySprite.getY()- enemy.yPos,2)    );
+        if(canAttack()) {double distance = Math.sqrt(   Math.pow(this.sprite.getX()- enemy.getxPos(),2)   + Math.pow(this.sprite.getY()- enemy.getyPos(),2)    );
             if(distance <= 5) {
                 enemy.takeDamage(baseDamage);
             }
@@ -55,18 +51,22 @@ public class Zombie extends Enemy {
         }
     }
 
-    public void move(Player player, float delta) {
-        if(isAlive) {
-            direction.set(player.getX() - xPos, player.getY() - yPos);
-
-            if (direction.len2() > 0f) {
-                direction.nor().scl(speed * delta);
-                EnemySprite.translate(direction.x, direction.y);
-            }
-        }
-    }
-
     private boolean canAttack() {
         return timeSinceLastAttack >= attackCooldown && isAlive();
     }
+
+    @Override
+    protected void onDeath() {
+        isAlive=false;
+        sprite.setTexture(deathTexture);
+    }
+
+    @Override
+    public void update(float deltaTime, Player player) {
+        timeSinceLastAttack += deltaTime;
+        move(player, deltaTime);
+    }
+
+    @Override
+    public void update(float delta) {}
 }

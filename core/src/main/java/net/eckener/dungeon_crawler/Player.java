@@ -7,13 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class Player {
+public class Player extends LivingEntity{
     private BackgroundChanger bgChanger;
-    private Sprite PlayerSprite;
-    private float playerSpeed = 4;
-    private int maxHealth;
     private int maxMana;
-    private int health;
     private int mana;
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
@@ -22,20 +18,17 @@ public class Player {
     private ItemStack selectedItem; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
 
     private boolean transitioning;
-    private FitViewport viewport;
+    private final FitViewport viewport;
 
     public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
-        this.maxHealth = maxHealth;
+        super(1,1,Assets.get(Assets.PLAYER_DOWN), maxHealth,4);
         this.maxMana = maxMana;
         this.viewport = viewport;
         this.bgChanger = bgChanger;
 
-        PlayerSprite = new Sprite(Assets.get(Assets.PLAYER_DOWN));
-        PlayerSprite.setSize(1, 1);
+        Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
+        selectedItem = new ItemStack(bow,1);
 
-
-        Weapon weapon = new Weapon("schwert", "Ultra Krasses Testschwert", Assets.get(Assets.DIAMOND_SWORD),1,1,11,2.0F);
-        selectedItem = new ItemStack(weapon,1);
     }
 
     private void changeBackground(){
@@ -44,56 +37,57 @@ public class Player {
 
     public void handleScreenTransition(){
         if(!transitioning) {
-            if (PlayerSprite.getX() + PlayerSprite.getX() + PlayerSprite.getWidth() < 0) {
+            if (getxPos() + getxPos() + sprite.getWidth() < 0) {
                 transitioning = true;
                 changeBackground();
-                PlayerSprite.setX(viewport.getWorldWidth() - PlayerSprite.getWidth());
+                sprite.setX(viewport.getWorldWidth() - sprite.getWidth());
                 transitioning = false;
             }
-            if (PlayerSprite.getX() > viewport.getWorldWidth()) {
+            if (getxPos() > viewport.getWorldWidth()) {
                 transitioning = true;
                 changeBackground();
-                PlayerSprite.setX(0);
+                setxPos(0);
                 transitioning = false;
             }
         }
     }
 
     public void move(float delta) {
-        delta *= playerSpeed;
+        delta *= speed;
+
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            PlayerSprite.setTexture(Assets.get(Assets.PLAYER_UP));
-            PlayerSprite.translateY(delta);
+            sprite.setTexture(Assets.get(Assets.PLAYER_UP));
+            sprite.translateY(delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            PlayerSprite.setTexture(Assets.get(Assets.PLAYER_LEFT));
-            PlayerSprite.translateX(-delta);
+            sprite.setTexture(Assets.get(Assets.PLAYER_LEFT));
+            sprite.translateX(-delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            PlayerSprite.setTexture(Assets.get(Assets.PLAYER_DOWN));
-            PlayerSprite.translateY(-delta);
+            sprite.setTexture(Assets.get(Assets.PLAYER_DOWN));
+            sprite.translateY(-delta);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            PlayerSprite.setTexture(Assets.get(Assets.PLAYER_RIGHT));
-            PlayerSprite.translateX(delta);
+            sprite.setTexture(Assets.get(Assets.PLAYER_RIGHT));
+            sprite.translateX(delta);
         }
         dontGoPastScreen(viewport.getWorldHeight());
     }
 
     public void dontGoPastScreen(float worldHeight) {
         //PlayerSprite.setX(MathUtils.clamp(PlayerSprite.getX(), 0, worldWidth - PlayerSprite.getWidth()));
-        PlayerSprite.setY(MathUtils.clamp(PlayerSprite.getY(), 0, worldHeight - PlayerSprite.getHeight()));
+        sprite.setY(MathUtils.clamp(sprite.getY(), 0, worldHeight - sprite.getHeight()));
     }
 
+    @Override
+    public void takeDamage(int damage) {
+        if(timeSinceLastDamage < baseDamageCooldown) {return;}
+        health = Math.max(0, health - damage);
+        timeSinceLastDamage = 0;
+    }
 
-    public void addHealth(int health) {
-        if(health >= 0) {
-            this.health = Math.min(maxHealth, this.health += health);
-        } else {
-            if(timeSinceLastDamage < baseDamageCooldown) {return;}
-            this.health = Math.max(0, this.health += health);
-            timeSinceLastDamage = 0;
-        }
+    @Override
+    protected void onDeath() {
     }
 
     public void addMana(int mana) {
@@ -110,17 +104,10 @@ public class Player {
 
     public void attack(Enemy enemy) {
         if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
-            enemy.takeDamage(selectedItem.getWeapon().getDamage());
+            selectedItem.getWeapon().attack(this, enemy,viewport);
             timeSinceLastAttack = 0;
+
         }
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public int getHealth() {
-        return health;
     }
 
     public void setMana(int mana) {
@@ -131,18 +118,7 @@ public class Player {
         return mana;
     }
 
-    public float getX() {
-        return PlayerSprite.getX();
-    }
-
-    public float getY() {
-        return PlayerSprite.getY();
-    }
-
-    public Sprite getPlayerSprite(){
-        return PlayerSprite;
-    }
-
+    @Override
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
         timeSinceLastAttack += deltaTime;
