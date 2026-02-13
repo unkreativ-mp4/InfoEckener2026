@@ -81,13 +81,14 @@ public class Inventory extends Table {
 
         if(itemStacks[orgRow][orgCol] == null) {
             System.out.println("No Item to move at this slot");
+            return;
         }
 
         ItemStack targetStack = itemStacks[newRow][newCol];
 
         if (targetStack == null) {
-            itemStacks[newRow][newCol] = itemStack;
-            itemStack.setAmount(1);
+            ItemStack movedStack = new ItemStack(itemStack.getItem(), 1);
+            itemStacks[newRow][newCol] = movedStack;
             if(itemStacks[orgRow][orgCol].getAmount() > 1) {
                 itemStacks[orgRow][orgCol].setAmount(itemStacks[orgRow][orgCol].getAmount() - 1);
             }

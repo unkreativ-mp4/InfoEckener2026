@@ -30,7 +30,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     int currentBackground = 0;
     Texture characterTextureUp, characterTextureDown, characterTextureLeft, characterTextureRight;
     Texture slotTexture, inventoryTexture;
-
     CustomLabel healthLabel;
     CustomLabel manaLabel;
 
@@ -78,6 +77,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         Texture woodenSwordTexture = new Texture("Wooden_Sword_Texture.png");
         Texture coinTexture= new Texture("coin.png");
 
+
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", woodenSwordTexture, 1, 64);
         Item coin = new Item("coin", "Coin", coinTexture, 5, 67);
 
@@ -101,7 +101,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         inventoryUI = new InventoryUI(inventory, inventoryTexture, slotTexture, 3.5f);
         stage.addActor(inventoryUI);
 
-        stage.setDebugAll(true);
+        stage.setDebugAll(false);
 
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage); // Stage first
