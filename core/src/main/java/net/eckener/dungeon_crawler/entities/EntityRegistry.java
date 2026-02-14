@@ -10,21 +10,28 @@ import net.eckener.dungeon_crawler.Main;
 public final class EntityRegistry {
 
     private static final Array<Entity> entities = new Array<>();
+    private static final Array<LivingEntity> livingEntities = new Array<>();
 
     private EntityRegistry() {}
 
-    /**Enters an {@link Entity} into the registry
+    /**Enters an {@link Entity} into the registry and if it is a {@link LivingEntity} into the specialized registry
      * @param entity the {@link Entity} which to register
      */
     public static void register(Entity entity) {
         entities.add(entity);
+        if(entity instanceof LivingEntity){
+            livingEntities.add((LivingEntity) entity);
+        }
     }
 
-    /**Removes an {@link Entity} from the registry
+    /**Removes an {@link Entity} from the registry and if it is a {@link LivingEntity} from the specialized registry
      * @param entity the {@link Entity} which to remove
      */
     public static void unregister(Entity entity) {
         entities.removeValue(entity, true);
+        if(entity instanceof LivingEntity){
+            livingEntities.removeValue((LivingEntity) entity, true);
+        }
     }
 
     /**
@@ -39,6 +46,8 @@ public final class EntityRegistry {
             } else {
                 entity.update(delta);
             }
+
+            entity.updateHitbox();
         }
     }
 
@@ -53,9 +62,22 @@ public final class EntityRegistry {
     }
 
     /**
-     * Empties the registry
+     * @return all {@link Entity}s
+     */
+    public static Array<Entity> getAllEntities() {
+        return entities;
+    }
+
+    /**
+     * @return all {@link LivingEntity}s
+     */
+    public static Array<LivingEntity> getAllLivingEntities() {return livingEntities;}
+
+    /**
+     * Empties both registries
      */
     public static void clear() {
         entities.clear();
+        livingEntities.clear();
     }
 }

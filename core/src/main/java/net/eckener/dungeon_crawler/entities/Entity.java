@@ -3,6 +3,7 @@ package net.eckener.dungeon_crawler.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Polygon;
 import net.eckener.dungeon_crawler.Main;
 
 /**
@@ -11,6 +12,8 @@ import net.eckener.dungeon_crawler.Main;
 public abstract class Entity {
 
     protected Sprite sprite;
+    float[] vertices;
+    Polygon hitbox;
 
     public Entity(float xPos, float yPos, Texture texture) {
         sprite = new Sprite(texture);
@@ -18,6 +21,14 @@ public abstract class Entity {
         sprite.setX(xPos);
         sprite.setY(yPos);
         EntityRegistry.register(this);
+
+        vertices = new float[] {
+            0, 0,
+            sprite.getWidth(), 0,
+            sprite.getWidth(), sprite.getHeight(),
+            0, sprite.getHeight()
+        };
+        hitbox = new Polygon(vertices);
     }
 
     /**
@@ -82,4 +93,10 @@ public abstract class Entity {
      * @param player {@link Player} in case it is needed, e.g. for pathfinding
      */
     public abstract void update(float delta, Player player);
+
+    public void updateHitbox() {
+        hitbox.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 2f);
+        hitbox.setPosition(sprite.getX(), sprite.getY());
+        hitbox.setRotation(sprite.getRotation());
+    }
 }

@@ -25,7 +25,7 @@ public class Bow extends Weapon{
      */
     @Override
     public void attack(Player player, Enemy enemy, Viewport viewport) {
-        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), player.getxPos(), player.getyPos());
+        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), player.getxPos(), player.getyPos(),player);
         arrow.setRotationToFaceCursor((OrthographicCamera) viewport.getCamera());
     }
 }

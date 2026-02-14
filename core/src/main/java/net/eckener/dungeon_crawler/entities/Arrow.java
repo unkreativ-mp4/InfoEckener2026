@@ -3,6 +3,7 @@ package net.eckener.dungeon_crawler.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -13,9 +14,11 @@ import com.badlogic.gdx.math.Vector3;
 public class Arrow extends Projectile{
 
     Vector2 directionVector = new Vector2();
+    Entity owner;
 
-    public Arrow(Texture texture, float xPos, float yPos) {
+    public Arrow(Texture texture, float xPos, float yPos, Entity owner) {
         super(texture, xPos, yPos);
+        this. owner = owner;
     }
 
     /**
@@ -49,6 +52,19 @@ public class Arrow extends Projectile{
     }
 
     /**
+     * Detects if the arrow has hit another {@link LivingEntity} and then unregisters itself
+     */
+    private void hitDetection(){
+        for(LivingEntity livingEntity : EntityRegistry.getAllLivingEntities()){
+            if (Intersector.overlapConvexPolygons(this.hitbox, livingEntity.hitbox) && !livingEntity.equals(owner)) {
+                livingEntity.takeDamage(10);
+                EntityRegistry.unregister(this);
+                break;
+            }
+        }
+    }
+
+    /**
      * Moves the arrow in the direction it's facing
      * @param deltaTime Frametime to satisfy smooth movement even when lagging
      */
@@ -57,7 +73,8 @@ public class Arrow extends Projectile{
     public void move(float deltaTime) {
         directionVector.set(1,1);
         directionVector.setAngleDeg(direction);
-        sprite.translate(directionVector.nor().scl(deltaTime).x, directionVector.nor().scl(deltaTime).y);
+        sprite.translate(directionVector.nor().scl(deltaTime*5).x, directionVector.nor().scl(deltaTime*5).y);
+        hitDetection();
     }
 
     /**
