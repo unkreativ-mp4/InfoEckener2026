@@ -1,4 +1,4 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Zombie extends Enemy {
     private static final int baseHealth = 20;
     private static final int baseDamage = 3;
+    private static final int baseReach = 2;
     private final Texture deathTexture;
     private final Vector2 direction = new Vector2();
 
@@ -44,7 +45,7 @@ public class Zombie extends Enemy {
     public void attack(Player player) {
         if(canAttack()) {
             double distance = Math.sqrt(   Math.pow(sprite.getX()- player.getxPos(),2)   + Math.pow(sprite.getY()- player.getyPos(),2)    );
-            if(distance <= 5) {
+            if(distance <= baseReach) {
                 player.takeDamage(baseDamage);
             }
             timeSinceLastAttack = 0;
@@ -57,8 +58,9 @@ public class Zombie extends Enemy {
      */
     @Override
     public void attack(Enemy enemy) {
-        if(canAttack()) {double distance = Math.sqrt(   Math.pow(this.sprite.getX()- enemy.getxPos(),2)   + Math.pow(this.sprite.getY()- enemy.getyPos(),2)    );
-            if(distance <= 5) {
+        if(canAttack()) {
+            double distance = Math.sqrt(   Math.pow(this.sprite.getX()- enemy.getxPos(),2)   + Math.pow(this.sprite.getY()- enemy.getyPos(),2)    );
+            if(distance <= baseReach) {
                 enemy.takeDamage(baseDamage);
             }
             timeSinceLastAttack = 0;
@@ -90,6 +92,7 @@ public class Zombie extends Enemy {
     public void update(float deltaTime, Player player) {
         timeSinceLastAttack += deltaTime;
         move(player, deltaTime);
+        attack(player);
     }
 
     /**

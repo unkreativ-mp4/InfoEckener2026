@@ -1,4 +1,4 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.ui;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;

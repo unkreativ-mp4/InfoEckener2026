@@ -1,6 +1,4 @@
-package net.eckener.dungeon_crawler;
-
-import com.badlogic.gdx.graphics.Texture;
+package net.eckener.dungeon_crawler.items;
 
 /**
  * Stores an {@link Item} or a {@link Weapon} and an amount

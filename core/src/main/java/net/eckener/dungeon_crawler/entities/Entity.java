@@ -1,8 +1,9 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import net.eckener.dungeon_crawler.Main;
 
 /**
  * The most basic form of an entity. Only exists so all entities can be registered in a single {@link EntityRegistry} and only one draw and update command is needed in {@link Main}

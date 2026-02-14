@@ -1,11 +1,13 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import net.eckener.dungeon_crawler.*;
+import net.eckener.dungeon_crawler.items.Bow;
+import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.items.Weapon;
 
 public class Player extends LivingEntity{
     private BackgroundChanger bgChanger;
@@ -21,7 +23,7 @@ public class Player extends LivingEntity{
     private final FitViewport viewport;
 
     public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
-        super(1,1,Assets.get(Assets.PLAYER_DOWN), maxHealth,4);
+        super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,4);
         this.maxMana = maxMana;
         this.viewport = viewport;
         this.bgChanger = bgChanger;

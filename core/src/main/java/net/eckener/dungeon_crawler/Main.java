@@ -8,17 +8,23 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
-import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import net.eckener.dungeon_crawler.debug.*;
+import net.eckener.dungeon_crawler.entities.EntityRegistry;
+import net.eckener.dungeon_crawler.entities.Player;
+import net.eckener.dungeon_crawler.entities.Zombie;
+import net.eckener.dungeon_crawler.items.Item;
+import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.ui.CustomLabel;
+import net.eckener.dungeon_crawler.ui.Inventory;
+import net.eckener.dungeon_crawler.ui.InventoryUI;
+import net.eckener.dungeon_crawler.ui.ManaOrb;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener {

@@ -1,9 +1,13 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.items;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import net.eckener.dungeon_crawler.Assets;
+import net.eckener.dungeon_crawler.entities.Arrow;
+import net.eckener.dungeon_crawler.entities.Enemy;
+import net.eckener.dungeon_crawler.entities.EntityRegistry;
+import net.eckener.dungeon_crawler.entities.Player;
 
 /**
  * Simple bow {@link Weapon} which can shoot {@link Arrow}s

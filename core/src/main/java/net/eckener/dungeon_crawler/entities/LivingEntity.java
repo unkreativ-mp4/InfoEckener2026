@@ -1,4 +1,4 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 
@@ -24,7 +24,7 @@ public abstract class LivingEntity extends Entity {
     /**
      * @param amount heals the LivingEntity up to its {@code maxHealth}
      */
-    protected void heal(int amount) {
+    public void heal(int amount) {
         health = Math.min(maxHealth, health + amount);
     }
 

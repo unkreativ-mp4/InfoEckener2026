@@ -1,8 +1,8 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import net.eckener.dungeon_crawler.Main;
 
 /**
  * An entity registry so {@link Main} has its peace

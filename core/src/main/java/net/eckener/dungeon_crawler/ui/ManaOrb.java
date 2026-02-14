@@ -1,7 +1,9 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.ui;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import net.eckener.dungeon_crawler.Assets;
+import net.eckener.dungeon_crawler.entities.Player;
 
 import java.util.HashMap;
 import java.util.Map;
