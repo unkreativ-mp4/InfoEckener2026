@@ -14,17 +14,15 @@ public class Arrow extends Projectile{
 
     Vector2 directionVector = new Vector2();
 
-    public Arrow(Texture texture, float xPos, float yPos, OrthographicCamera camera) {
+    public Arrow(Texture texture, float xPos, float yPos) {
         super(texture, xPos, yPos);
-        startingRotation(camera);
-
     }
 
     /**
-     * Sets the rotation of the sprite to face the cursor
+     * Sets the rotation of the {@link com.badlogic.gdx.graphics.g2d.Sprite} to face the cursor
      * @param camera {@link OrthographicCamera} is needed to correctly set the rotation (I think). Best acquired from a {@link com.badlogic.gdx.utils.viewport.Viewport}
      */
-    private void startingRotation(OrthographicCamera camera){
+    public void setRotationToFaceCursor(OrthographicCamera camera){
         Vector3 vector3 = new Vector3();
         camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
@@ -36,6 +34,17 @@ public class Arrow extends Projectile{
 
         direction = (float) Math.toDegrees(Math.atan2(dy, dx));
         sprite.setOriginCenter();
+        sprite.setRotation(direction);
+    }
+
+    /**
+     * Sets the rotation of the {@link com.badlogic.gdx.graphics.g2d.Sprite} to face a {@link LivingEntity}
+     * @param livingEntity the {@link LivingEntity} which to face
+     */
+    public void setRotationToFaceLivingEntity(LivingEntity livingEntity){
+        Vector2 vector2 = new Vector2(livingEntity.getxPos() - getxPos(), livingEntity.getyPos() - getyPos());
+        sprite.setOriginCenter();
+        direction = vector2.angleDeg();
         sprite.setRotation(direction);
     }
 

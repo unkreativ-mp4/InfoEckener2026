@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import net.eckener.dungeon_crawler.Assets;
 import net.eckener.dungeon_crawler.entities.Arrow;
 import net.eckener.dungeon_crawler.entities.Enemy;
-import net.eckener.dungeon_crawler.entities.EntityRegistry;
 import net.eckener.dungeon_crawler.entities.Player;
 
 /**
@@ -26,8 +25,7 @@ public class Bow extends Weapon{
      */
     @Override
     public void attack(Player player, Enemy enemy, Viewport viewport) {
-        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), player.getxPos(), player.getyPos(), (OrthographicCamera) viewport.getCamera());
-        EntityRegistry.register(arrow);
-        System.out.println("attacking arrow");
+        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), player.getxPos(), player.getyPos());
+        arrow.setRotationToFaceCursor((OrthographicCamera) viewport.getCamera());
     }
 }

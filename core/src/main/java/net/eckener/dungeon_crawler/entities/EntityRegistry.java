@@ -34,7 +34,7 @@ public final class EntityRegistry {
      */
     public static void updateAll(float delta, Player player) {
         for (Entity entity : entities) {
-            if(entity instanceof Zombie) {
+            if(entity instanceof Enemy) {
                 entity.update(delta, player);
             } else {
                 entity.update(delta);

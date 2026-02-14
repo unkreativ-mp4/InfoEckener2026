@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import net.eckener.dungeon_crawler.debug.*;
 import net.eckener.dungeon_crawler.entities.EntityRegistry;
 import net.eckener.dungeon_crawler.entities.Player;
+import net.eckener.dungeon_crawler.entities.Skeleton;
 import net.eckener.dungeon_crawler.entities.Zombie;
 import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.items.ItemStack;
@@ -44,6 +46,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     CustomLabel manaLabel;
 
     Zombie zombie;
+    Skeleton skeleton;
 
     public Player player;
     Inventory inventory;
@@ -139,7 +142,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         // Enemies
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
-        EntityRegistry.register(zombie);
+        skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
 
         // ───────────────────────────────
         // Input Handling

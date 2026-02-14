@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public abstract class Enemy extends LivingEntity {
 
+    protected double attackCooldown;
+    protected double timeSinceLastAttack = 0;
+
     public Enemy(float xPos, float yPos, int maxHealth, Texture aliveTexture, int speed) {
         super(xPos,yPos, aliveTexture,maxHealth, speed);
     }
 
     public abstract void update(float deltaTime, Player player);
 
-    public abstract void attack(Player player);
-
-    public abstract void attack(Enemy enemy);
+    public abstract void attack(LivingEntity livingEntity);
 
 }

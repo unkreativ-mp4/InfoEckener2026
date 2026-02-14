@@ -17,6 +17,7 @@ public abstract class Entity {
         sprite.setSize(1,1);
         sprite.setX(xPos);
         sprite.setY(yPos);
+        EntityRegistry.register(this);
     }
 
     /**
