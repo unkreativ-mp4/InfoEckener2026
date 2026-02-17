@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.Main;
 
 /**
@@ -12,10 +13,13 @@ import net.eckener.dungeon_crawler.Main;
 public abstract class Entity {
 
     protected Sprite sprite;
+    protected int speed;
     float[] vertices;
     Polygon hitbox;
+    Vector2 momentum = new Vector2();
 
-    public Entity(float xPos, float yPos, Texture texture) {
+    public Entity(float xPos, float yPos, Texture texture, int speed) {
+        this.speed = speed;
         sprite = new Sprite(texture);
         sprite.setSize(1,1);
         sprite.setX(xPos);
@@ -102,5 +106,10 @@ public abstract class Entity {
         hitbox.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 2f);
         hitbox.setPosition(sprite.getX(), sprite.getY());
         hitbox.setRotation(sprite.getRotation());
+    }
+
+    public void updateMovement() {
+        momentum.scl(0.95F);
+        momentum.clamp(0,speed);
     }
 }
