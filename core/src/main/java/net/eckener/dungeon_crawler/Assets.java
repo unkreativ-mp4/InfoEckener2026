@@ -115,6 +115,11 @@ public final class Assets {
         return manager.get(path, Texture.class);
     }
 
+    /**
+     * Gets the actual Font from an asset path
+     * @param path the path providing the file
+     * @return a {@link BitmapFont}
+     */
     public static BitmapFont getFont(String path) { return  manager.get(path, BitmapFont.class);
     }
 

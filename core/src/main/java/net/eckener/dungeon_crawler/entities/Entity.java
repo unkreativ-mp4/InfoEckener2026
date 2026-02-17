@@ -94,6 +94,10 @@ public abstract class Entity {
      */
     public abstract void update(float delta, Player player);
 
+
+    /**
+     * Updates the entities {@code hitbox} to match position and rotation
+     */
     public void updateHitbox() {
         hitbox.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 2f);
         hitbox.setPosition(sprite.getX(), sprite.getY());

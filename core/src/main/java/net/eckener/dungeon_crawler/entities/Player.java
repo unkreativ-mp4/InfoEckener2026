@@ -23,7 +23,7 @@ public class Player extends LivingEntity{
     private final FitViewport viewport;
 
     public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
-        super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,4);
+        super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
         this.maxMana = maxMana;
         this.viewport = viewport;
         this.bgChanger = bgChanger;
