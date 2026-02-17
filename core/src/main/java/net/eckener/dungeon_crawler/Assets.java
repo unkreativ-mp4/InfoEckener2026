@@ -40,6 +40,17 @@ public final class Assets {
     public static final String MANA_INDICATOR_80  = "textures/gui/mana/indicator_80.png";
     public static final String MANA_INDICATOR_90  = "textures/gui/mana/indicator_90.png";
     public static final String MANA_INDICATOR_100 = "textures/gui/mana/indicator_100.png";
+    public static final String HEALTH_INDICATOR_0   = "textures/gui/health/indicator_0.png";
+    public static final String HEALTH_INDICATOR_10  = "textures/gui/health/indicator_10.png";
+    public static final String HEALTH_INDICATOR_20  = "textures/gui/health/indicator_20.png";
+    public static final String HEALTH_INDICATOR_30  = "textures/gui/health/indicator_30.png";
+    public static final String HEALTH_INDICATOR_40  = "textures/gui/health/indicator_40.png";
+    public static final String HEALTH_INDICATOR_50  = "textures/gui/health/indicator_50.png";
+    public static final String HEALTH_INDICATOR_60  = "textures/gui/health/indicator_60.png";
+    public static final String HEALTH_INDICATOR_70  = "textures/gui/health/indicator_70.png";
+    public static final String HEALTH_INDICATOR_80  = "textures/gui/health/indicator_80.png";
+    public static final String HEALTH_INDICATOR_90  = "textures/gui/health/indicator_90.png";
+    public static final String HEALTH_INDICATOR_100 = "textures/gui/health/indicator_100.png";
     public static final String ARROW = "textures/placeholders/arrow.png";
     public static final String IRON_SHOVEL = "textures/placeholders/iron_shovel.png";
    //public static final String FANTASY_FONT = "fonts/fantasy_font.png";

@@ -130,6 +130,7 @@ public class Player extends LivingEntity{
     public float getManaPercent() {
         return (float) mana / maxMana;
     }
+    public float getHealthPercent() {return (float) health / maxHealth;}
 
     /**
      * Attacks an {@link Enemy} with the selected {@link Weapon}
@@ -155,6 +156,9 @@ public class Player extends LivingEntity{
      */
     public int getMana() {
         return mana;
+    }
+    public int getHealth() {
+        return health;
     }
 
     /**
