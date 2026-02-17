@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -20,10 +22,10 @@ import java.util.Objects;
 public class InventoryUI extends Table {
 
     private boolean inventoryVisible;
-    private float slotSize = 48f;
-    private float slotPad = 4f;
+    private float slotSize = 32f;
+    private float slotPad = 3f;
     private Texture slotBackgroundTexture;
-
+    private final BitmapFont uiFont = new BitmapFont();
     private boolean dragging = false;
     private GridPoint2 dragOrigin = null;     // (col,row) like your userObject
     private ItemStack draggedStack = null;    // the stack we are moving 1 from
@@ -54,8 +56,11 @@ public class InventoryUI extends Table {
 
         buildInventoryUI(inventory);
 
+        Skin titleSkin = new Skin(Gdx.files.internal("uiskin.json"));
+        Label title = new Label("Inventory", titleSkin);
+        invPanel.add(title).center().padBottom(8f * uiScale).row();
         invPanel.add(inventory).center();
-        add(invPanel).expand().center();
+        add(invPanel).center();
 
         dragGhost.setVisible(false);
         addActor(dragGhost);
@@ -68,14 +73,14 @@ public class InventoryUI extends Table {
         inventory.clearChildren();
         inventory.defaults().size(slotSize).pad(slotPad);
 
-        NinePatch slotBackgroundPatch = new NinePatch(slotBackgroundTexture, 3, 3, 3, 3);
+        NinePatch slotBackgroundPatch = new NinePatch(slotBackgroundTexture, 0, 0, 0, 0);
 
         for (int row = 0; row < inventory.getRows(); row++) {
             for (int col = 0; col < inventory.getCols(); col++) {
                 Table cell = new Table();
                 cell.setBackground(new NinePatchDrawable(slotBackgroundPatch));
 
-                SlotWidget slot = new SlotWidget(inventory.getItemStack(row,col), new BitmapFont());
+                SlotWidget slot = new SlotWidget(inventory.getItemStack(row,col), uiFont);
                 cell.setUserObject(slot);
                 slot.setTouchable(Touchable.enabled);
 

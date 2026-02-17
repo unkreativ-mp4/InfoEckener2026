@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -41,6 +42,10 @@ public class Main extends InputAdapter implements ApplicationListener {
     public Player player;
     Inventory inventory;
     InventoryUI inventoryUI;
+
+    Inventory penis;
+    InventoryUI penisUI;
+
     private Stage stage;
 
     private final IntSet downKeys = new IntSet(20);
@@ -100,7 +105,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         debug = new DebugOverlay(layout, debugRenderer, debugInput);
 
-        stage.setDebugAll(true);
+        stage.setDebugAll(false);
 
         // ───────────────────────────────
         // GUI
@@ -113,19 +118,20 @@ public class Main extends InputAdapter implements ApplicationListener {
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
         Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 5, 67);
 
-        inventory = new Inventory(5, 6);
-
-        for (int i = 0; i < inventory.getInventorySize() - 5; i++) {
-            inventory.fillInventoryWithItemStack(new ItemStack(woodenSword, 3));
-        }
+        inventory = new Inventory(4, 7);
+        penis = new Inventory(3,2);
 
         ItemStack coinStack = new ItemStack(coin, 5);
-        inventory.addItemStack(coinStack, 4, 3);
-        
+        inventory.addItemStack(coinStack, 3, 3);
+        penis.addItemStack(coinStack, 0,0);
+
         inventory.printInventory(inventory);
 
         inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 3.5f);
+        penisUI = new InventoryUI(penis, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2f);
         stage.addActor(inventoryUI);
+        stage.addActor(penisUI);
+
 
         // ───────────────────────────────
         // Enemies
@@ -230,8 +236,11 @@ public class Main extends InputAdapter implements ApplicationListener {
             if(keycode == Input.Keys.C) {
                 zombie.attack(player);
             }
-            if(keycode == Input.Keys.P) {
+            if(keycode == Input.Keys.U) {
                 player.attack(zombie);
+            }
+            if(keycode == Input.Keys.P) {
+                penisUI.openInventory(penis);
             }
 
         }

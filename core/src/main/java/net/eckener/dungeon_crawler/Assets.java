@@ -2,6 +2,7 @@ package net.eckener.dungeon_crawler;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public final class Assets {
 
@@ -35,6 +36,7 @@ public final class Assets {
     public static final String MANA_INDICATOR_90  = "textures/gui/mana/indicator_90.png";
     public static final String MANA_INDICATOR_100 = "textures/gui/mana/indicator_100.png";
     public static final String ARROW = "textures/placeholders/arrow.png";
+   //public static final String FANTASY_FONT = "fonts/fantasy_font.png";
 
 
 
@@ -69,6 +71,7 @@ public final class Assets {
         manager.load(MANA_INDICATOR_90, Texture.class);
         manager.load(MANA_INDICATOR_100, Texture.class);
         manager.load(ARROW, Texture.class);
+        //manager.load(FANTASY_FONT, BitmapFont.class);
 
 
     }
@@ -87,6 +90,9 @@ public final class Assets {
 
     public static Texture get(String path) {
         return manager.get(path, Texture.class);
+    }
+
+    public static BitmapFont getFont(String path) { return  manager.get(path, BitmapFont.class);
     }
 
     public static void dispose() {
