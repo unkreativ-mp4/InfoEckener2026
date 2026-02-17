@@ -26,7 +26,7 @@ public class Player {
     private boolean transitioning;
     private FitViewport viewport;
 
-    public Player(int maxHealth, int maxMana, FitViewport viewport, RoomChanger roomChanger) {
+    public Player(int maxHealth, int maxMana, FitViewport viewport, RoomChanger roomChanger, float x, float y) {
         this.upTexture = Assets.get(Assets.PLAYER_UP);
         this.downTexture = Assets.get(Assets.PLAYER_DOWN);
         this.leftTexture = Assets.get(Assets.PLAYER_LEFT);
@@ -35,6 +35,8 @@ public class Player {
         this.maxMana = maxMana;
         this.viewport = viewport;
         this.roomChanger = roomChanger;
+        this.x = x;
+        this.y = y;
         //this.bgChanger = bgChanger;
 
         PlayerSprite = new Sprite(this.downTexture);
@@ -43,7 +45,7 @@ public class Player {
     public void setWorldWidth(float worldWidth) {
         this.worldWidth = worldWidth;
     }
-    private void checkRoomExit() {
+    /*private void checkRoomExit() {
 
         float left = PlayerSprite.getX();
         float right = left + PlayerSprite.getWidth();
@@ -55,7 +57,7 @@ public class Player {
         if (left > worldWidth) {
             roomChanger.changeRoom(Direction.RIGHT);
         }
-    }
+    }*/
 
     //private void changeBackground(){bgChanger.changeBackground();}
 
@@ -154,7 +156,10 @@ public class Player {
         return PlayerSprite.getY();
     }
 
-    public void setX(float newX) { x = newX; }
+    public void setX(float newX) {
+        x = PlayerSprite.getX();
+        x = newX;
+    }
     public void setY(float newY) { y = newY; }
     public float getWidth() {return PlayerSprite.getWidth();}
 
@@ -164,7 +169,7 @@ public class Player {
 
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
-        checkRoomExit();
+        //checkRoomExit();
         //handleScreenTransition();
     }
 }

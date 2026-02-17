@@ -39,6 +39,9 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
     InventoryUI inventoryUI;
     private Stage stage;
 
+    public void update2(){
+        handleScreenTransition();
+    }
     private final IntSet downKeys = new IntSet(20);
     /*public void loadBackgrounds(){
         backgrounds.add(Assets.get(Assets.BACKGROUND_PLACEHOLDER));
@@ -47,14 +50,14 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
     public void loadRooms() {
         rooms.add(new Room (
             Assets.get(Assets.BACKGROUND_PLACEHOLDER),
-            800, 480,
-            100, 100
+            10, 5,
+            1, 1
         ));
 
         rooms.add(new Room(
             Assets.get(Assets.BACKGROUND_ORANGE),
-            800, 480,
-            200, 150
+            10, 5,
+            2, 1
         ));
     }
 
@@ -63,30 +66,7 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         currentRoom = rooms.get(index);
         player.setWorldWidth(currentRoom.width);
     }
-    public void handleScreenTransition(){
-        if (transitioning) return;
 
-        float playerLeft = player.getX();
-        float playerRight = player.getX() + player.getWidth();
-
-        // Player exits LEFT
-        if (playerRight < 0) {
-            transitioning = true;
-
-            changeRoom(Direction.LEFT);
-
-            transitioning = false;
-        }
-
-        // Player exits RIGHT
-        if (playerLeft > currentRoom.width) {
-            transitioning = true;
-
-            changeRoom(Direction.RIGHT);
-
-            transitioning = false;
-        }
-    }
 
 
     @Override
@@ -129,11 +109,9 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
                 }
             }
         );*/
-        player = new Player(100, 100, viewport, this);
-
-        player.setWorldWidth(currentRoom.width);
-
+        player = new Player(100, 100, viewport, this, 0, 0);
         setRoom(0);
+        player.setWorldWidth(currentRoom.width);
         player.setPosition(currentRoom.spawnX, currentRoom.spawnY);
 
         // ───────────────────────────────
@@ -199,8 +177,36 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         currentRoom = rooms.get(currentRoomIndex);
 
         // reposition player based on direction
-        if (direction == Direction.LEFT) player.setX(currentRoom.width - player.getWidth());
-        if (direction == Direction.RIGHT) player.setX(0);
+        if (direction == Direction.LEFT) player.setX((currentRoom.width - player.getX()));
+        if (direction == Direction.RIGHT) player.setPosition((currentRoom.width - player.getX()), 0);
+    }
+    public void handleScreenTransition(){
+        if (transitioning) return;
+
+        float playerLeft = player.getX();
+        System.out.println("playerLeft perceived x: "+ playerLeft);
+        float playerRight = player.getX() + player.getWidth();
+        System.out.println("playerRight perceived x: "+ playerRight);
+        //System.out.println("currentRoom width: " + currentRoom.width);
+        //System.out.println("player width: " + player.getWidth());
+
+        // Player exits LEFT
+        if (playerRight < 0) {
+            transitioning = true;
+
+            changeRoom(Direction.LEFT);
+
+            transitioning = false;
+        }
+
+        // Player exits RIGHT
+        if (playerLeft > currentRoom.width) {
+            transitioning = true;
+
+            changeRoom(Direction.RIGHT);
+
+            transitioning = false;
+        }
     }
 
     @Override
@@ -220,7 +226,8 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         player.move(delta);
         zombie.update(delta, player);
         player.update(delta);
-        handleScreenTransition();
+        update2();
+        System.out.println("Player X: " + player.getX());
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
