@@ -55,8 +55,8 @@ public class Main extends InputAdapter implements ApplicationListener {
     Inventory inventory;
     InventoryUI inventoryUI;
 
-    Inventory penis;
-    InventoryUI penisUI;
+    Inventory chest;
+    InventoryUI chestUI;
 
     private Stage stage;
 
@@ -131,19 +131,19 @@ public class Main extends InputAdapter implements ApplicationListener {
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
         Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 5, 67);
 
-        inventory = new Inventory(4, 7);
-        penis = new Inventory(3,2);
+        inventory = new Inventory(4, 7, "Inventory");
+        chest = new Inventory(3,2, "Chest");
 
         ItemStack coinStack = new ItemStack(coin, 5);
         inventory.addItemStack(coinStack, 3, 3);
-        penis.addItemStack(coinStack, 0,0);
+        chest.addItemStack(coinStack, 0,0);
 
         inventory.printInventory(inventory);
 
         inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 3.5f);
-        penisUI = new InventoryUI(penis, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2f);
+        chestUI = new InventoryUI(chest, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2f);
         stage.addActor(inventoryUI);
-        stage.addActor(penisUI);
+        stage.addActor(chestUI);
 
 
         // ───────────────────────────────
@@ -251,7 +251,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 player.attack(zombie);
             }
             if(keycode == Input.Keys.P) {
-                penisUI.openInventory(penis);
+                chestUI.openInventory(chest);
             }
 
         }

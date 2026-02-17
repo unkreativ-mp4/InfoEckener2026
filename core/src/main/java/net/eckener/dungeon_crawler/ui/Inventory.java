@@ -9,11 +9,13 @@ public class Inventory extends Table {
 
     private final int rows;
     private final int cols;
+    private final String inventoryName;
 
     private ItemStack[][] itemStacks;
 
-    public Inventory(int rows, int cols){
+    public Inventory(int rows, int cols, String pInventoryName){
 
+        this.inventoryName = pInventoryName;
         this.rows = rows;
         this.cols = cols;
 
@@ -60,7 +62,9 @@ public class Inventory extends Table {
         return itemStacks;
     }
 
-    public ItemStack getItemStack(int row, int col) {
+    public String getInventoryName() { return inventoryName; }
+
+    public ItemStack getItemStack( int row, int col) {
         return itemStacks[row][col];
     }
 
@@ -141,6 +145,69 @@ public class Inventory extends Table {
 
             System.out.println("Moved " + itemStack.getItem().getItemName()
                 + " to pos: " + newRow + ", " + newCol);
+        } else {
+            System.out.println("Inventory Slot occupied!");
+        }
+    }
+
+    public void transferOneTo(Inventory targetInv, int fromRow, int fromCol, int toRow, int toCol) {
+        ItemStack[][] from = this.itemStacks;
+        ItemStack[][] to = targetInv.itemStacks;
+
+        if (from[fromRow][fromCol] == null) {
+            System.out.println("No Item to move at this slot");
+            return;
+        }
+
+        ItemStack sourceStack = from[fromRow][fromCol];
+        ItemStack targetStack = to[toRow][toCol];
+
+        if (targetStack == null) {
+            // place 1 into target
+            to[toRow][toCol] = new ItemStack(sourceStack.getItem(), 1);
+
+            // remove 1 from source
+            if (sourceStack.getAmount() > 1) sourceStack.setAmount(sourceStack.getAmount() - 1);
+            else from[fromRow][fromCol] = null;
+
+            return;
+        }
+
+        boolean sameItem = Objects.equals(targetStack.getItem().getItemID(), sourceStack.getItem().getItemID());
+        if (sameItem) {
+            targetStack.setAmount(targetStack.getAmount() + 1);
+
+            if (sourceStack.getAmount() > 1) sourceStack.setAmount(sourceStack.getAmount() - 1);
+            else from[fromRow][fromCol] = null;
+        } else {
+            System.out.println("Inventory Slot occupied!");
+        }
+    }
+
+    public void transferWholeStackTo(Inventory targetInv, int fromRow, int fromCol, int toRow, int toCol) {
+        ItemStack[][] from = this.itemStacks;
+        ItemStack[][] to = targetInv.itemStacks;
+
+        if (from[fromRow][fromCol] == null) {
+            System.out.println("No Item to move at this slot");
+            return;
+        }
+
+        ItemStack sourceStack = from[fromRow][fromCol];
+        int stackAmount = sourceStack.getAmount();
+
+        ItemStack targetStack = to[toRow][toCol];
+
+        if (targetStack == null) {
+            to[toRow][toCol] = new ItemStack(sourceStack.getItem(), stackAmount);
+            from[fromRow][fromCol] = null;
+            return;
+        }
+
+        boolean sameItem = Objects.equals(targetStack.getItem().getItemID(), sourceStack.getItem().getItemID());
+        if (sameItem) {
+            targetStack.setAmount(targetStack.getAmount() + stackAmount);
+            from[fromRow][fromCol] = null;
         } else {
             System.out.println("Inventory Slot occupied!");
         }
