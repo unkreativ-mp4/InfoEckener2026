@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -19,6 +20,16 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import net.eckener.dungeon_crawler.debug.*;
+import net.eckener.dungeon_crawler.entities.EntityRegistry;
+import net.eckener.dungeon_crawler.entities.Player;
+import net.eckener.dungeon_crawler.entities.Skeleton;
+import net.eckener.dungeon_crawler.entities.Zombie;
+import net.eckener.dungeon_crawler.items.Item;
+import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.ui.CustomLabel;
+import net.eckener.dungeon_crawler.ui.Inventory;
+import net.eckener.dungeon_crawler.ui.InventoryUI;
+import net.eckener.dungeon_crawler.ui.ManaOrb;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener {
@@ -38,6 +49,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     CustomLabel manaLabel;
 
     Zombie zombie;
+    Skeleton skeleton;
 
     public Player player;
     Inventory inventory;
@@ -92,6 +104,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 }
             }
         );
+        EntityRegistry.register(player);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -137,6 +150,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         // Enemies
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
+        skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
 
         // ───────────────────────────────
         // Input Handling
@@ -163,9 +177,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         float delta = Gdx.graphics.getDeltaTime();
 
         // --- UPDATE ---
-        player.move(delta);
-        zombie.update(delta, player);
-        player.update(delta);
+        EntityRegistry.updateAll(delta, player);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
@@ -182,8 +194,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.begin();
         spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
-        player.getPlayerSprite().draw(spriteBatch);
-        zombie.draw(spriteBatch);
+        EntityRegistry.renderAll(spriteBatch);
         spriteBatch.end();
 
         // ======================
@@ -228,7 +239,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 inventoryUI.openInventory(inventory);
             }
             if(keycode == Input.Keys.H) {
-                player.addHealth(5);
+                player.heal(5);
             }
             if(keycode == Input.Keys.M) {
                 player.addMana(5);
@@ -259,7 +270,7 @@ public class Main extends InputAdapter implements ApplicationListener {
             player.addMana(-5);
         }
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
-            player.addHealth(-5);
+            player.takeDamage(5);
         }
     }
 }

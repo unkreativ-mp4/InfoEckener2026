@@ -1,8 +1,15 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.items;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import net.eckener.dungeon_crawler.entities.Enemy;
+import net.eckener.dungeon_crawler.entities.Player;
 
-public class Weapon extends Item{
+
+/**
+ * Expands {@link Item} by things like a {@code damage} attribute
+ */
+public abstract class Weapon extends Item{
     private final int damage;
     private final float cooldownModifier;
 
@@ -12,11 +19,19 @@ public class Weapon extends Item{
         this.cooldownModifier = cooldownModifier;
     }
 
+    /**
+     * @return the {@code damage} of the Weapon
+     */
     public int getDamage() {
         return damage;
     }
 
+    /**
+     * @return the {@code cooldownModifier} of the Weapon
+     */
     public float getCooldownModifier() {
         return cooldownModifier;
     }
+
+    public abstract void attack(Player player, Enemy enemy, Viewport viewport);
 }

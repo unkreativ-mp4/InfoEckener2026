@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controls the layout of the {@link DebugOverlay}
+ */
 public class DebugLayout {
 
     private final DebugStats stats;
@@ -13,6 +16,10 @@ public class DebugLayout {
         this.stats = stats;
     }
 
+    /**
+     * Assembles the left side of the {@link DebugOverlay}
+     * @return a list of strings to render
+     */
     public List<String> leftColumn() {
         List<String> l = new ArrayList<>();
 
@@ -32,7 +39,10 @@ public class DebugLayout {
 
         return l;
     }
-
+    /**
+     * Assembles the right side of the {@link DebugOverlay}
+     * @return a list of strings to render
+     */
     public List<String> rightColumn() {
         List<String> r = new ArrayList<>();
 

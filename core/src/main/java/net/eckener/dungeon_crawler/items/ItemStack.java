@@ -1,5 +1,8 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.items;
 
+/**
+ * Stores an {@link Item} or a {@link Weapon} and an amount
+ */
 public class ItemStack {
 
 
@@ -17,26 +20,44 @@ public class ItemStack {
         this.amount = amount;
     }
 
+    /**
+     * @return if the ItemStack actually contains anything
+     */
     public boolean isEmpty() {
         return item == null || amount == 0;
     }
 
+    /**
+     * @return the {@link Item} stored in the ItemStack
+     */
     public Item getItem() {
         return item;
     }
 
+    /**
+     * @return the amount of {@link Item}s stored
+     */
     public int getAmount() {
         return amount;
     }
 
+    /**
+     * @param pAmount sets the amount of {@link Item}s stored
+     */
     public void setAmount(int pAmount) {
         amount = pAmount;
     }
 
+    /**
+     * @return the {@link Weapon} stored in the ItemStack
+     */
     public Weapon getWeapon() {
         return weapon;
     }
 
+    /**
+     * @return if the stored {@link Item} is just an {@link Item} or actually a {@link Weapon}
+     */
     public boolean isWeapon() {
         return weapon != null;
     }
