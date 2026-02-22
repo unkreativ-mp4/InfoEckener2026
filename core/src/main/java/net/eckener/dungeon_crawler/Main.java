@@ -8,11 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -149,7 +145,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         // Enemies
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
-        //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
+        skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
 
         // ───────────────────────────────
         // Input Handling
@@ -269,9 +265,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         //Keys that are currently down are in the IntSet.
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.M)){
             player.addMana(-5);
-        }
-        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
-            player.takeDamage(5);
         }
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
             player.takeDamage(5);

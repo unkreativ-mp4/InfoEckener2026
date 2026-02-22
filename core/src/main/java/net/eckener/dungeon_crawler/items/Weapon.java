@@ -2,8 +2,7 @@ package net.eckener.dungeon_crawler.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import net.eckener.dungeon_crawler.entities.Enemy;
-import net.eckener.dungeon_crawler.entities.Player;
+import net.eckener.dungeon_crawler.entities.LivingEntity;
 
 
 /**
@@ -33,5 +32,5 @@ public abstract class Weapon extends Item{
         return cooldownModifier;
     }
 
-    public abstract void attack(Player player, Enemy enemy, Viewport viewport);
+    public abstract void attack(LivingEntity attacker, LivingEntity attacked, Viewport viewport);
 }

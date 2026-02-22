@@ -170,9 +170,6 @@ public class Player extends LivingEntity{
     public int getMana() {
         return mana;
     }
-    public int getHealth() {
-        return health;
-    }
 
     /**
      * Runs every frame and increases {@code timeSince} attributes among other things
@@ -188,8 +185,8 @@ public class Player extends LivingEntity{
 
     /**
      * Never use, because it makes no sense
-     * @param delta
-     * @param player
+     * @param delta Frametime stuff
+     * @param player could honestly just be {@code this}
      */
     @Override
     public void update(float delta, Player player) {}

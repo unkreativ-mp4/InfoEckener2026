@@ -8,7 +8,11 @@ import net.eckener.dungeon_crawler.entities.Player;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Aesthetically pleasing way of displaying {@code health}
+ */
 public class Health {
+
     private final float x;
     private final float y;
     private final Player player;
