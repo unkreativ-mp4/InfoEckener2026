@@ -13,6 +13,8 @@ public class Player extends LivingEntity{
     private BackgroundChanger bgChanger;
     private int maxMana;
     private int mana;
+    private int maxHealth;
+    private int health;
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
     private final float baseDamageCooldown = 0.5F;
@@ -24,6 +26,7 @@ public class Player extends LivingEntity{
 
     public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
         super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
+        this.maxHealth = maxHealth;
         this.maxMana = maxMana;
         this.viewport = viewport;
         this.bgChanger = bgChanger;
@@ -123,6 +126,13 @@ public class Player extends LivingEntity{
             this.mana = Math.max(0, this.mana += mana);
         }
     }
+    public void addHealth(int health) {
+        if (health >= 0){
+            this.health = Math.min(maxHealth, this.health += health);
+        } else {
+            this.health = Math.max(0, this.health += health);
+        }
+    }
 
     /**
      * @return how much mana the Player has left in percent
@@ -130,7 +140,9 @@ public class Player extends LivingEntity{
     public float getManaPercent() {
         return (float) mana / maxMana;
     }
-    public float getHealthPercent() {return (float) health / maxHealth;}
+    public float getHealthPercent() {
+        return (float) health / maxHealth;
+    }
 
     /**
      * Attacks an {@link Enemy} with the selected {@link Weapon}

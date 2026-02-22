@@ -89,6 +89,17 @@ public final class Assets {
         manager.load(MANA_INDICATOR_80, Texture.class);
         manager.load(MANA_INDICATOR_90, Texture.class);
         manager.load(MANA_INDICATOR_100, Texture.class);
+        manager.load(HEALTH_INDICATOR_0, Texture.class);
+        manager.load(HEALTH_INDICATOR_10, Texture.class);
+        manager.load(HEALTH_INDICATOR_20, Texture.class);
+        manager.load(HEALTH_INDICATOR_30, Texture.class);
+        manager.load(HEALTH_INDICATOR_40, Texture.class);
+        manager.load(HEALTH_INDICATOR_50, Texture.class);
+        manager.load(HEALTH_INDICATOR_60, Texture.class);
+        manager.load(HEALTH_INDICATOR_70, Texture.class);
+        manager.load(HEALTH_INDICATOR_80, Texture.class);
+        manager.load(HEALTH_INDICATOR_90, Texture.class);
+        manager.load(HEALTH_INDICATOR_100, Texture.class);
         manager.load(ARROW, Texture.class);
         manager.load(IRON_SHOVEL, Texture.class);
         //manager.load(FANTASY_FONT, BitmapFont.class);

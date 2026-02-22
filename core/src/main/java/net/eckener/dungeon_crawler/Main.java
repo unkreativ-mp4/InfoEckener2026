@@ -26,10 +26,7 @@ import net.eckener.dungeon_crawler.entities.Skeleton;
 import net.eckener.dungeon_crawler.entities.Zombie;
 import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.items.ItemStack;
-import net.eckener.dungeon_crawler.ui.CustomLabel;
-import net.eckener.dungeon_crawler.ui.Inventory;
-import net.eckener.dungeon_crawler.ui.InventoryUI;
-import net.eckener.dungeon_crawler.ui.ManaOrb;
+import net.eckener.dungeon_crawler.ui.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener {
@@ -39,6 +36,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     OrthographicCamera camera;
 
     ManaOrb manaOrb;
+    Health healthIcon;
 
     DebugOverlay debug;
 
@@ -123,7 +121,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         // ───────────────────────────────
         // GUI
         // ───────────────────────────────
-        manaOrb = new ManaOrb(player, 500,50);
+        manaOrb = new ManaOrb(player, 0,30);
+        healthIcon = new Health(player,5,100);
 
         // ───────────────────────────────
         // Items & Inventory
@@ -205,6 +204,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         spriteBatch.begin();
         manaOrb.draw(spriteBatch);
+        healthIcon.draw(spriteBatch);
         debug.render();   // draw text only
         spriteBatch.end();
 
@@ -239,7 +239,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 inventoryUI.openInventory(inventory);
             }
             if(keycode == Input.Keys.H) {
-                player.heal(5);
+                player.addHealth(5);
             }
             if(keycode == Input.Keys.M) {
                 player.addMana(5);
@@ -268,6 +268,9 @@ public class Main extends InputAdapter implements ApplicationListener {
         //Keys that are currently down are in the IntSet.
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.M)){
             player.addMana(-5);
+        }
+        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
+            player.addHealth(-5);
         }
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
             player.takeDamage(5);
