@@ -34,6 +34,15 @@ public class Zombie extends Enemy {
         }
     }
 
+    public void newMove(Player player) {
+        direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
+        if (direction.len2() > 0f) {
+            direction.nor().scl(speed - momentum.len());
+            momentum.add(direction);
+
+        }
+    }
+
     /**
      * @param livingEntity Attacks a {@link LivingEntity} if it can
      */
@@ -74,7 +83,8 @@ public class Zombie extends Enemy {
     public void update(float deltaTime, Player player) {
         if(isAlive) {
             timeSinceLastAttack += deltaTime;
-            move(player, deltaTime);
+            //move(player, deltaTime);
+            newMove(player);
             attack(player);
         }
     }

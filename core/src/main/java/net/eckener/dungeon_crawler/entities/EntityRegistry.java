@@ -51,6 +51,15 @@ public final class EntityRegistry {
         }
     }
 
+    public static void updateMovementAll(float deltaTime) {
+        for (Entity entity : entities) {
+            if(entity instanceof Zombie){
+                entity.updateMovement(deltaTime);
+            }
+            //entity.updateMovement();
+        }
+    }
+
     /**
      * Renders all registered {@link Entity}s
      * @param batch the {@link SpriteBatch} in which to draw/render the {@link Entity}s

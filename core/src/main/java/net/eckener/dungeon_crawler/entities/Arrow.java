@@ -17,7 +17,7 @@ public class Arrow extends Projectile{
     Entity owner;
 
     public Arrow(Texture texture, float xPos, float yPos, Entity owner) {
-        super(texture, xPos, yPos);
+        super(texture, xPos, yPos, 5);
         this. owner = owner;
     }
 
@@ -73,7 +73,7 @@ public class Arrow extends Projectile{
     public void move(float deltaTime) {
         directionVector.set(1,1);
         directionVector.setAngleDeg(direction);
-        sprite.translate(directionVector.nor().scl(deltaTime*5).x, directionVector.nor().scl(deltaTime*5).y);
+        sprite.translate(directionVector.nor().scl(deltaTime*speed).x, directionVector.nor().scl(deltaTime*speed).y);
         hitDetection();
     }
 

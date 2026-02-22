@@ -9,8 +9,8 @@ public abstract class Projectile extends Entity {
 
     protected float direction;
 
-    public Projectile(Texture texture,float xPos, float yPos) {
-        super(xPos,yPos,texture);
+    public Projectile(Texture texture,float xPos, float yPos, int speed) {
+        super(xPos,yPos,texture,speed);
     }
 
     public abstract void move(float deltaTime);

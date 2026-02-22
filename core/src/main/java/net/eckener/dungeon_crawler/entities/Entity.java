@@ -71,6 +71,27 @@ public abstract class Entity {
     }
 
     /**
+     * @param momentum sets the momentum vector of the Entity
+     */
+    public void setMomentum(Vector2 momentum) {
+        this.momentum = momentum;
+    }
+
+    /**
+     * @return the momentum vector of the Entity
+     */
+    public Vector2 getMomentum() {
+        return momentum;
+    }
+
+    /**
+     * @param momentum adds to the momentum vector of the Entity
+     */
+    public void addMomentum(Vector2 momentum) {
+        this.momentum.add(momentum);
+    }
+
+    /**
      * The draw method, so the entity actually gets rendered
      * @param batch the {@link com.badlogic.gdx.graphics.g2d.SpriteBatch} in which to draw the {@link Sprite}
      */
@@ -108,8 +129,12 @@ public abstract class Entity {
         hitbox.setRotation(sprite.getRotation());
     }
 
-    public void updateMovement() {
+    /**
+     * Reduces the momentum to simulate friction, limits the speed, and moves the Sprite/Entity
+     */
+    public void updateMovement(float deltaTime) {
         momentum.scl(0.95F);
-        momentum.clamp(0,speed);
+        momentum.clamp(0,20);
+        sprite.translate(momentum.scl(deltaTime).x, momentum.scl(deltaTime).y);
     }
 }
