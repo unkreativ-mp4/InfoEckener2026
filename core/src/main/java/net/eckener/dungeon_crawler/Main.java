@@ -239,7 +239,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 inventoryUI.openInventory(inventory);
             }
             if(keycode == Input.Keys.H) {
-                player.addHealth(5);
+                player.heal(5);
             }
             if(keycode == Input.Keys.M) {
                 player.addMana(5);
@@ -270,7 +270,7 @@ public class Main extends InputAdapter implements ApplicationListener {
             player.addMana(-5);
         }
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
-            player.addHealth(-5);
+            player.takeDamage(5);
         }
         if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
             player.takeDamage(5);
