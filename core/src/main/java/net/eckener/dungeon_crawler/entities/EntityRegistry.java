@@ -51,12 +51,13 @@ public final class EntityRegistry {
         }
     }
 
+    /**
+     * Calls the updateMovement method for all Entities, so friction and Sprite-translation is processed
+     * @param deltaTime Frametime for smooth movement
+     */
     public static void updateMovementAll(float deltaTime) {
         for (Entity entity : entities) {
-            if(entity instanceof Zombie){
-                entity.updateMovement(deltaTime);
-            }
-            //entity.updateMovement();
+            entity.updateMovement(deltaTime);
         }
     }
 

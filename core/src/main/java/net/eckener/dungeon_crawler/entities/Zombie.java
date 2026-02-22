@@ -1,7 +1,6 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * very basic Zombie {@link Enemy}
@@ -11,7 +10,6 @@ public class Zombie extends Enemy {
     private static final int baseDamage = 3;
     private static final int baseReach = 2;
     private final Texture deathTexture;
-    private final Vector2 direction = new Vector2();
 
 
 
@@ -24,22 +22,12 @@ public class Zombie extends Enemy {
     /**
      * Moves the Zombie straight to the {@link Player}
      * @param player the {@link Player} which to target
-     * @param deltaTime Frametime for smooth movement even when lagging
      */
-    public void move(Player player, float deltaTime) {
-        direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
-        if (direction.len2() > 0f) {
-            direction.nor().scl(speed * deltaTime);
-            sprite.translate(direction.x, direction.y);
-        }
-    }
-
-    public void newMove(Player player) {
+    public void move(Player player) {
         direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
         if (direction.len2() > 0f) {
             direction.nor().scl(speed - momentum.len());
             momentum.add(direction);
-
         }
     }
 
@@ -55,7 +43,6 @@ public class Zombie extends Enemy {
             }
             timeSinceLastAttack = 0;
         }
-
     }
 
     /**
@@ -83,8 +70,7 @@ public class Zombie extends Enemy {
     public void update(float deltaTime, Player player) {
         if(isAlive) {
             timeSinceLastAttack += deltaTime;
-            //move(player, deltaTime);
-            newMove(player);
+            move(player);
             attack(player);
         }
     }

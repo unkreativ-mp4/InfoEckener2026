@@ -17,6 +17,7 @@ public abstract class Entity {
     float[] vertices;
     Polygon hitbox;
     Vector2 momentum = new Vector2();
+    Vector2 direction = new Vector2();
 
     public Entity(float xPos, float yPos, Texture texture, int speed) {
         this.speed = speed;
@@ -134,7 +135,7 @@ public abstract class Entity {
      */
     public void updateMovement(float deltaTime) {
         momentum.scl(0.95F);
-        momentum.clamp(0,20);
+        momentum.clamp(0,200);
         momentum.scl(deltaTime);
         sprite.translate(momentum.x, momentum.y);
     }

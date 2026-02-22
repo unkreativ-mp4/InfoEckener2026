@@ -250,7 +250,6 @@ public class Main extends InputAdapter implements ApplicationListener {
             }
             if(keycode == Input.Keys.U) {
                 player.attack(zombie);
-                //zombie.addMomentum(new Vector2(5,5));
             }
             if(keycode == Input.Keys.P) {
                 penisUI.openInventory(penis);
