@@ -135,6 +135,7 @@ public abstract class Entity {
     public void updateMovement(float deltaTime) {
         momentum.scl(0.95F);
         momentum.clamp(0,20);
-        sprite.translate(momentum.scl(deltaTime).x, momentum.scl(deltaTime).y);
+        momentum.scl(deltaTime);
+        sprite.translate(momentum.x, momentum.y);
     }
 }

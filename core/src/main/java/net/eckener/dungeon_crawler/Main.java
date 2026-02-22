@@ -174,11 +174,11 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-        float delta = Gdx.graphics.getDeltaTime();
+        float deltaTime = Gdx.graphics.getDeltaTime();
 
         // --- UPDATE ---
-        EntityRegistry.updateAll(delta, player);
-        EntityRegistry.updateMovementAll(delta);
+        EntityRegistry.updateAll(deltaTime, player);
+        EntityRegistry.updateMovementAll(deltaTime);
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
@@ -210,7 +210,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.end();
 
         // --- STAGE ---
-        stage.act(delta);
+        stage.act(deltaTime);
         stage.draw();
     }
 
