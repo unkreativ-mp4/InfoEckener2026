@@ -18,19 +18,17 @@ public class Skeleton extends Enemy {
 
     /**
      * Moves the Skeleton to the {@link Player}, but keeps a certain distance
-     * @param deltaTime Frametime for smooth movement even when lagging
      * @param player the {@link Player} which to target
      */
-    public void move(float deltaTime, Player player) {
+    public void move(Player player) {
         direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
         if (direction.len2() > 2f) {
-            direction.nor().scl(speed * deltaTime);
-            sprite.translate(direction.x, direction.y);
+            direction.nor().scl(speed - momentum.len());
+            momentum.add(direction);
         } else if (direction.len2() > 0f) {
-            direction.nor().scl(speed * deltaTime);
-            sprite.translate(-direction.x, -direction.y);
+            direction.nor().scl(speed - momentum.len());
+            momentum.add(direction.scl(-1));
         }
-
     }
 
     /**
@@ -49,7 +47,7 @@ public class Skeleton extends Enemy {
     public void update(float deltaTime, Player player) {
         if(isAlive) {
             timeSinceLastAttack += deltaTime;
-            move(deltaTime,player);
+            move(player);
             attack(player);
         }
     }

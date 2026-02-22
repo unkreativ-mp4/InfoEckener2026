@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public abstract class Projectile extends Entity {
 
-    protected float direction;
+    protected float directionDeg;
 
-    public Projectile(Texture texture,float xPos, float yPos) {
-        super(xPos,yPos,texture);
+    public Projectile(Texture texture,float xPos, float yPos, int speed) {
+        super(xPos,yPos,texture,speed);
     }
 
     public abstract void move(float deltaTime);
@@ -18,8 +18,8 @@ public abstract class Projectile extends Entity {
     /**
      * @return the direction the Projectile is facing/heading in
      */
-    public float getDirection() {
-        return direction;
+    public float getDirectionDeg() {
+        return directionDeg;
     }
 
     public abstract void update(float deltaTime);

@@ -13,12 +13,11 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Arrow extends Projectile{
 
-    Vector2 directionVector = new Vector2();
     Entity owner;
 
     public Arrow(Texture texture, float xPos, float yPos, Entity owner) {
-        super(texture, xPos, yPos);
-        this. owner = owner;
+        super(texture, xPos, yPos, 5);
+        this.owner = owner;
     }
 
     /**
@@ -35,9 +34,9 @@ public class Arrow extends Projectile{
         float dx = vector3.x - cx;
         float dy = vector3.y - cy;
 
-        direction = (float) Math.toDegrees(Math.atan2(dy, dx));
+        directionDeg = (float) Math.toDegrees(Math.atan2(dy, dx));
         sprite.setOriginCenter();
-        sprite.setRotation(direction);
+        sprite.setRotation(directionDeg);
     }
 
     /**
@@ -47,8 +46,8 @@ public class Arrow extends Projectile{
     public void setRotationToFaceLivingEntity(LivingEntity livingEntity){
         Vector2 vector2 = new Vector2(livingEntity.getxPos() - getxPos(), livingEntity.getyPos() - getyPos());
         sprite.setOriginCenter();
-        direction = vector2.angleDeg();
-        sprite.setRotation(direction);
+        directionDeg = vector2.angleDeg();
+        sprite.setRotation(directionDeg);
     }
 
     /**
@@ -71,9 +70,10 @@ public class Arrow extends Projectile{
 
     @Override
     public void move(float deltaTime) {
-        directionVector.set(1,1);
-        directionVector.setAngleDeg(direction);
-        sprite.translate(directionVector.nor().scl(deltaTime*5).x, directionVector.nor().scl(deltaTime*5).y);
+        direction.set(1,1);
+        direction.setAngleDeg(directionDeg);
+        direction.nor().scl(speed - momentum.len());
+        momentum.add(direction);
         hitDetection();
     }
 

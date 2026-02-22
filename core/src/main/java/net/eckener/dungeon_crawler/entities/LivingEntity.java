@@ -9,16 +9,14 @@ public abstract class LivingEntity extends Entity {
 
     protected int health;
     protected int maxHealth;
-    protected int speed;
     protected boolean isAlive = true;
 
 
     public LivingEntity(float xPos, float yPos, Texture texture, int maxHealth, int speed) {
-        super(xPos, yPos, texture);
+        super(xPos, yPos, texture,speed);
 
         this.maxHealth = maxHealth;
         this.health = maxHealth;
-        this.speed = speed;
     }
 
     /**

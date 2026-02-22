@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 
 public class Player extends LivingEntity{
@@ -29,6 +30,7 @@ public class Player extends LivingEntity{
         this.bgChanger = bgChanger;
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
+        Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
         selectedItem = new ItemStack(bow,1);
 
     }
@@ -62,26 +64,32 @@ public class Player extends LivingEntity{
 
     /**
      * Player movement depending on user input
-     * @param delta Frametime for smooth movement even when lagging
      */
-    public void move(float delta) {
-        delta *= speed;
-
+    public void move() {
+        boolean matched = false;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             sprite.setTexture(Assets.get(Assets.PLAYER_UP));
-            sprite.translateY(delta);
+            direction.add(0,1);
+            matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             sprite.setTexture(Assets.get(Assets.PLAYER_LEFT));
-            sprite.translateX(-delta);
+            direction.add(-1,0);
+            matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
             sprite.setTexture(Assets.get(Assets.PLAYER_DOWN));
-            sprite.translateY(-delta);
+            direction.add(0,-1);
+            matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             sprite.setTexture(Assets.get(Assets.PLAYER_RIGHT));
-            sprite.translateX(delta);
+            direction.add(1,0);
+            matched = true;
+        }
+        if (matched) {
+            direction.nor().scl(speed - momentum.len());
+            momentum.add(direction);
         }
         dontGoPastScreen(viewport.getWorldHeight());
     }
@@ -109,8 +117,7 @@ public class Player extends LivingEntity{
      * waiting for implementation
      */
     @Override
-    protected void onDeath() {
-    }
+    protected void onDeath() {}
 
     /**
      * Changes the {@code mana} the player has. Also works with negative amounts
@@ -175,7 +182,7 @@ public class Player extends LivingEntity{
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
         timeSinceLastAttack += deltaTime;
-        move(deltaTime);
+        move();
         handleScreenTransition();
     }
 

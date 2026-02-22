@@ -52,6 +52,16 @@ public final class EntityRegistry {
     }
 
     /**
+     * Calls the updateMovement method for all Entities, so friction and Sprite-translation is processed
+     * @param deltaTime Frametime for smooth movement
+     */
+    public static void updateMovementAll(float deltaTime) {
+        for (Entity entity : entities) {
+            entity.updateMovement(deltaTime);
+        }
+    }
+
+    /**
      * Renders all registered {@link Entity}s
      * @param batch the {@link SpriteBatch} in which to draw/render the {@link Entity}s
      */

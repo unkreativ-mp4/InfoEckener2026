@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.Main;
 
 /**
@@ -12,10 +13,14 @@ import net.eckener.dungeon_crawler.Main;
 public abstract class Entity {
 
     protected Sprite sprite;
+    protected int speed;
     float[] vertices;
     Polygon hitbox;
+    Vector2 momentum = new Vector2();
+    Vector2 direction = new Vector2();
 
-    public Entity(float xPos, float yPos, Texture texture) {
+    public Entity(float xPos, float yPos, Texture texture, int speed) {
+        this.speed = speed;
         sprite = new Sprite(texture);
         sprite.setSize(1,1);
         sprite.setX(xPos);
@@ -67,6 +72,27 @@ public abstract class Entity {
     }
 
     /**
+     * @param momentum sets the momentum vector of the Entity
+     */
+    public void setMomentum(Vector2 momentum) {
+        this.momentum = momentum;
+    }
+
+    /**
+     * @return the momentum vector of the Entity
+     */
+    public Vector2 getMomentum() {
+        return momentum;
+    }
+
+    /**
+     * @param momentum adds to the momentum vector of the Entity
+     */
+    public void addMomentum(Vector2 momentum) {
+        this.momentum.add(momentum);
+    }
+
+    /**
      * The draw method, so the entity actually gets rendered
      * @param batch the {@link com.badlogic.gdx.graphics.g2d.SpriteBatch} in which to draw the {@link Sprite}
      */
@@ -102,5 +128,15 @@ public abstract class Entity {
         hitbox.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 2f);
         hitbox.setPosition(sprite.getX(), sprite.getY());
         hitbox.setRotation(sprite.getRotation());
+    }
+
+    /**
+     * Reduces the momentum to simulate friction, limits the speed, and moves the Sprite/Entity
+     */
+    public void updateMovement(float deltaTime) {
+        momentum.scl(0.95F);
+        momentum.clamp(0,200);
+        momentum.scl(deltaTime);
+        sprite.translate(momentum.x, momentum.y);
     }
 }
