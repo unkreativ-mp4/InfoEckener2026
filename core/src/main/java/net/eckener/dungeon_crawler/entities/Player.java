@@ -64,7 +64,6 @@ public class Player extends LivingEntity{
 
     /**
      * Player movement depending on user input
-     * @param delta Frametime for smooth movement even when lagging
      */
     public void move() {
         boolean matched = false;
