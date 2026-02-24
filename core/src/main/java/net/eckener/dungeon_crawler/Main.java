@@ -177,21 +177,17 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         currentRoom = rooms.get(currentRoomIndex);
 
         // reposition player based on direction
-        if (direction == Direction.LEFT) player.setX((currentRoom.width - player.getX()));
-        if (direction == Direction.RIGHT) player.setPosition((currentRoom.width - player.getX()), 0);
+        if (direction == Direction.LEFT) player.setX(currentRoom.width - player.getWidth());
+        if (direction == Direction.RIGHT) player.setX(0);
     }
     public void handleScreenTransition(){
         if (transitioning) return;
 
         float playerLeft = player.getX();
-        System.out.println("playerLeft perceived x: "+ playerLeft);
         float playerRight = player.getX() + player.getWidth();
-        System.out.println("playerRight perceived x: "+ playerRight);
-        //System.out.println("currentRoom width: " + currentRoom.width);
-        //System.out.println("player width: " + player.getWidth());
 
         // Player exits LEFT
-        if (playerRight < 0) {
+        if (playerRight <= 0) {
             transitioning = true;
 
             changeRoom(Direction.LEFT);
@@ -200,7 +196,7 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         }
 
         // Player exits RIGHT
-        if (playerLeft > currentRoom.width) {
+        if (playerLeft >= currentRoom.width) {
             transitioning = true;
 
             changeRoom(Direction.RIGHT);

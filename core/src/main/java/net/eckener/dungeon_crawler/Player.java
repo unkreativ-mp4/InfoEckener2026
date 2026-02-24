@@ -157,7 +157,6 @@ public class Player {
     }
 
     public void setX(float newX) {
-        x = PlayerSprite.getX();
         x = newX;
     }
     public void setY(float newY) { y = newY; }
