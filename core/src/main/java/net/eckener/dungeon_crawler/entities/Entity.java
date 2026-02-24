@@ -13,13 +13,13 @@ import net.eckener.dungeon_crawler.Main;
 public abstract class Entity {
 
     protected Sprite sprite;
-    protected int speed;
+    protected float speed;
     float[] vertices;
     Polygon hitbox;
     Vector2 momentum = new Vector2();
     Vector2 direction = new Vector2();
 
-    public Entity(float xPos, float yPos, Texture texture, int speed) {
+    public Entity(float xPos, float yPos, Texture texture, float speed) {
         this.speed = speed;
         sprite = new Sprite(texture);
         sprite.setSize(1,1);

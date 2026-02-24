@@ -39,9 +39,6 @@ public class Main extends InputAdapter implements ApplicationListener {
     Array<Texture> backgrounds = new Array<>();
     int currentBackground = 0;
 
-    CustomLabel healthLabel;
-    CustomLabel manaLabel;
-
     Zombie zombie;
     Skeleton skeleton;
 
@@ -74,19 +71,10 @@ public class Main extends InputAdapter implements ApplicationListener {
         // ───────────────────────────────
         spriteBatch = new SpriteBatch();
 
-        viewport = new FitViewport(8, 5);
+        viewport = new FitViewport(16, 10);
         stage = new Stage(new ScreenViewport(), spriteBatch);
 
         loadBackgrounds();
-
-        // ───────────────────────────────
-        // UI Labels
-        // ───────────────────────────────
-        healthLabel = new CustomLabel("Player Health:", 10, 25);
-        manaLabel   = new CustomLabel("Player Mana:",   10, 10);
-
-        stage.addActor(healthLabel.getLabel());
-        stage.addActor(manaLabel.getLabel());
 
         // ───────────────────────────────
         // Player
@@ -174,9 +162,6 @@ public class Main extends InputAdapter implements ApplicationListener {
         // --- UPDATE ---
         EntityRegistry.updateAll(deltaTime, player);
         EntityRegistry.updateMovementAll(deltaTime);
-
-        healthLabel.setText("Player Health: " + player.getHealth());
-        manaLabel.setText("Player Mana: " + player.getMana());
 
         // --- CLEAR ---
         ScreenUtils.clear(Color.BLACK);

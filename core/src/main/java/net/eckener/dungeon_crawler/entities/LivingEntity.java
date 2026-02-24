@@ -12,8 +12,8 @@ public abstract class LivingEntity extends Entity {
     protected boolean isAlive = true;
 
 
-    public LivingEntity(float xPos, float yPos, Texture texture, int maxHealth, int speed) {
-        super(xPos, yPos, texture,speed);
+    public LivingEntity(float xPos, float yPos, Texture texture, int maxHealth, float speed) {
+        super(xPos, yPos, texture, speed);
 
         this.maxHealth = maxHealth;
         this.health = maxHealth;
@@ -63,7 +63,7 @@ public abstract class LivingEntity extends Entity {
     /**
      * @return the {@code speed} of the LivingEntity
      */
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
