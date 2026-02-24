@@ -21,6 +21,7 @@ public class InventoryUI extends Table {
     private boolean inventoryVisible;
     private float slotSize = 32f;
     private float slotPad = 3f;
+
     private Texture slotBackgroundTexture;
     private final BitmapFont uiFont = new BitmapFont();
     private boolean dragging = false;
@@ -31,22 +32,20 @@ public class InventoryUI extends Table {
     private final Array<Inventory> openInventories = new Array<>();
 
 
+    public InventoryUI(Inventory inventory, Texture inventoryTexture, Texture pSlotBackgroundTexture, float uiScale) {
 
-
-    public InventoryUI(Inventory inventory, Texture inventoryTexture, Texture pSlotBackgroundTexture, float uiScale){
-
-        this.setFillParent(true);
+        //this.setFillParent(true);
 
         this.setVisible(false);
         inventory.setVisible(false);
         setTouchable(Touchable.disabled);
 
-        center();
+        //center();
+        //this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         slotSize = slotSize * uiScale;
         slotPad = slotPad * uiScale;
         slotBackgroundTexture = pSlotBackgroundTexture;
-
 
 
         NinePatch invPatch = new NinePatch(inventoryTexture, 11, 11, 11, 11);
@@ -81,7 +80,7 @@ public class InventoryUI extends Table {
                 Table cell = new Table();
                 cell.setBackground(new NinePatchDrawable(slotBackgroundPatch));
 
-                SlotWidget slot = new SlotWidget(inventory.getItemStack(row,col), uiFont);
+                SlotWidget slot = new SlotWidget(inventory.getItemStack(row, col), uiFont);
                 slot.setUserObject(new SlotReference(inventory, row, col));
                 cell.setUserObject(slot);
                 slot.setTouchable(Touchable.enabled);
@@ -90,7 +89,7 @@ public class InventoryUI extends Table {
                 final int r = row;
                 final int c = col;
 
-                slot.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener()  {
+                slot.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 
 
                     @Override
@@ -123,6 +122,7 @@ public class InventoryUI extends Table {
                         return true; // we handle the drag
 
                     }
+
                     @Override
                     public void touchDragged(InputEvent event, float x, float y, int pointer) {
                         if (!dragging) return;
@@ -130,6 +130,7 @@ public class InventoryUI extends Table {
                         setGhostAt(event.getStageX(), event.getStageY());
                         event.stop();
                     }
+
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
@@ -198,24 +199,36 @@ public class InventoryUI extends Table {
 
                 cell.add(slot).grow();
                 inventory.add(cell).size(slotSize).pad(slotPad);
-                if(col == inventory.getCols() - 1) {
+                if (col == inventory.getCols() - 1) {
                     inventory.row();
                 }
             }
         }
     }
 
-    public void openInventory(Inventory inv) {
-        if (!openInventories.contains(inv, true)) openInventories.add(inv);
-        inv.setVisible(true);
+    public void inventoryVisebilityManagement(Inventory inventory) {
+        if (!inventoryVisible) {
+            openInventory(inventory);
+            inventoryVisible = !inventoryVisible;
+        }
+
+        else {
+            closeInventory(inventory);
+            inventoryVisible = !inventoryVisible;
+        }
+    }
+
+    public void openInventory(Inventory inventory) {
+        if (!openInventories.contains(inventory, true)) openInventories.add(inventory);
+        inventory.setVisible(true);
         setVisible(true);
         setTouchable(Touchable.enabled);
         rebuildAllOpenInventories();
     }
 
-    public void closeInventory(Inventory inv) {
-        openInventories.removeValue(inv, true);
-        inv.setVisible(false);
+    public void closeInventory(Inventory inventory) {
+        openInventories.removeValue(inventory, true);
+        inventory.setVisible(false);
         if (openInventories.size == 0) {
             setVisible(false);
             setTouchable(Touchable.disabled);

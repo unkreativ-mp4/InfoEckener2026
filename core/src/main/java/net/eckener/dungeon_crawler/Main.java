@@ -236,7 +236,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         } else {
 
             if(keycode == Input.Keys.I) {
-                inventoryUI.openInventory(inventory);
+                inventoryUI.inventoryVisebilityManagement(inventory);
             }
             if(keycode == Input.Keys.H) {
                 player.heal(5);
@@ -251,7 +251,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 player.attack(zombie);
             }
             if(keycode == Input.Keys.P) {
-                chestUI.openInventory(chest);
+                chestUI.inventoryVisebilityManagement(chest);
             }
 
         }
