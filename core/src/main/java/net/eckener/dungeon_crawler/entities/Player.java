@@ -31,7 +31,7 @@ public class Player extends LivingEntity{
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
         Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
-        selectedItem = new ItemStack(bow,1);
+        selectedItem = new ItemStack(maul,1);
 
     }
 

@@ -93,6 +93,15 @@ public abstract class Entity {
     }
 
     /**
+     * Adds to the momentum of the Entity
+     * @param x the additional x momentum
+     * @param y the additional y momentum
+     */
+    public void addMomentum(float x, float y) {
+        momentum.add(x,y);
+    }
+
+    /**
      * The draw method, so the entity actually gets rendered
      * @param batch the {@link com.badlogic.gdx.graphics.g2d.SpriteBatch} in which to draw the {@link Sprite}
      */
@@ -136,7 +145,10 @@ public abstract class Entity {
     public void updateMovement(float deltaTime) {
         momentum.scl(0.95F);
         momentum.clamp(0,200);
-        momentum.scl(deltaTime);
-        sprite.translate(momentum.x, momentum.y);
+        System.out.println("A: "+ momentum);
+        Vector2 timescaledMomentum = momentum;
+        timescaledMomentum.scl(deltaTime);
+        sprite.translate(timescaledMomentum.x, timescaledMomentum.y);
+        System.out.println("B: "+ momentum);
     }
 }
