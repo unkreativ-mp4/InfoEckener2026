@@ -149,8 +149,6 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         // ───────────────────────────────
         // Player
         // ───────────────────────────────
-        EntityRegistry.register(player);
-
         player = new Player(100, 100, viewport, this, 0, 0);
         setRoom(0);
         player.setWorldWidth(currentRoom.width);
