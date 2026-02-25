@@ -6,10 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -24,29 +22,24 @@ import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.items.ItemStack;
 import net.eckener.dungeon_crawler.ui.*;
 
+import static net.eckener.dungeon_crawler.RoomRegistry.*;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
-public class Main extends InputAdapter implements ApplicationListener, RoomChanger{
+public class Main extends InputAdapter implements ApplicationListener{
 
     SpriteBatch spriteBatch;
-    FitViewport viewport;
-    OrthographicCamera camera;
+    public static FitViewport viewport;
+    public static OrthographicCamera camera;
 
     ManaOrb manaOrb;
     Health healthIcon;
 
     DebugOverlay debug;
 
-    //Array<Texture> backgrounds = new Array<>();
-    Array<Room> rooms = new Array<>();
-    Room currentRoom;
-    //int currentBackground = 0;
-    private boolean transitioning;
-    private int currentRoomIndex = 0;
-
     Zombie zombie;
     Skeleton skeleton;
 
-    public Player player;
+    Player player;
     Inventory inventory;
     InventoryUI inventoryUI;
 
@@ -56,73 +49,6 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
     private Stage stage;
 
     private final IntSet downKeys = new IntSet(20);
-
-    public void loadRooms() {
-        rooms.add(new Room (
-            Assets.get(Assets.BACKGROUND_PLACEHOLDER),
-            10, 5,
-            1, 1
-        ));
-
-        rooms.add(new Room(
-            Assets.get(Assets.BACKGROUND_ORANGE),
-            12, 5,
-            2, 1
-        ));
-    }
-
-    public void setRoom(int index){
-        currentRoomIndex = index;
-        currentRoom = rooms.get(index);
-        player.setWorldWidth(currentRoom.width);
-    }
-
-    @Override
-    public void changeRoom(Direction direction) {
-
-        int delta = 0;
-        if (direction == Direction.LEFT)  delta = -1;
-        if (direction == Direction.RIGHT) delta = 1;
-
-        currentRoomIndex =
-            (currentRoomIndex + delta + rooms.size) % rooms.size;
-
-        currentRoom = rooms.get(currentRoomIndex);
-        viewport.setWorldSize(currentRoom.width, currentRoom.height);
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-
-        if (direction == Direction.LEFT)
-            player.setX(currentRoom.width - player.getWidth());
-
-        if (direction == Direction.RIGHT)
-            player.setX(0);
-    }
-
-    public void handleScreenTransition(){
-        if (transitioning) return;
-
-        float playerLeft = player.getX();
-        float playerRight = player.getX() + player.getWidth();
-
-        // Player exits LEFT
-        if (playerRight <= 0) {
-            transitioning = true;
-
-            changeRoom(Direction.LEFT);
-
-            transitioning = false;
-        }
-
-        // Player exits RIGHT
-        if (playerLeft >= currentRoom.width) {
-            transitioning = true;
-
-            changeRoom(Direction.RIGHT);
-
-            transitioning = false;
-        }
-    }
-
 
 
     @Override
@@ -142,7 +68,6 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         viewport = new FitViewport(16, 10);
         stage = new Stage(new ScreenViewport(), spriteBatch);
 
-        //loadBackgrounds();
         loadRooms();
 
 
@@ -150,10 +75,8 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         // Player
         // ───────────────────────────────
 
-        player = new Player(100, 100, viewport, this, 0, 0);
-        setRoom(0);
-        player.setWorldWidth(currentRoom.width);
-        player.setPosition(currentRoom.spawnX, currentRoom.spawnY);
+        player = new Player(100, 100);
+        EntityRegistry.registerRoom(player);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -180,11 +103,11 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         // ───────────────────────────────
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
         Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 5, 67);
+        ItemStack coinStack = new ItemStack(coin, 5);
 
         inventory = new Inventory(4, 7);
         penis = new Inventory(3,2);
 
-        ItemStack coinStack = new ItemStack(coin, 5);
         inventory.addItemStack(coinStack, 3, 3);
         penis.addItemStack(coinStack, 0,0);
 
@@ -200,6 +123,7 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         // Enemies
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
+        EntityRegistry.registerRoom(zombie);
         //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
 
         // ───────────────────────────────
@@ -227,9 +151,9 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         float deltaTime = Gdx.graphics.getDeltaTime();
 
         // --- UPDATE ---
-        EntityRegistry.updateAll(deltaTime, player);
-        EntityRegistry.updateMovementAll(deltaTime);
-        handleScreenTransition();
+        EntityRegistry.updateRoom(deltaTime, player);
+        EntityRegistry.updateRoomMovement(deltaTime);
+        handleScreenTransition(player);
 
         // --- CLEAR ---
         ScreenUtils.clear(Color.BLACK);
@@ -241,10 +165,9 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
-        spriteBatch.draw(currentRoom.background,0, 0, currentRoom.width, currentRoom.height);
-        //spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        spriteBatch.draw(getCurrentRoom().background,0, 0, getCurrentRoom().width, getCurrentRoom().height);
 
-        EntityRegistry.renderAll(spriteBatch);
+        EntityRegistry.renderRoom(spriteBatch);
         spriteBatch.end();
 
         // ======================

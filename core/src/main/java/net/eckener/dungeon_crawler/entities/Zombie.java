@@ -6,12 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
  * very basic Zombie {@link Enemy}
  */
 public class Zombie extends Enemy {
+
     private static final int baseHealth = 20;
     private static final int baseDamage = 3;
     private static final int baseReach = 2;
     private final Texture deathTexture;
-
-
 
     public Zombie(float xPos, float yPos, Texture aliveTexture, Texture deathTexture) {
         super(xPos, yPos, baseHealth, aliveTexture,1);

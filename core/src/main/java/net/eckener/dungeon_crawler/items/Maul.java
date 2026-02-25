@@ -1,7 +1,6 @@
 package net.eckener.dungeon_crawler.items;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
 
 public class Maul extends Weapon{
@@ -10,7 +9,7 @@ public class Maul extends Weapon{
     }
 
     @Override
-    public void attack(LivingEntity attacker, LivingEntity attacked, Viewport viewport) {
+    public void attack(LivingEntity attacker, LivingEntity attacked) {
 
     }
 }

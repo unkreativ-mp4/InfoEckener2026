@@ -1,11 +1,13 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+
+import static net.eckener.dungeon_crawler.Main.camera;
 
 /**
  * Arrow projectile
@@ -21,10 +23,9 @@ public class Arrow extends Projectile{
     }
 
     /**
-     * Sets the rotation of the {@link com.badlogic.gdx.graphics.g2d.Sprite} to face the cursor
-     * @param camera {@link OrthographicCamera} is needed to correctly set the rotation (I think). Best acquired from a {@link com.badlogic.gdx.utils.viewport.Viewport}
+     * Sets the rotation of the {@link Sprite} to face the cursor
      */
-    public void setRotationToFaceCursor(OrthographicCamera camera){
+    public void setRotationToFaceCursor(){
         Vector3 vector3 = new Vector3();
         camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
@@ -54,7 +55,7 @@ public class Arrow extends Projectile{
      * Detects if the arrow has hit another {@link LivingEntity} and then unregisters itself
      */
     private void hitDetection(){
-        for(LivingEntity livingEntity : EntityRegistry.getAllLivingEntities()){
+        for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()){
             if (Intersector.overlapConvexPolygons(this.hitbox, livingEntity.hitbox) && !livingEntity.equals(owner)) {
                 livingEntity.takeDamage(10);
                 EntityRegistry.unregister(this);

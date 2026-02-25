@@ -1,6 +1,5 @@
 package net.eckener.dungeon_crawler.items;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import net.eckener.dungeon_crawler.Assets;
@@ -21,11 +20,10 @@ public class Bow extends Weapon{
      * Spawns an arrow at {@link Player}'s position facing the cursor
      * @param attacker The {@link LivingEntity} at which to spawn the {@link Arrow}
      * @param attacked An {@link LivingEntity} that is only passed because the {@link Weapon} class requires it to; isn't used
-     * @param viewport {@link Viewport} so the orientation of the arrow works correctly
      */
     @Override
-    public void attack(LivingEntity attacker, LivingEntity attacked, Viewport viewport) {
+    public void attack(LivingEntity attacker, LivingEntity attacked) {
         Arrow arrow = new Arrow(Assets.get(Assets.ARROW), attacker.getxPos(), attacker.getyPos(),attacker);
-        arrow.setRotationToFaceCursor((OrthographicCamera) viewport.getCamera());
+        arrow.setRotationToFaceCursor();
     }
 }

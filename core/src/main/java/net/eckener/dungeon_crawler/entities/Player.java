@@ -3,7 +3,6 @@ package net.eckener.dungeon_crawler.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.ItemStack;
@@ -11,26 +10,19 @@ import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 
 public class Player extends LivingEntity{
-    private RoomChanger roomChanger;
     private int maxMana;
     private int mana;
-    float x, y;
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
     private final float baseDamageCooldown = 0.5F;
     private final float baseAttackCooldown = 1.0F;
     private ItemStack selectedItem; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
 
-    private final FitViewport viewport;
-    private float worldWidth;
 
-    public Player(int maxHealth, int maxMana, FitViewport viewport, RoomChanger roomChanger, float x, float y) {
+
+    public Player(int maxHealth, int maxMana) {
         super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
         this.maxMana = maxMana;
-        this.viewport = viewport;
-        this.roomChanger = roomChanger;
-        this.x = x;
-        this.y = y;
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
         Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
@@ -68,7 +60,7 @@ public class Player extends LivingEntity{
             direction.nor().scl(speed - momentum.len());
             momentum.add(direction);
         }
-        dontGoPastScreen(viewport.getWorldHeight());
+        //dontGoPastScreen(viewport.getWorldHeight());
     }
 
     /**
@@ -128,7 +120,7 @@ public class Player extends LivingEntity{
      */
     public void attack(Enemy enemy) {
         if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
-            selectedItem.getWeapon().attack(this, enemy,viewport);
+            selectedItem.getWeapon().attack(this, enemy);
             timeSinceLastAttack = 0;
 
         }
@@ -146,18 +138,6 @@ public class Player extends LivingEntity{
      */
     public int getMana() {
         return mana;
-    }
-    public void setX(float newX) {
-        sprite.setX(newX);
-    }
-    public float getX(){return sprite.getX();}
-    public float getWidth(){return sprite.getWidth();}
-    public void setWorldWidth(float worldWidth) {
-        this.worldWidth = worldWidth;
-    }
-    public void setPosition(float x, float y){
-        this.x = x;
-        this.y = y;
     }
 
     /**

@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.Main;
+import net.eckener.dungeon_crawler.Room;
+
+import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
 
 /**
  * The most basic form of an entity. Only exists so all entities can be registered in a single {@link EntityRegistry} and only one draw and update command is needed in {@link Main}
@@ -18,6 +21,7 @@ public abstract class Entity {
     Polygon hitbox;
     Vector2 momentum = new Vector2();
     Vector2 direction = new Vector2();
+    Room room;
 
     public Entity(float xPos, float yPos, Texture texture, float speed) {
         this.speed = speed;
@@ -26,6 +30,7 @@ public abstract class Entity {
         sprite.setX(xPos);
         sprite.setY(yPos);
         EntityRegistry.register(this);
+        room = getCurrentRoom();
 
         vertices = new float[] {
             0, 0,
@@ -114,6 +119,13 @@ public abstract class Entity {
      */
     public Texture getTexture() {
         return sprite.getTexture();
+    }
+
+    /**
+     * @return the Room of the Entity
+     */
+    public Room getRoom() {
+        return room;
     }
 
     /**
