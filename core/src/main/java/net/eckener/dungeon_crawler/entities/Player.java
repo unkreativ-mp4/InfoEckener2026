@@ -11,23 +11,26 @@ import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 
 public class Player extends LivingEntity{
-    private BackgroundChanger bgChanger;
+    private RoomChanger roomChanger;
     private int maxMana;
     private int mana;
+    float x, y;
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
     private final float baseDamageCooldown = 0.5F;
     private final float baseAttackCooldown = 1.0F;
     private ItemStack selectedItem; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
 
-    private boolean transitioning;
     private final FitViewport viewport;
+    private float worldWidth;
 
-    public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
+    public Player(int maxHealth, int maxMana, FitViewport viewport, RoomChanger roomChanger, float x, float y) {
         super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
         this.maxMana = maxMana;
         this.viewport = viewport;
-        this.bgChanger = bgChanger;
+        this.roomChanger = roomChanger;
+        this.x = x;
+        this.y = y;
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
         Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
@@ -35,32 +38,6 @@ public class Player extends LivingEntity{
 
     }
 
-    /**
-     * changes the game background
-     */
-    private void changeBackground(){
-        bgChanger.changeBackground();
-    }
-
-    /**
-     * handles the transition from one background to another, including player movement
-     */
-    public void handleScreenTransition(){
-        if(!transitioning) {
-            if (getxPos() + getxPos() + sprite.getWidth() < 0) {
-                transitioning = true;
-                changeBackground();
-                sprite.setX(viewport.getWorldWidth() - sprite.getWidth());
-                transitioning = false;
-            }
-            if (getxPos() > viewport.getWorldWidth()) {
-                transitioning = true;
-                changeBackground();
-                setxPos(0);
-                transitioning = false;
-            }
-        }
-    }
 
     /**
      * Player movement depending on user input
@@ -170,6 +147,18 @@ public class Player extends LivingEntity{
     public int getMana() {
         return mana;
     }
+    public void setX(float newX) {
+        sprite.setX(newX);
+    }
+    public float getX(){return sprite.getX();}
+    public float getWidth(){return sprite.getWidth();}
+    public void setWorldWidth(float worldWidth) {
+        this.worldWidth = worldWidth;
+    }
+    public void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
 
     /**
      * Runs every frame and increases {@code timeSince} attributes among other things
@@ -180,7 +169,6 @@ public class Player extends LivingEntity{
         timeSinceLastDamage += deltaTime;
         timeSinceLastAttack += deltaTime;
         move();
-        handleScreenTransition();
     }
 
     /**
@@ -191,3 +179,4 @@ public class Player extends LivingEntity{
     @Override
     public void update(float delta, Player player) {}
 }
+
