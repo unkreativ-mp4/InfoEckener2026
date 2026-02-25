@@ -157,7 +157,7 @@ public class Player {
     }
 
     public void setX(float newX) {
-        x = newX;
+        PlayerSprite.setX(newX);
     }
     public void setY(float newY) { y = newY; }
     public float getWidth() {return PlayerSprite.getWidth();}
@@ -168,7 +168,5 @@ public class Player {
 
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
-        //checkRoomExit();
-        //handleScreenTransition();
     }
 }

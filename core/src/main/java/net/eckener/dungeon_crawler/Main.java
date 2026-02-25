@@ -39,9 +39,6 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
     InventoryUI inventoryUI;
     private Stage stage;
 
-    public void update2(){
-        handleScreenTransition();
-    }
     private final IntSet downKeys = new IntSet(20);
     /*public void loadBackgrounds(){
         backgrounds.add(Assets.get(Assets.BACKGROUND_PLACEHOLDER));
@@ -56,7 +53,7 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
 
         rooms.add(new Room(
             Assets.get(Assets.BACKGROUND_ORANGE),
-            10, 5,
+            12, 5,
             2, 1
         ));
     }
@@ -65,6 +62,67 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         currentRoomIndex = index;
         currentRoom = rooms.get(index);
         player.setWorldWidth(currentRoom.width);
+    }
+    /*@Override
+    public void changeRoom(Direction direction) {
+        int nextIndex = currentRoomIndex;
+
+        if (direction == Direction.LEFT) nextIndex--;
+        if (direction == Direction.RIGHT) nextIndex++;
+
+        if (nextIndex < 0 || nextIndex >= rooms.size) return;
+
+        currentRoomIndex = nextIndex;
+        currentRoom = rooms.get(currentRoomIndex);
+
+        // reposition player based on direction
+        if (direction == Direction.LEFT) player.setX(currentRoom.width - player.getWidth());
+        if (direction == Direction.RIGHT) player.setX(0);
+    }*/
+    @Override
+    public void changeRoom(Direction direction) {
+
+        int delta = 0;
+        if (direction == Direction.LEFT)  delta = -1;
+        if (direction == Direction.RIGHT) delta = 1;
+
+        currentRoomIndex =
+            (currentRoomIndex + delta + rooms.size) % rooms.size;
+
+        currentRoom = rooms.get(currentRoomIndex);
+        viewport.setWorldSize(currentRoom.width, currentRoom.height);
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
+        if (direction == Direction.LEFT)
+            player.setX(currentRoom.width - player.getWidth());
+
+        if (direction == Direction.RIGHT)
+            player.setX(0);
+    }
+
+    public void handleScreenTransition(){
+        if (transitioning) return;
+
+        float playerLeft = player.getX();
+        float playerRight = player.getX() + player.getWidth();
+
+        // Player exits LEFT
+        if (playerRight <= 0) {
+            transitioning = true;
+
+            changeRoom(Direction.LEFT);
+
+            transitioning = false;
+        }
+
+        // Player exits RIGHT
+        if (playerLeft >= currentRoom.width) {
+            transitioning = true;
+
+            changeRoom(Direction.RIGHT);
+
+            transitioning = false;
+        }
     }
 
 
@@ -164,46 +222,6 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
 
         Gdx.input.setInputProcessor(multiplexer);
     }
-    @Override
-    public void changeRoom(Direction direction) {
-        int nextIndex = currentRoomIndex;
-
-        if (direction == Direction.LEFT) nextIndex--;
-        if (direction == Direction.RIGHT) nextIndex++;
-
-        if (nextIndex < 0 || nextIndex >= rooms.size) return;
-
-        currentRoomIndex = nextIndex;
-        currentRoom = rooms.get(currentRoomIndex);
-
-        // reposition player based on direction
-        if (direction == Direction.LEFT) player.setX(currentRoom.width - player.getWidth());
-        if (direction == Direction.RIGHT) player.setX(0);
-    }
-    public void handleScreenTransition(){
-        if (transitioning) return;
-
-        float playerLeft = player.getX();
-        float playerRight = player.getX() + player.getWidth();
-
-        // Player exits LEFT
-        if (playerRight <= 0) {
-            transitioning = true;
-
-            changeRoom(Direction.LEFT);
-
-            transitioning = false;
-        }
-
-        // Player exits RIGHT
-        if (playerLeft >= currentRoom.width) {
-            transitioning = true;
-
-            changeRoom(Direction.RIGHT);
-
-            transitioning = false;
-        }
-    }
 
     @Override
     public void resize(int width, int height) {
@@ -222,8 +240,8 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         player.move(delta);
         zombie.update(delta, player);
         player.update(delta);
-        update2();
-        System.out.println("Player X: " + player.getX());
+        handleScreenTransition();
+        //System.out.println("Player X: " + player.getX());
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());
