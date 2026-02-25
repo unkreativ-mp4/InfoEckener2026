@@ -72,7 +72,7 @@ public class Zombie extends Enemy {
             move(player);
             attack(player);
         }
-        System.out.println(momentum);
+        //System.out.println(momentum);
     }
 
     /**

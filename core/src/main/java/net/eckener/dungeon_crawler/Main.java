@@ -76,7 +76,6 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
 
         player = new Player(100, 100);
-        EntityRegistry.registerRoom(player);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -123,8 +122,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // Enemies
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
-        EntityRegistry.registerRoom(zombie);
-        //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
+        skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
 
         // ───────────────────────────────
         // Input Handling
@@ -227,6 +225,10 @@ public class Main extends InputAdapter implements ApplicationListener{
             }
             if(keycode == Input.Keys.P) {
                 penisUI.openInventory(penis);
+            }
+            if(keycode == Input.Keys.L) {
+                new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
+                System.out.println("hgjb");
             }
 
         }

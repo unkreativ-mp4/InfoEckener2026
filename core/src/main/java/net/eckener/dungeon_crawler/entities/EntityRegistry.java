@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.Array;
 import net.eckener.dungeon_crawler.Main;
 import net.eckener.dungeon_crawler.Room;
 
+import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
+
 /**
  * An entity registry so {@link Main} has its peace
  */
@@ -26,6 +28,14 @@ public final class EntityRegistry {
         if(entity instanceof LivingEntity){
             livingEntities.add((LivingEntity) entity);
         }
+        try {
+            if(entity.getRoom().equals(getCurrentRoom())) {
+                registerRoom(entity);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**Enters an {@link Entity} into the Room registry and if it is a {@link LivingEntity} into the specialized registry
@@ -36,6 +46,7 @@ public final class EntityRegistry {
         if(entity instanceof LivingEntity){
             roomLivingEntities.add((LivingEntity) entity);
         }
+
     }
 
     /**Removes an {@link Entity} from the registry and if it is a {@link LivingEntity} from the specialized registry
