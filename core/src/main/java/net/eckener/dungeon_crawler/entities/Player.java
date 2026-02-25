@@ -59,6 +59,7 @@ public class Player extends LivingEntity{
         if (matched) {
             direction.nor().scl(speed - momentum.len());
             momentum.add(direction);
+            direction.setZero();
         }
         //dontGoPastScreen(viewport.getWorldHeight());
     }
