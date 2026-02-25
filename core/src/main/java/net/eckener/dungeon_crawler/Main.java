@@ -40,10 +40,7 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
     private Stage stage;
 
     private final IntSet downKeys = new IntSet(20);
-    /*public void loadBackgrounds(){
-        backgrounds.add(Assets.get(Assets.BACKGROUND_PLACEHOLDER));
-        backgrounds.add(Assets.get(Assets.BACKGROUND_ORANGE));
-    }*/
+
     public void loadRooms() {
         rooms.add(new Room (
             Assets.get(Assets.BACKGROUND_PLACEHOLDER),
@@ -63,22 +60,7 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         currentRoom = rooms.get(index);
         player.setWorldWidth(currentRoom.width);
     }
-    /*@Override
-    public void changeRoom(Direction direction) {
-        int nextIndex = currentRoomIndex;
 
-        if (direction == Direction.LEFT) nextIndex--;
-        if (direction == Direction.RIGHT) nextIndex++;
-
-        if (nextIndex < 0 || nextIndex >= rooms.size) return;
-
-        currentRoomIndex = nextIndex;
-        currentRoom = rooms.get(currentRoomIndex);
-
-        // reposition player based on direction
-        if (direction == Direction.LEFT) player.setX(currentRoom.width - player.getWidth());
-        if (direction == Direction.RIGHT) player.setX(0);
-    }*/
     @Override
     public void changeRoom(Direction direction) {
 
@@ -160,13 +142,7 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         // ───────────────────────────────
         // Player
         // ───────────────────────────────
-        /*player = new Player(100, 100, viewport, () -> {
-                currentBackground++;
-                if (currentBackground >= backgrounds.size) {
-                    currentBackground = 0;
-                }
-            }
-        );*/
+
         player = new Player(100, 100, viewport, this, 0, 0);
         setRoom(0);
         player.setWorldWidth(currentRoom.width);
@@ -241,7 +217,6 @@ public class Main extends InputAdapter implements ApplicationListener, RoomChang
         zombie.update(delta, player);
         player.update(delta);
         handleScreenTransition();
-        //System.out.println("Player X: " + player.getX());
 
         healthLabel.setText("Player Health: " + player.getHealth());
         manaLabel.setText("Player Mana: " + player.getMana());

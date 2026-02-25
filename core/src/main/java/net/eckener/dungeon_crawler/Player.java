@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Player {
-    //private BackgroundChanger bgChanger;
     private RoomChanger roomChanger;
     private Texture upTexture, downTexture, leftTexture, rightTexture;
     public Sprite PlayerSprite;
@@ -22,8 +21,6 @@ public class Player {
     float x, y;
     private float worldWidth;
 
-
-    private boolean transitioning;
     private FitViewport viewport;
 
     public Player(int maxHealth, int maxMana, FitViewport viewport, RoomChanger roomChanger, float x, float y) {
@@ -37,7 +34,6 @@ public class Player {
         this.roomChanger = roomChanger;
         this.x = x;
         this.y = y;
-        //this.bgChanger = bgChanger;
 
         PlayerSprite = new Sprite(this.downTexture);
         PlayerSprite.setSize(1, 1);
@@ -45,39 +41,6 @@ public class Player {
     public void setWorldWidth(float worldWidth) {
         this.worldWidth = worldWidth;
     }
-    /*private void checkRoomExit() {
-
-        float left = PlayerSprite.getX();
-        float right = left + PlayerSprite.getWidth();
-
-        if (right < 0) {
-            roomChanger.changeRoom(Direction.LEFT);
-        }
-
-        if (left > worldWidth) {
-            roomChanger.changeRoom(Direction.RIGHT);
-        }
-    }*/
-
-    //private void changeBackground(){bgChanger.changeBackground();}
-
-
-    /*public void handleScreenTransition(){
-        if(!transitioning) {
-            if (PlayerSprite.getX() + PlayerSprite.getX() + PlayerSprite.getWidth() < 0) {
-                transitioning = true;
-                //changeBackground();
-                PlayerSprite.setX(currentRoom.width - PlayerSprite.getWidth());
-                transitioning = false;
-            }
-            if (PlayerSprite.getX() > currentRoom.width) {
-                transitioning = true;
-                //changeBackground();
-                PlayerSprite.setX(0);
-                transitioning = false;
-            }
-        }
-    }*/
 
     public void move(float delta) {
         delta *= playerSpeed;
@@ -159,7 +122,7 @@ public class Player {
     public void setX(float newX) {
         PlayerSprite.setX(newX);
     }
-    public void setY(float newY) { y = newY; }
+    public void setY(float newY) { PlayerSprite.setY(newY); }
     public float getWidth() {return PlayerSprite.getWidth();}
 
     public Sprite getPlayerSprite(){
