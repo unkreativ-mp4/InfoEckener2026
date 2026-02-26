@@ -1,6 +1,7 @@
 package net.eckener.dungeon_crawler.items;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
 
 public class Maul extends Weapon{
@@ -10,6 +11,8 @@ public class Maul extends Weapon{
 
     @Override
     public void attack(LivingEntity attacker, LivingEntity attacked) {
-
+        Vector2 vector2 = new Vector2(attacked.getxPos() - attacker.getxPos(), attacked.getyPos() - attacker.getyPos());
+        vector2.nor().scl(8f);
+        attacked.addMomentum(vector2);
     }
 }

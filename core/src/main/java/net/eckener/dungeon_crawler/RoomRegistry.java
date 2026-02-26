@@ -23,7 +23,7 @@ public final class RoomRegistry {
     public static void loadRooms() {
         rooms.clear();
 
-        addRoom(0, 0, new Room(Assets.get(Assets.BACKGROUND_PLACEHOLDER), 10, 5));
+        addRoom(0, 0, new Room(Assets.get(Assets.BACKGROUND_PLACEHOLDER), 16, 10));
 
         addRoom(1, 0, new Room(Assets.get(Assets.BACKGROUND_ORANGE), 12, 5));
 
@@ -83,27 +83,28 @@ public final class RoomRegistry {
         if (nextRoom == null) return; // no room in that direction
 
         currentCoords = target;
+        Room oldRoom = currentRoom;
         currentRoom = nextRoom;
 
         updateViewport();
-        repositionPlayer(direction, player);
+        repositionPlayer(direction, player, oldRoom);
         EntityRegistry.onRoomChange(currentRoom);
     }
 
     /**
-     * Sets the Player position to the edge of the screen depending on the Direction the Player is moving in
+     * Sets the Player position to the edge of the screen depending on the Direction the Player is moving in, also respects the Player's position in relation to the Room width/height
      * @param direction the Direction the Player is moving in
      * @param player the moving Player
      */
-    private static void repositionPlayer(Direction direction, Player player) {
+    private static void repositionPlayer(Direction direction, Player player, Room oldRoom) {
         float playerWidth = player.getSprite().getWidth();
         float playerHeight = player.getSprite().getHeight();
 
         switch (direction) {
-            case LEFT -> player.setxPos(currentRoom.width - playerWidth);
-            case RIGHT -> player.setxPos(0);
-            case UP -> player.setyPos(0);
-            case DOWN -> player.setyPos(currentRoom.height - playerHeight);
+            case LEFT -> player.setPos(currentRoom.width - playerWidth, player.getyPos() / oldRoom.height * currentRoom.height);
+            case RIGHT -> player.setPos(0, player.getyPos() / oldRoom.height * currentRoom.height);
+            case UP -> player.setPos(player.getxPos() / oldRoom.width * currentRoom.width , 0);
+            case DOWN -> player.setPos(player.getxPos() / oldRoom.width * currentRoom.width , currentRoom.height - playerHeight);
         }
     }
 

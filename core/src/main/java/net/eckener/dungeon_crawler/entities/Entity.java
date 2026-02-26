@@ -71,6 +71,15 @@ public abstract class Entity {
     }
 
     /**
+     * Sets the Entity's position
+     * @param xPos the x-Position
+     * @param yPos the y-Position
+     */
+    public void setPos(float xPos, float yPos) {
+        sprite.setPosition(xPos, yPos);
+    }
+
+    /**
      * @return the {@link Sprite} of the entity
      */
     public Sprite getSprite() {
