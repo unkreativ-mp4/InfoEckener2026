@@ -1,6 +1,7 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.Assets;
 
@@ -23,10 +24,10 @@ public class Skeleton extends Enemy {
     public void move(Player player) {
         direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
         if (direction.len2() > 2f) {
-            direction.nor().scl(speed - momentum.len());
+            direction.nor().scl(speed - MathUtils.clamp(momentum.len(),0, speed ));
             momentum.add(direction);
         } else if (direction.len2() > 0f) {
-            direction.nor().scl(speed - momentum.len());
+            direction.nor().scl(speed - MathUtils.clamp(momentum.len(),0, speed ));
             momentum.add(direction.scl(-1));
         }
     }

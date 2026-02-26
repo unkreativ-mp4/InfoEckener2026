@@ -21,6 +21,7 @@ public abstract class Entity {
     Polygon hitbox;
     Vector2 momentum = new Vector2();
     Vector2 direction = new Vector2();
+    Vector2 timescaledMomentum = new Vector2();
     private final Room room;
 
     public Entity(float xPos, float yPos, Texture texture, float speed) {
@@ -157,10 +158,7 @@ public abstract class Entity {
     public void updateMovement(float deltaTime) {
         momentum.scl(0.95F);
         momentum.clamp(0,200);
-        //System.out.println("A: "+ momentum);
-        Vector2 timescaledMomentum = momentum;
-        timescaledMomentum.scl(deltaTime);
+        timescaledMomentum.set(momentum).scl(deltaTime);
         sprite.translate(timescaledMomentum.x, timescaledMomentum.y);
-        //System.out.println("B: "+ momentum);
     }
 }

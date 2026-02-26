@@ -121,7 +121,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         // Enemies
         // ───────────────────────────────
-        //zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
+        zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
         //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
 
         // ───────────────────────────────
@@ -220,15 +220,14 @@ public class Main extends InputAdapter implements ApplicationListener{
                 zombie.attack(player);
             }
             if(keycode == Input.Keys.U) {
-                player.attack(zombie);
-                zombie.addMomentum(50,50);
+                //player.attack(zombie);
+                zombie.addMomentum(7,7);
             }
             if(keycode == Input.Keys.P) {
                 penisUI.openInventory(penis);
             }
             if(keycode == Input.Keys.L) {
                 new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
-                System.out.println("hgjb");
             }
 
         }

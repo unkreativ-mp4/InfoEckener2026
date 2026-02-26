@@ -1,6 +1,7 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 
 /**
  * very basic Zombie {@link Enemy}
@@ -24,8 +25,8 @@ public class Zombie extends Enemy {
      */
     public void move(Player player) {
         direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
-        if (direction.len2() > 0f) {
-            direction.nor().scl(speed - momentum.len());
+        if (direction.len2() > 0.1f) {
+            direction.nor().scl(speed - MathUtils.clamp(momentum.len(),0, speed ));
             momentum.add(direction);
         }
     }
