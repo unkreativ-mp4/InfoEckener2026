@@ -56,7 +56,7 @@ public class Arrow extends Projectile{
      */
     private void hitDetection(){
         for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()){
-            if (Intersector.overlapConvexPolygons(this.hitbox, livingEntity.hitbox) && !livingEntity.equals(owner)) {
+            if (Intersector.overlapConvexPolygons(this.getHitbox(), livingEntity.getHitbox()) && !livingEntity.equals(owner)) {
                 livingEntity.takeDamage(10);
                 EntityRegistry.unregister(this);
                 break;

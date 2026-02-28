@@ -15,11 +15,11 @@ import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
 public abstract class Entity extends Sprite {
 
     protected float speed;
-    float[] vertices;
-    Polygon hitbox;
-    Vector2 momentum = new Vector2();
-    Vector2 direction = new Vector2();
-    Vector2 timescaledMomentum = new Vector2();
+    private float[] vertices;
+    private Polygon hitbox;
+    protected Vector2 momentum = new Vector2();
+    protected Vector2 direction = new Vector2();
+    private Vector2 timescaledMomentum = new Vector2();
     private final Room room;
 
     public Entity(float xPos, float yPos, Texture texture, float speed) {
@@ -70,6 +70,13 @@ public abstract class Entity extends Sprite {
      */
     public void addMomentum(float x, float y) {
         momentum.add(x,y);
+    }
+
+    /**
+     * @return the Hitbox Polygon of the Entity
+     */
+    public Polygon getHitbox() {
+        return hitbox;
     }
 
     /**
