@@ -97,14 +97,14 @@ public final class RoomRegistry {
      * @param player the moving Player
      */
     private static void repositionPlayer(Direction direction, Player player, Room oldRoom) {
-        float playerWidth = player.getSprite().getWidth();
-        float playerHeight = player.getSprite().getHeight();
+        float playerWidth = player.getWidth();
+        float playerHeight = player.getHeight();
 
         switch (direction) {
-            case LEFT -> player.setPos(currentRoom.width - playerWidth, player.getyPos() / oldRoom.height * currentRoom.height);
-            case RIGHT -> player.setPos(0, player.getyPos() / oldRoom.height * currentRoom.height);
-            case UP -> player.setPos(player.getxPos() / oldRoom.width * currentRoom.width , 0);
-            case DOWN -> player.setPos(player.getxPos() / oldRoom.width * currentRoom.width , currentRoom.height - playerHeight);
+            case LEFT -> player.setPosition(currentRoom.width - playerWidth, player.getY() / oldRoom.height * currentRoom.height);
+            case RIGHT -> player.setPosition(0, player.getY() / oldRoom.height * currentRoom.height);
+            case UP -> player.setPosition(player.getX() / oldRoom.width * currentRoom.width , 0);
+            case DOWN -> player.setPosition(player.getX() / oldRoom.width * currentRoom.width , currentRoom.height - playerHeight);
         }
     }
 
@@ -123,10 +123,10 @@ public final class RoomRegistry {
     public static void handleScreenTransition(Player player) {
         if (currentRoom == null) return;
 
-        float left = player.getxPos();
-        float right = left + player.getSprite().getWidth();
-        float bottom = player.getyPos();
-        float top = bottom + player.getSprite().getHeight();
+        float left = player.getX();
+        float right = left + player.getWidth();
+        float bottom = player.getY();
+        float top = bottom + player.getHeight();
 
         if (right <= 0) {
             tryTransition(Direction.LEFT, player);

@@ -37,22 +37,22 @@ public class Player extends LivingEntity{
     public void move() {
         boolean matched = false;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            sprite.setTexture(Assets.get(Assets.PLAYER_UP));
+            setTexture(Assets.get(Assets.PLAYER_UP));
             direction.add(0,1);
             matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            sprite.setTexture(Assets.get(Assets.PLAYER_LEFT));
+            setTexture(Assets.get(Assets.PLAYER_LEFT));
             direction.add(-1,0);
             matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            sprite.setTexture(Assets.get(Assets.PLAYER_DOWN));
+            setTexture(Assets.get(Assets.PLAYER_DOWN));
             direction.add(0,-1);
             matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            sprite.setTexture(Assets.get(Assets.PLAYER_RIGHT));
+            setTexture(Assets.get(Assets.PLAYER_RIGHT));
             direction.add(1,0);
             matched = true;
         }
@@ -61,16 +61,6 @@ public class Player extends LivingEntity{
             momentum.add(direction);
             direction.setZero();
         }
-        //dontGoPastScreen(viewport.getWorldHeight());
-    }
-
-    /**
-     * prevents the player from walking out of the screen
-     * @param worldHeight the height of the world/background
-     */
-    public void dontGoPastScreen(float worldHeight) {
-        //PlayerSprite.setX(MathUtils.clamp(PlayerSprite.getX(), 0, worldWidth - PlayerSprite.getWidth()));
-        sprite.setY(MathUtils.clamp(sprite.getY(), 0, worldHeight - sprite.getHeight()));
     }
 
     /**Hurts the Player but respects I-frames

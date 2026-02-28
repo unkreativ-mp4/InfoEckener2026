@@ -29,15 +29,15 @@ public class Arrow extends Projectile{
         Vector3 vector3 = new Vector3();
         camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-        float cx = sprite.getX() + sprite.getWidth() * 0.5f;
-        float cy = sprite.getY() + sprite.getHeight() * 0.5f;
+        float cx = getX() + getWidth() * 0.5f;
+        float cy = getY() + getHeight() * 0.5f;
 
         float dx = vector3.x - cx;
         float dy = vector3.y - cy;
 
         directionDeg = (float) Math.toDegrees(Math.atan2(dy, dx));
-        sprite.setOriginCenter();
-        sprite.setRotation(directionDeg);
+        setOriginCenter();
+        setRotation(directionDeg);
     }
 
     /**
@@ -45,10 +45,10 @@ public class Arrow extends Projectile{
      * @param livingEntity the {@link LivingEntity} which to face
      */
     public void setRotationToFaceLivingEntity(LivingEntity livingEntity){
-        Vector2 vector2 = new Vector2(livingEntity.getxPos() - getxPos(), livingEntity.getyPos() - getyPos());
-        sprite.setOriginCenter();
+        Vector2 vector2 = new Vector2(livingEntity.getX() - getX(), livingEntity.getY() - getY());
+        setOriginCenter();
         directionDeg = vector2.angleDeg();
-        sprite.setRotation(directionDeg);
+        setRotation(directionDeg);
     }
 
     /**

@@ -22,7 +22,7 @@ public class Skeleton extends Enemy {
      * @param player the {@link Player} which to target
      */
     public void move(Player player) {
-        direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
+        direction.set(player.getX() - getX(), player.getY() - getY());
         if (direction.len2() > 2f) {
             direction.nor().scl(speed - MathUtils.clamp(momentum.len(),0, speed ));
             momentum.add(direction);
@@ -59,7 +59,7 @@ public class Skeleton extends Enemy {
     @Override
     public void attack(LivingEntity livingEntity) {
         if(canAttack()) {
-            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), getxPos(), getyPos(), this);
+            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), getX(), getY(), this);
             arrow.setRotationToFaceLivingEntity(livingEntity);
             timeSinceLastAttack = 0;
         }

@@ -1,7 +1,6 @@
 package net.eckener.dungeon_crawler.items;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import net.eckener.dungeon_crawler.Assets;
 import net.eckener.dungeon_crawler.entities.Arrow;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
@@ -23,7 +22,7 @@ public class Bow extends Weapon{
      */
     @Override
     public void attack(LivingEntity attacker, LivingEntity attacked) {
-        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), attacker.getxPos(), attacker.getyPos(),attacker);
+        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), attacker.getX(), attacker.getY(),attacker);
         arrow.setRotationToFaceCursor();
     }
 }

@@ -3,7 +3,6 @@ package net.eckener.dungeon_crawler;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
  * {@link AssetManager} for the clean registry of assets, so {@link Main} isn't clogged up

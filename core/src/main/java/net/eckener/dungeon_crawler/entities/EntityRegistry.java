@@ -186,7 +186,7 @@ public final class EntityRegistry {
 
     /**
      * Clears the Room registries and registers the Entities of the new Room into the Room registries
-     * @param room
+     * @param room the newly entered Room
      */
     public static void onRoomChange(Room room) {
         clearRoomEntities();

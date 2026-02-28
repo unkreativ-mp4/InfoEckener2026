@@ -24,7 +24,7 @@ public class Zombie extends Enemy {
      * @param player the {@link Player} which to target
      */
     public void move(Player player) {
-        direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
+        direction.set(player.getX() - getX(), player.getY() - getY());
         if (direction.len2() > 0.1f) {
             direction.nor().scl(speed - MathUtils.clamp(momentum.len(),0, speed ));
             momentum.add(direction);
@@ -37,7 +37,7 @@ public class Zombie extends Enemy {
     @Override
     public void attack(LivingEntity livingEntity) {
         if(canAttack()) {
-            double distance = Math.sqrt(   Math.pow(sprite.getX()- livingEntity.getxPos(),2)   + Math.pow(sprite.getY()- livingEntity.getyPos(),2)    );
+            double distance = Math.sqrt(   Math.pow(getX()- livingEntity.getX(),2)   + Math.pow(getY()- livingEntity.getY(),2)    );
             if(distance <= baseReach) {
                 livingEntity.takeDamage(baseDamage);
             }
@@ -58,7 +58,7 @@ public class Zombie extends Enemy {
     @Override
     protected void onDeath() {
         isAlive=false;
-        sprite.setTexture(deathTexture);
+        setTexture(deathTexture);
     }
 
     /**
@@ -73,7 +73,6 @@ public class Zombie extends Enemy {
             move(player);
             attack(player);
         }
-        //System.out.println(momentum);
     }
 
     /**

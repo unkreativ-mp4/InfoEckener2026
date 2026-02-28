@@ -115,8 +115,8 @@ public class Inventory extends Table {
         }
     }
 
-    public void moveWholeItemStacktoSlot(ItemStack[][] itemStacks, ItemStack itemStack, int stackAmount, int newRow, int newCol, int orgRow, int orgCol) {
-        stackAmount = itemStacks[orgRow][orgCol].getAmount();
+    public void moveWholeItemStacktoSlot(ItemStack[][] itemStacks, ItemStack itemStack,  int newRow, int newCol, int orgRow, int orgCol) {
+        int stackAmount = itemStacks[orgRow][orgCol].getAmount();
 
         if(itemStacks[orgRow][orgCol] == null) {
             System.out.println("No Item to move at this slot");

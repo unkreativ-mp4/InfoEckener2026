@@ -133,8 +133,7 @@ public class InventoryUI extends Table {
                         // Determine drop target slot
                         SlotWidget target = findSlotUnderPointer(event.getStageX(), event.getStageY());
 
-                        if (target != null && target.getUserObject() instanceof GridPoint2) {
-                            GridPoint2 targetPos = (GridPoint2) target.getUserObject();
+                        if (target != null && target.getUserObject() instanceof GridPoint2 targetPos) {
 
                             int newCol = targetPos.x;
                             int newRow = targetPos.y;
@@ -146,7 +145,6 @@ public class InventoryUI extends Table {
                             if (!(newRow == orgRow && newCol == orgCol)) {
                                 // Move ONE item using your current moveItemtoSlot implementation
                                 if(!shiftClicked) {
-                                    System.out.println(shiftClicked);
                                     inventory.moveItemtoSlot(
                                         inventory.getItemStacks(),
                                         inventory.getItemStack(orgRow, orgCol),
@@ -156,12 +154,13 @@ public class InventoryUI extends Table {
                                     );
                                 }
                                 else {
-                                    System.out.println(shiftClicked);
                                     inventory.moveWholeItemStacktoSlot(
                                         inventory.getItemStacks(),
-                                        inventory.getItemStack(orgRow, orgCol), inventory.getItemStack(orgRow, orgCol).getAmount(),
-                                        newRow, newCol,
-                                        orgRow, orgCol
+                                        inventory.getItemStack(orgRow, orgCol),
+                                        newRow,
+                                        newCol,
+                                        orgRow,
+                                        orgCol
                                     );
                                 }
                             }
