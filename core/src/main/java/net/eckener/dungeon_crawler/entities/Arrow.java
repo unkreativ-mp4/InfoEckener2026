@@ -66,7 +66,7 @@ public class Arrow extends Projectile{
 
     /**
      * Moves the arrow in the direction it's facing
-     * @param deltaTime Frametime to satisfy smooth movement even when lagging
+     * @param deltaTime Frame time to satisfy smooth movement even when lagging
      */
 
     @Override
@@ -80,7 +80,7 @@ public class Arrow extends Projectile{
 
     /**
      * Called every frame to update the Arrow
-     * @param deltaTime Frametime to satisfy smooth updating even when lagging
+     * @param deltaTime Frame time to satisfy smooth updating even when lagging
      */
 
     @Override
@@ -90,7 +90,7 @@ public class Arrow extends Projectile{
 
     /**
      * Called every frame to update the Arrow, but this time the Player is passed
-     * @param deltaTime Frametime to satisfy smooth updating even when lagging
+     * @param deltaTime Frame time to satisfy smooth updating even when lagging
      * @param player Here not used
      */
 

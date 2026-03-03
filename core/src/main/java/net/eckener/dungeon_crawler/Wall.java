@@ -8,7 +8,6 @@ import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
 
 public class Wall extends Sprite {
 
-    private float[] vertices;
     private Polygon hitbox;
     private final Room room;
 
@@ -21,7 +20,7 @@ public class Wall extends Sprite {
         room = getCurrentRoom();
         WallRegistry.register(this);
 
-        vertices = new float[] {
+        float[] vertices = new float[]{
             0, 0,
             getWidth(), 0,
             getWidth(), getHeight(),
@@ -31,10 +30,16 @@ public class Wall extends Sprite {
         hitbox.setPosition(x, y);
     }
 
+    /**
+     * @return the Hitbox Polygon of the Wall
+     */
     public Polygon getHitbox() {
         return hitbox;
     }
 
+    /**
+     * @return the Room the Wall is in
+     */
     public Room getRoom() {
         return room;
     }

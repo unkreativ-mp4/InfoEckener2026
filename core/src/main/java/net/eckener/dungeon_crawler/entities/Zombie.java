@@ -63,7 +63,7 @@ public class Zombie extends Enemy {
 
     /**
      * Updates the Zombie every frame
-     * @param deltaTime Frametime to satisfy smooth updating even when lagging
+     * @param deltaTime Frame time to satisfy smooth updating even when lagging
      * @param player {@link Player} in case it is needed, e.g. for pathfinding
      */
     @Override
@@ -77,7 +77,7 @@ public class Zombie extends Enemy {
 
     /**
      * runs every frame; here not needed
-     * @param delta Frametime to satisfy smooth updating even when lagging
+     * @param delta Frame time to satisfy smooth updating even when lagging
      */
     @Override
     public void update(float delta) {}

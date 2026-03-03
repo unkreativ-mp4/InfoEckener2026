@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import net.eckener.dungeon_crawler.*;
 
 import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
@@ -16,7 +15,6 @@ import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
 public abstract class Entity extends Sprite {
 
     protected float speed;
-    private float[] vertices;
     private Polygon hitbox;
     protected Vector2 momentum = new Vector2();
     protected Vector2 direction = new Vector2();
@@ -38,7 +36,7 @@ public abstract class Entity extends Sprite {
         System.out.println("EntityRoomRegistry: " + EntityRegistry.getAllRoomEntities());
 
 
-        vertices = new float[] {
+        float[] vertices = new float[]{
             0, 0,
             getWidth(), 0,
             getWidth(), getHeight(),
@@ -93,13 +91,13 @@ public abstract class Entity extends Sprite {
 
     /**
      * Method which runs every frame
-     * @param delta Frametime to satisfy smooth updating even when lagging
+     * @param delta Frame time to satisfy smooth updating even when lagging
      */
     public abstract void update(float delta);
 
     /**
      * Method which runs every frame
-     * @param delta Frametime to satisfy smooth updating even when lagging
+     * @param delta Frame time to satisfy smooth updating even when lagging
      * @param player {@link Player} in case it is needed, e.g. for pathfinding
      */
     public abstract void update(float delta, Player player);

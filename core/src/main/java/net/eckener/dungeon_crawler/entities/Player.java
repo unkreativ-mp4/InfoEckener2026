@@ -2,7 +2,6 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.MathUtils;
 import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.ItemStack;
@@ -133,7 +132,7 @@ public class Player extends LivingEntity{
 
     /**
      * Runs every frame and increases {@code timeSince} attributes among other things
-     * @param deltaTime Frametime to satisfy smooth updating even when lagging
+     * @param deltaTime Frame time to satisfy smooth updating even when lagging
      */
     @Override
     public void update(float deltaTime) {
@@ -144,7 +143,7 @@ public class Player extends LivingEntity{
 
     /**
      * Never use, because it makes no sense
-     * @param delta Frametime stuff
+     * @param delta Frame time stuff
      * @param player could honestly just be {@code this}
      */
     @Override

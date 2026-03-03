@@ -143,9 +143,9 @@ public class InventoryUI extends Table {
 
                             // Ignore dropping back on same slot if you want
                             if (!(newRow == orgRow && newCol == orgCol)) {
-                                // Move ONE item using your current moveItemtoSlot implementation
+                                // Move ONE item using your current moveItemToSlot implementation
                                 if(!shiftClicked) {
-                                    inventory.moveItemtoSlot(
+                                    inventory.moveItemToSlot(
                                         inventory.getItemStacks(),
                                         inventory.getItemStack(orgRow, orgCol),
                                         newRow, newCol,
@@ -154,7 +154,7 @@ public class InventoryUI extends Table {
                                     );
                                 }
                                 else {
-                                    inventory.moveWholeItemStacktoSlot(
+                                    inventory.moveWholeItemStackToSlot(
                                         inventory.getItemStacks(),
                                         inventory.getItemStack(orgRow, orgCol),
                                         newRow,
@@ -209,7 +209,7 @@ public class InventoryUI extends Table {
     }
 
 
-    private SlotWidget findSlotUnderPointer(float stageX, float stageY) {   //chatgpt hat gekocht
+    private SlotWidget findSlotUnderPointer(float stageX, float stageY) {   //ChatGPT hat gekocht
         if (getStage() == null) return null;
 
         var hit = getStage().hit(stageX, stageY, true);

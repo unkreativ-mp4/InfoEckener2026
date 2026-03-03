@@ -26,13 +26,13 @@ public class Inventory extends Table {
     }
 
     public void fillInventoryWithItemStack(ItemStack itemStack){
-        outerloop:
+        outerLoop:
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if(isSlotEmpty(row, col)) {
                     itemStacks[row][col] = itemStack;
                     //System.out.println(y + " " + x);
-                    break outerloop;
+                    break outerLoop;
                 }
             }
         }
@@ -75,7 +75,7 @@ public class Inventory extends Table {
 
     }
 
-    public void moveItemtoSlot(ItemStack[][] itemStacks, ItemStack itemStack, int newRow, int newCol, int orgRow, int orgCol) {
+    public void moveItemToSlot(ItemStack[][] itemStacks, ItemStack itemStack, int newRow, int newCol, int orgRow, int orgCol) {
 
         if(itemStacks[orgRow][orgCol] == null) {
             System.out.println("No Item to move at this slot");
@@ -115,7 +115,7 @@ public class Inventory extends Table {
         }
     }
 
-    public void moveWholeItemStacktoSlot(ItemStack[][] itemStacks, ItemStack itemStack,  int newRow, int newCol, int orgRow, int orgCol) {
+    public void moveWholeItemStackToSlot(ItemStack[][] itemStacks, ItemStack itemStack, int newRow, int newCol, int orgRow, int orgCol) {
         int stackAmount = itemStacks[orgRow][orgCol].getAmount();
 
         if(itemStacks[orgRow][orgCol] == null) {

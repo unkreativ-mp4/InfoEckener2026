@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 /**
- * Gathers the statistics whhich are displayed in the {@link DebugOverlay}
+ * Gathers the statistics which are displayed in the {@link DebugOverlay}
  */
 public class DebugStats {
 
@@ -22,7 +22,7 @@ public class DebugStats {
     }
 
     /**
-     * @return the Frametime
+     * @return the Frame time
      */
     public float delta() {
         return Gdx.graphics.getDeltaTime();
