@@ -46,7 +46,7 @@ public class InventoryUI extends Table {
 
         //inventoryXPos = pInventoryXPos
         //inventoryYPos = pInventoryYPos;
-        System.out.println(inventoryXPos + " " + inventoryYPos);
+        //System.out.println(inventoryXPos + " " + inventoryYPos);
 
         //this.setPosition(inventoryXPos, inventoryYPos);
 
@@ -215,6 +215,7 @@ public class InventoryUI extends Table {
     }
 
     public void inventoryOpenManagement(Inventory inventory) {
+
         if (!isOpen) {
             openInventory(inventory);
             isOpen = !isOpen;
@@ -255,9 +256,13 @@ public class InventoryUI extends Table {
     }
 
     private void setGhostAt(float stageX, float stageY) {
+        if (getStage() == null) return;
+
+        var local = this.stageToLocalCoordinates(new com.badlogic.gdx.math.Vector2(stageX, stageY));
+
         dragGhost.setPosition(
-            stageX - dragGhost.getWidth() / 2f,
-            stageY - dragGhost.getHeight() / 2f
+            local.x - dragGhost.getWidth() / 2f,
+            local.y - dragGhost.getHeight() / 2f
         );
     }
 

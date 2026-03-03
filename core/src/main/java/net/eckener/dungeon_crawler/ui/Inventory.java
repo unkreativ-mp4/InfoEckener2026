@@ -26,7 +26,7 @@ public class Inventory extends Table {
 
         this.itemStacks = new ItemStack[rows][cols];
 
-        inventoryUI = new InventoryUI(this, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), stage.getHeight(), stage.getWidth(), 3.5f);
+        inventoryUI = new InventoryUI(this, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), stage.getHeight(), stage.getWidth(), 2.5f);
         inventoryUI.setPosition(
             (stage.getWidth() - inventoryUI.getWidth()) / 2f,
             (stage.getHeight() - inventoryUI.getHeight()) /2f

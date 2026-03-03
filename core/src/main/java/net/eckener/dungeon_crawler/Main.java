@@ -105,11 +105,6 @@ public class Main extends InputAdapter implements ApplicationListener{
 
 
         chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage);
-        chest.getChestInventoryUI().setPosition(
-            (stage.getWidth() - chest.getChestInventoryUI().getWidth()) / 2f,
-            (stage.getHeight() - chest.getChestInventoryUI().getHeight())
-        );
-        stage.addActor(chest.getChestInventoryUI());
 
         ItemStack coinStack = new ItemStack(coin, 5);
         player.getPlayerInventory().addItemStack(coinStack, 3, 3);
@@ -139,10 +134,18 @@ public class Main extends InputAdapter implements ApplicationListener{
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
 
+        float YwhenChestOpen;
+        if(chest.isChestOpen()) {
+            YwhenChestOpen = ((stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 5f);
+        }
+        else {
+            YwhenChestOpen = ((stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 2f);
+        }
+
+
         player.getPlayerInventory().getInventoryUI().setPosition(
-            (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f,
-            (stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 2f
-        );
+            (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f, YwhenChestOpen);
+
         chest.getChestInventoryUI().setPosition(
             (stage.getWidth()  - chest.getChestInventoryUI().getWidth())  / 2f,
             (stage.getHeight() - chest.getChestInventoryUI().getHeight())

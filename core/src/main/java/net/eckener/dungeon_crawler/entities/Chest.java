@@ -12,14 +12,20 @@ import java.util.Random;
 public class Chest extends Entity{
     private Inventory chestInventory;
     private InventoryUI chestInventoryUI;
+    private boolean isChestOpen;
 
 
     public Chest(float pInventoryXPos, float pInventoryYPos, Stage stage) {
         super(4,2, Assets.get(Assets.CHEST),0);
 
         chestInventory = new Inventory(4, 7, "Chest", stage);
-        chestInventoryUI = new InventoryUI(chestInventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), pInventoryXPos, pInventoryYPos, 3.5f);
-
+        chestInventoryUI = chestInventory.getInventoryUI();
+        this.getChestInventoryUI().setPosition(
+            (stage.getWidth() - this.getChestInventoryUI().getWidth()) / 2f,
+            (stage.getHeight() - this.getChestInventoryUI().getHeight())
+        );
+        stage.addActor(this.getChestInventoryUI());
+        isChestOpen = false;
     }
 
     @Override
@@ -39,7 +45,8 @@ public class Chest extends Entity{
 
     public void openCloseChest(Player player) {
 
-        player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(chestInventory);
+        //player.getPlayerInventory().getInventoryUI().setPosition();
+
 
         float range = 1.0f;
 
@@ -48,7 +55,11 @@ public class Chest extends Entity{
 
         boolean inRange = (dx * dx + dy * dy) <= (range * range);
 
-        if (inRange) chestInventoryUI.inventoryOpenManagement(chestInventory);
+        if (inRange) {
+            chestInventoryUI.inventoryOpenManagement(chestInventory);
+            player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(player.getPlayerInventory());
+        }
+        isChestOpen = !isChestOpen;
 
     }
 
@@ -57,5 +68,9 @@ public class Chest extends Entity{
 
     public void addItemStack(ItemStack pItem) {
         chestInventory.addItemStack(pItem, 2, 2);
+    }
+
+    public boolean isChestOpen() {
+        return isChestOpen;
     }
 }
