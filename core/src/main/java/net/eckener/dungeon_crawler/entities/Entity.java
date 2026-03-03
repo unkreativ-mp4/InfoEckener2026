@@ -26,9 +26,9 @@ public abstract class Entity extends Sprite {
         super(texture);
 
         this.speed = speed;
-        this.setSize(1,1);
-        this.setX(xPos);
-        this.setY(yPos);
+        setSize(1,1);
+        setX(xPos);
+        setY(yPos);
 
         room = getCurrentRoom();
         EntityRegistry.register(this);

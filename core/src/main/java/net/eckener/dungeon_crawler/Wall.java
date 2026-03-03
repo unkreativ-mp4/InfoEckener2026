@@ -13,9 +13,16 @@ public class Wall extends Sprite {
     private final Room room;
 
     public Wall(Texture texture, int x, int y) {
-        super(texture, x, y, 1, 1);
+        super(texture);
+        setSize(1,1);
+        setX(x);
+        setY(y);
+
         room = getCurrentRoom();
         WallRegistry.register(this);
+
+        System.out.println("WallRegistry: " + WallRegistry.getAllWalls());
+        System.out.println("WallRoomRegistry: " + WallRegistry.getAllRoomWalls());
 
         vertices = new float[] {
             0, 0,
