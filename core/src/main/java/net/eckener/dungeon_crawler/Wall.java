@@ -21,9 +21,6 @@ public class Wall extends Sprite {
         room = getCurrentRoom();
         WallRegistry.register(this);
 
-        System.out.println("WallRegistry: " + WallRegistry.getAllWalls());
-        System.out.println("WallRoomRegistry: " + WallRegistry.getAllRoomWalls());
-
         vertices = new float[] {
             0, 0,
             getWidth(), 0,
@@ -31,6 +28,7 @@ public class Wall extends Sprite {
             0, getHeight()
         };
         hitbox = new Polygon(vertices);
+        hitbox.setPosition(x, y);
     }
 
     public Polygon getHitbox() {

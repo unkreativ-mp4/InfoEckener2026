@@ -82,8 +82,6 @@ public final class EntityRegistry {
             } else {
                 entity.update(delta);
             }
-
-            entity.updateHitbox();
         }
     }
 
@@ -99,8 +97,6 @@ public final class EntityRegistry {
             } else {
                 entity.update(delta);
             }
-
-            entity.updateHitbox();
         }
     }
 
@@ -111,6 +107,7 @@ public final class EntityRegistry {
     public static void updateMovementAll(float deltaTime) {
         for (Entity entity : entities) {
             entity.updateMovement(deltaTime);
+            entity.updateHitbox();
         }
     }
 
@@ -121,6 +118,7 @@ public final class EntityRegistry {
     public static void updateRoomMovement(float deltaTime) {
         for (Entity entity : roomEntities) {
             entity.updateMovement(deltaTime);
+            entity.updateHitbox();
         }
     }
 

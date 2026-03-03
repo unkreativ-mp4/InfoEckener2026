@@ -124,7 +124,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
         //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
 
-        new Wall(Assets.get(Assets.STONE_BRICKS), 2,1);
+        new Wall(Assets.get(Assets.STONE_BRICKS), 4,5);
 
         // ───────────────────────────────
         // Input Handling
