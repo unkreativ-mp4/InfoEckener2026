@@ -3,6 +3,8 @@ package net.eckener.dungeon_crawler;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
+import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
+
 public final class WallRegistry {
 
     private static final Array<Wall> walls = new Array<>();
@@ -10,6 +12,10 @@ public final class WallRegistry {
 
     public static void register(Wall wall) {
         walls.add(wall);
+
+        if(wall.getRoom().equals(getCurrentRoom())) {
+            registerRoom(wall);
+        }
     }
 
     public static void registerRoom(Wall wall)  {
