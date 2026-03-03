@@ -20,10 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import net.eckener.dungeon_crawler.debug.*;
-import net.eckener.dungeon_crawler.entities.EntityRegistry;
-import net.eckener.dungeon_crawler.entities.Player;
-import net.eckener.dungeon_crawler.entities.Skeleton;
-import net.eckener.dungeon_crawler.entities.Zombie;
+import net.eckener.dungeon_crawler.entities.*;
 import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.items.ItemStack;
 import net.eckener.dungeon_crawler.ui.CustomLabel;
@@ -52,11 +49,10 @@ public class Main extends InputAdapter implements ApplicationListener {
     Skeleton skeleton;
 
     public Player player;
-    Inventory inventory;
-    InventoryUI inventoryUI;
+    //Inventory inventory;
+    //InventoryUI inventoryUI;
+    Chest chest;
 
-    Inventory chest;
-    InventoryUI chestUI;
 
     private Stage stage;
 
@@ -102,7 +98,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 if (currentBackground >= backgrounds.size) {
                     currentBackground = 0;
                 }
-            }
+            }, stage
         );
         EntityRegistry.register(player);
 
@@ -118,7 +114,7 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         debug = new DebugOverlay(layout, debugRenderer, debugInput);
 
-        stage.setDebugAll(false);
+        stage.setDebugAll(true);
 
         // ───────────────────────────────
         // GUI
@@ -131,20 +127,20 @@ public class Main extends InputAdapter implements ApplicationListener {
         Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
         Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 5, 67);
 
-        inventory = new Inventory(4, 7, "Inventory");
-        chest = new Inventory(3,2, "Chest");
+
+
+        System.out.println("Stage: " +stage.getHeight() + " " + stage.getWidth());
+
+
+        chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage);
+        chest.getChestInventoryUI().setPosition(
+            (stage.getWidth() - chest.getChestInventoryUI().getWidth()) / 2f,
+            (stage.getHeight() - chest.getChestInventoryUI().getHeight())
+        );
+        stage.addActor(chest.getChestInventoryUI());
 
         ItemStack coinStack = new ItemStack(coin, 5);
-        inventory.addItemStack(coinStack, 3, 3);
-        chest.addItemStack(coinStack, 0,0);
-
-        inventory.printInventory(inventory);
-
-        inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 3.5f);
-        chestUI = new InventoryUI(chest, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2f);
-        stage.addActor(inventoryUI);
-        stage.addActor(chestUI);
-
+        player.getPlayerInventory().addItemStack(coinStack, 3, 3);
 
         // ───────────────────────────────
         // Enemies
@@ -170,6 +166,15 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
+
+        player.getPlayerInventory().getInventoryUI().setPosition(
+            (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f,
+            (stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 2f
+        );
+        chest.getChestInventoryUI().setPosition(
+            (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f,
+            (stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight())
+        );
     }
 
     @Override
@@ -236,7 +241,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         } else {
 
             if(keycode == Input.Keys.I) {
-                inventoryUI.inventoryVisebilityManagement(inventory);
+                player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(player.getPlayerInventory());
             }
             if(keycode == Input.Keys.H) {
                 player.heal(5);
@@ -251,7 +256,7 @@ public class Main extends InputAdapter implements ApplicationListener {
                 player.attack(zombie);
             }
             if(keycode == Input.Keys.P) {
-                chestUI.inventoryVisebilityManagement(chest);
+                chest.openCloseChest(player);
             }
 
         }

@@ -3,11 +3,14 @@ package net.eckener.dungeon_crawler.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.ItemStack;
 import net.eckener.dungeon_crawler.items.Weapon;
+import net.eckener.dungeon_crawler.ui.Inventory;
+import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 public class Player extends LivingEntity{
     private BackgroundChanger bgChanger;
@@ -18,15 +21,18 @@ public class Player extends LivingEntity{
     private final float baseDamageCooldown = 0.5F;
     private final float baseAttackCooldown = 1.0F;
     private ItemStack selectedItem; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
+    private Inventory inventory;
 
     private boolean transitioning;
     private final FitViewport viewport;
 
-    public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger) {
+    public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger, Stage pStage) {
         super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,4);
         this.maxMana = maxMana;
         this.viewport = viewport;
         this.bgChanger = bgChanger;
+
+        inventory = new Inventory(4, 7, "Inventory", pStage);
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
         selectedItem = new ItemStack(bow,1);
@@ -176,4 +182,9 @@ public class Player extends LivingEntity{
      */
     @Override
     public void update(float delta, Player player) {}
+
+    public Inventory getPlayerInventory() {
+        return inventory;
+    }
+
 }

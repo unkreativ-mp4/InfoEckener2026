@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -18,9 +17,13 @@ import net.eckener.dungeon_crawler.items.ItemStack;
 
 public class InventoryUI extends Table {
 
-    private boolean inventoryVisible;
+    private Inventory inventory;
+    private boolean isOpen;
     private float slotSize = 32f;
     private float slotPad = 3f;
+
+    private float inventoryXPos;
+    private float inventoryYPos;
 
     private Texture slotBackgroundTexture;
     private final BitmapFont uiFont = new BitmapFont();
@@ -32,20 +35,26 @@ public class InventoryUI extends Table {
     private final Array<Inventory> openInventories = new Array<>();
 
 
-    public InventoryUI(Inventory inventory, Texture inventoryTexture, Texture pSlotBackgroundTexture, float uiScale) {
+    public InventoryUI(Inventory pInventory, Texture inventoryTexture, Texture pSlotBackgroundTexture, float pInventoryXPos, float pInventoryYPos, float uiScale) {
 
         //this.setFillParent(true);
+        inventory = pInventory;
 
         this.setVisible(false);
         inventory.setVisible(false);
         setTouchable(Touchable.disabled);
 
-        //center();
-        //this.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        //inventoryXPos = pInventoryXPos
+        //inventoryYPos = pInventoryYPos;
+        System.out.println(inventoryXPos + " " + inventoryYPos);
+
+        //this.setPosition(inventoryXPos, inventoryYPos);
+
 
         slotSize = slotSize * uiScale;
         slotPad = slotPad * uiScale;
         slotBackgroundTexture = pSlotBackgroundTexture;
+
 
 
         NinePatch invPatch = new NinePatch(inventoryTexture, 11, 11, 11, 11);
@@ -206,15 +215,15 @@ public class InventoryUI extends Table {
         }
     }
 
-    public void inventoryVisebilityManagement(Inventory inventory) {
-        if (!inventoryVisible) {
+    public void inventoryOpenManagement(Inventory inventory) {
+        if (!isOpen) {
             openInventory(inventory);
-            inventoryVisible = !inventoryVisible;
+            isOpen = !isOpen;
         }
 
         else {
             closeInventory(inventory);
-            inventoryVisible = !inventoryVisible;
+            isOpen = !isOpen;
         }
     }
 
@@ -242,8 +251,8 @@ public class InventoryUI extends Table {
     }
 
 
-    public boolean getInventoryVisible() {
-        return inventoryVisible;
+    public boolean getOpen() {
+        return isOpen;
     }
 
     private void setGhostAt(float stageX, float stageY) {
@@ -268,4 +277,17 @@ public class InventoryUI extends Table {
         }
         return (SlotWidget) hit;
     }
+
+    public void setInventoryXPos(float inventoryXPos) {
+        this.inventoryXPos = inventoryXPos;
+    }
+
+    public void setInventoryYPos(float inventoryYPos) {
+        this.inventoryYPos = inventoryYPos;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
 }

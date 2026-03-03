@@ -43,6 +43,7 @@ public final class Assets {
     public static final String ARROW = "textures/placeholders/arrow.png";
     public static final String IRON_SHOVEL = "textures/placeholders/iron_shovel.png";
    //public static final String FANTASY_FONT = "fonts/fantasy_font.png";
+    public static final String CHEST = "textures/placeholders/treasure_chest_red.png";
 
 
 
@@ -81,6 +82,7 @@ public final class Assets {
         manager.load(ARROW, Texture.class);
         manager.load(IRON_SHOVEL, Texture.class);
         //manager.load(FANTASY_FONT, BitmapFont.class);
+        manager.load(CHEST, Texture.class);
 
 
     }
