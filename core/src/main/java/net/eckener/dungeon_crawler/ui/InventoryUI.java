@@ -174,7 +174,6 @@ public class InventoryUI extends Table {
                                         originRef.inv.moveWholeItemStacktoSlot(
                                             originRef.inv.getItemStacks(),
                                             originRef.inv.getItemStack(originRef.row, originRef.col),
-                                            originRef.inv.getItemStack(originRef.row, originRef.col).getAmount(),
                                             targetRef.row, targetRef.col,
                                             originRef.row, originRef.col
                                         );

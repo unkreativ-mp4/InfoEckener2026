@@ -14,10 +14,10 @@ public class Chest extends Entity{
     private InventoryUI chestInventoryUI;
 
 
-    public Chest(float pInventoryXPos, float pInventoryYPos, Stage pStage) {
-        super(4,2, Assets.get(Assets.CHEST));
+    public Chest(float pInventoryXPos, float pInventoryYPos, Stage stage) {
+        super(4,2, Assets.get(Assets.CHEST),0);
 
-        chestInventory = new Inventory(4, 7, "Chest", pStage);
+        chestInventory = new Inventory(4, 7, "Chest", stage);
         chestInventoryUI = new InventoryUI(chestInventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), pInventoryXPos, pInventoryYPos, 3.5f);
 
     }
@@ -43,8 +43,8 @@ public class Chest extends Entity{
 
         float range = 1.0f;
 
-        float dx = player.getxPos() - getxPos();
-        float dy = player.getyPos() - getyPos();
+        float dx = player.getX() - getX();
+        float dy = player.getY() - getY();
 
         boolean inRange = (dx * dx + dy * dy) <= (range * range);
 

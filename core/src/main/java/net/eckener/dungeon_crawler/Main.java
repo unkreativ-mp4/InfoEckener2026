@@ -71,7 +71,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // Player
         // ───────────────────────────────
 
-        player = new Player(100, 100);
+        player = new Player(100, 100, stage);
 
         // ───────────────────────────────
         // Debug Overlay

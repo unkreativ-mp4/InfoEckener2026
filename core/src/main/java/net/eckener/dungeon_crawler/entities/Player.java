@@ -25,11 +25,11 @@ public class Player extends LivingEntity{
 
 
 
-    public Player(int maxHealth, int maxMana) {
+    public Player(int maxHealth, int maxMana, Stage stage) {
         super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
         this.maxMana = maxMana;
 
-        inventory = new Inventory(4, 7, "Inventory", pStage);
+        inventory = new Inventory(4, 7, "Inventory", stage);
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
         Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
