@@ -166,6 +166,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         spriteBatch.draw(getCurrentRoom().background,0, 0, getCurrentRoom().width, getCurrentRoom().height);
 
         EntityRegistry.renderRoom(spriteBatch);
+        WallRegistry.renderRoom(spriteBatch);
         spriteBatch.end();
 
         // ======================

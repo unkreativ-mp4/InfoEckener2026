@@ -14,5 +14,6 @@ public class Maul extends Weapon{
         Vector2 vector2 = new Vector2(attacked.getX() - attacker.getX(), attacked.getY() - attacker.getY());
         vector2.nor().scl(8f);
         attacked.addMomentum(vector2);
+        attacked.takeDamage(getDamage());
     }
 }

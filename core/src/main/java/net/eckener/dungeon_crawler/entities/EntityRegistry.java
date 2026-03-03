@@ -174,6 +174,7 @@ public final class EntityRegistry {
     public static void clear() {
         entities.clear();
         livingEntities.clear();
+        clearRoomEntities();
     }
 
     /**

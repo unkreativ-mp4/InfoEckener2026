@@ -59,6 +59,7 @@ public final class RoomRegistry {
 
         updateViewport();
         EntityRegistry.onRoomChange(currentRoom);
+        WallRegistry.onRoomChange(currentRoom);
     }
 
     /**
@@ -89,6 +90,7 @@ public final class RoomRegistry {
         updateViewport();
         repositionPlayer(direction, player, oldRoom);
         EntityRegistry.onRoomChange(currentRoom);
+        WallRegistry.onRoomChange(currentRoom);
     }
 
     /**
