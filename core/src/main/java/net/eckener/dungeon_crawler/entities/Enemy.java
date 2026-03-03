@@ -10,7 +10,7 @@ public abstract class Enemy extends LivingEntity {
     protected double attackCooldown;
     protected double timeSinceLastAttack = 0;
 
-    public Enemy(float xPos, float yPos, int maxHealth, Texture aliveTexture, int speed) {
+    public Enemy(float xPos, float yPos, int maxHealth, Texture aliveTexture, float speed) {
         super(xPos,yPos, aliveTexture,maxHealth, speed);
     }
 

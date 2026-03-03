@@ -11,13 +11,11 @@ import net.eckener.dungeon_crawler.items.ItemStack;
 
 public class SlotWidget extends Stack {
 
-    private ItemStack itemStack;
     private Image slotItemTexture;
     private Label itemAmount;
 
     public SlotWidget(ItemStack pItemStack, BitmapFont font) {
 
-        this.itemStack = pItemStack;
         slotItemTexture = new Image();
         slotItemTexture.setVisible(false);
 

@@ -1,84 +1,89 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.Main;
+import net.eckener.dungeon_crawler.Room;
+
+import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
 
 /**
  * The most basic form of an entity. Only exists so all entities can be registered in a single {@link EntityRegistry} and only one draw and update command is needed in {@link Main}
  */
-public abstract class Entity {
+public abstract class Entity extends Sprite {
 
-    protected Sprite sprite;
-    float[] vertices;
-    Polygon hitbox;
+    protected float speed;
+    private float[] vertices;
+    private Polygon hitbox;
+    protected Vector2 momentum = new Vector2();
+    protected Vector2 direction = new Vector2();
+    private Vector2 timescaledMomentum = new Vector2();
+    private final Room room;
 
-    public Entity(float xPos, float yPos, Texture texture) {
-        sprite = new Sprite(texture);
-        sprite.setSize(1,1);
-        sprite.setX(xPos);
-        sprite.setY(yPos);
+    public Entity(float xPos, float yPos, Texture texture, float speed) {
+        super(texture);
+
+        this.speed = speed;
+        this.setSize(1,1);
+        this.setX(xPos);
+        this.setY(yPos);
+
+        room = getCurrentRoom();
         EntityRegistry.register(this);
 
         vertices = new float[] {
             0, 0,
-            sprite.getWidth(), 0,
-            sprite.getWidth(), sprite.getHeight(),
-            0, sprite.getHeight()
+            getWidth(), 0,
+            getWidth(), getHeight(),
+            0, getHeight()
         };
         hitbox = new Polygon(vertices);
     }
 
     /**
-     * @return the x-Position of the {@link Sprite} and the entity
+     * @param momentum sets the momentum vector of the Entity
      */
-    public float getxPos() {
-        return sprite.getX();
+    public void setMomentum(Vector2 momentum) {
+        this.momentum = momentum;
     }
 
     /**
-     * @param xPos sets the x-Position of the {@link Sprite} and the entity
+     * @return the momentum vector of the Entity
      */
-    public void setxPos(float xPos) {
-        sprite.setX(xPos);
+    public Vector2 getMomentum() {
+        return momentum;
     }
 
     /**
-     * @return the y-Position of the {@link Sprite} and the entity
+     * @param momentum adds to the momentum vector of the Entity
      */
-    public float getyPos() {
-        return sprite.getY();
+    public void addMomentum(Vector2 momentum) {
+        this.momentum.add(momentum);
     }
 
     /**
-     * @param yPos sets the x-Position of the {@link Sprite} and the entity
+     * Adds to the momentum of the Entity
+     * @param x the additional x momentum
+     * @param y the additional y momentum
      */
-    public void setyPos(float yPos) {
-        sprite.setY(yPos);
+    public void addMomentum(float x, float y) {
+        momentum.add(x,y);
     }
 
     /**
-     * @return the {@link Sprite} of the entity
+     * @return the Hitbox Polygon of the Entity
      */
-    public Sprite getSprite() {
-        return sprite;
+    public Polygon getHitbox() {
+        return hitbox;
     }
 
     /**
-     * The draw method, so the entity actually gets rendered
-     * @param batch the {@link com.badlogic.gdx.graphics.g2d.SpriteBatch} in which to draw the {@link Sprite}
+     * @return the Room of the Entity
      */
-    public void draw(Batch batch) {
-        sprite.draw(batch);
-    }
-
-    /**
-     * @return the {@link Texture} of the {@link Sprite}
-     */
-    public Texture getTexture() {
-        return sprite.getTexture();
+    public Room getRoom() {
+        return room;
     }
 
     /**
@@ -94,9 +99,23 @@ public abstract class Entity {
      */
     public abstract void update(float delta, Player player);
 
+
+    /**
+     * Updates the entities {@code hitbox} to match position and rotation
+     */
     public void updateHitbox() {
-        hitbox.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 2f);
-        hitbox.setPosition(sprite.getX(), sprite.getY());
-        hitbox.setRotation(sprite.getRotation());
+        hitbox.setOrigin(getWidth() / 2f, getHeight() / 2f);
+        hitbox.setPosition(getX(), getY());
+        hitbox.setRotation(getRotation());
+    }
+
+    /**
+     * Reduces the momentum to simulate friction, limits the speed, and moves the Sprite/Entity
+     */
+    public void updateMovement(float deltaTime) {
+        momentum.scl(0.95F);
+        momentum.clamp(0,200);
+        timescaledMomentum.set(momentum).scl(deltaTime);
+        translate(timescaledMomentum.x, timescaledMomentum.y);
     }
 }

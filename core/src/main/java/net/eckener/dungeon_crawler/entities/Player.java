@@ -8,12 +8,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 import net.eckener.dungeon_crawler.ui.Inventory;
 import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 public class Player extends LivingEntity{
-    private BackgroundChanger bgChanger;
     private int maxMana;
     private int mana;
     private float timeSinceLastDamage;
@@ -23,82 +23,51 @@ public class Player extends LivingEntity{
     private ItemStack selectedItem; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
     private Inventory inventory;
 
-    private boolean transitioning;
-    private final FitViewport viewport;
 
-    public Player(int maxHealth, int maxMana, FitViewport viewport, BackgroundChanger bgChanger, Stage pStage) {
-        super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,4);
+
+    public Player(int maxHealth, int maxMana) {
+        super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
         this.maxMana = maxMana;
-        this.viewport = viewport;
-        this.bgChanger = bgChanger;
 
         inventory = new Inventory(4, 7, "Inventory", pStage);
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
-        selectedItem = new ItemStack(bow,1);
+        Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
+        selectedItem = new ItemStack(maul,1);
 
     }
 
-    /**
-     * changes the game background
-     */
-    private void changeBackground(){
-        bgChanger.changeBackground();
-    }
-
-    /**
-     * handles the transition from one background to another, including player movement
-     */
-    public void handleScreenTransition(){
-        if(!transitioning) {
-            if (getxPos() + getxPos() + sprite.getWidth() < 0) {
-                transitioning = true;
-                changeBackground();
-                sprite.setX(viewport.getWorldWidth() - sprite.getWidth());
-                transitioning = false;
-            }
-            if (getxPos() > viewport.getWorldWidth()) {
-                transitioning = true;
-                changeBackground();
-                setxPos(0);
-                transitioning = false;
-            }
-        }
-    }
 
     /**
      * Player movement depending on user input
-     * @param delta Frametime for smooth movement even when lagging
      */
-    public void move(float delta) {
-        delta *= speed;
-
+    public void move() {
+        boolean matched = false;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            sprite.setTexture(Assets.get(Assets.PLAYER_UP));
-            sprite.translateY(delta);
+            setTexture(Assets.get(Assets.PLAYER_UP));
+            direction.add(0,1);
+            matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            sprite.setTexture(Assets.get(Assets.PLAYER_LEFT));
-            sprite.translateX(-delta);
+            setTexture(Assets.get(Assets.PLAYER_LEFT));
+            direction.add(-1,0);
+            matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            sprite.setTexture(Assets.get(Assets.PLAYER_DOWN));
-            sprite.translateY(-delta);
+            setTexture(Assets.get(Assets.PLAYER_DOWN));
+            direction.add(0,-1);
+            matched = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            sprite.setTexture(Assets.get(Assets.PLAYER_RIGHT));
-            sprite.translateX(delta);
+            setTexture(Assets.get(Assets.PLAYER_RIGHT));
+            direction.add(1,0);
+            matched = true;
         }
-        dontGoPastScreen(viewport.getWorldHeight());
-    }
-
-    /**
-     * prevents the player from walking out of the screen
-     * @param worldHeight the height of the world/background
-     */
-    public void dontGoPastScreen(float worldHeight) {
-        //PlayerSprite.setX(MathUtils.clamp(PlayerSprite.getX(), 0, worldWidth - PlayerSprite.getWidth()));
-        sprite.setY(MathUtils.clamp(sprite.getY(), 0, worldHeight - sprite.getHeight()));
+        if (matched) {
+            direction.nor().scl(speed - momentum.len());
+            momentum.add(direction);
+            direction.setZero();
+        }
     }
 
     /**Hurts the Player but respects I-frames
@@ -115,8 +84,7 @@ public class Player extends LivingEntity{
      * waiting for implementation
      */
     @Override
-    protected void onDeath() {
-    }
+    protected void onDeath() {}
 
     /**
      * Changes the {@code mana} the player has. Also works with negative amounts
@@ -138,12 +106,19 @@ public class Player extends LivingEntity{
     }
 
     /**
+     * @return how much health the Player has left in percent
+     */
+    public float getHealthPercent() {
+        return (float) health / maxHealth;
+    }
+
+    /**
      * Attacks an {@link Enemy} with the selected {@link Weapon}
      * @param enemy the {@link Enemy} which to attack
      */
     public void attack(Enemy enemy) {
         if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
-            selectedItem.getWeapon().attack(this, enemy,viewport);
+            selectedItem.getWeapon().attack(this, enemy);
             timeSinceLastAttack = 0;
 
         }
@@ -171,14 +146,13 @@ public class Player extends LivingEntity{
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
         timeSinceLastAttack += deltaTime;
-        move(deltaTime);
-        handleScreenTransition();
+        move();
     }
 
     /**
      * Never use, because it makes no sense
-     * @param delta
-     * @param player
+     * @param delta Frametime stuff
+     * @param player could honestly just be {@code this}
      */
     @Override
     public void update(float delta, Player player) {}

@@ -1,11 +1,13 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+
+import static net.eckener.dungeon_crawler.Main.camera;
 
 /**
  * Arrow projectile
@@ -13,31 +15,29 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Arrow extends Projectile{
 
-    Vector2 directionVector = new Vector2();
     Entity owner;
 
     public Arrow(Texture texture, float xPos, float yPos, Entity owner) {
-        super(texture, xPos, yPos);
-        this. owner = owner;
+        super(texture, xPos, yPos, 5);
+        this.owner = owner;
     }
 
     /**
-     * Sets the rotation of the {@link com.badlogic.gdx.graphics.g2d.Sprite} to face the cursor
-     * @param camera {@link OrthographicCamera} is needed to correctly set the rotation (I think). Best acquired from a {@link com.badlogic.gdx.utils.viewport.Viewport}
+     * Sets the rotation of the {@link Sprite} to face the cursor
      */
-    public void setRotationToFaceCursor(OrthographicCamera camera){
+    public void setRotationToFaceCursor(){
         Vector3 vector3 = new Vector3();
         camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-        float cx = sprite.getX() + sprite.getWidth() * 0.5f;
-        float cy = sprite.getY() + sprite.getHeight() * 0.5f;
+        float cx = getX() + getWidth() * 0.5f;
+        float cy = getY() + getHeight() * 0.5f;
 
         float dx = vector3.x - cx;
         float dy = vector3.y - cy;
 
-        direction = (float) Math.toDegrees(Math.atan2(dy, dx));
-        sprite.setOriginCenter();
-        sprite.setRotation(direction);
+        directionDeg = (float) Math.toDegrees(Math.atan2(dy, dx));
+        setOriginCenter();
+        setRotation(directionDeg);
     }
 
     /**
@@ -45,18 +45,18 @@ public class Arrow extends Projectile{
      * @param livingEntity the {@link LivingEntity} which to face
      */
     public void setRotationToFaceLivingEntity(LivingEntity livingEntity){
-        Vector2 vector2 = new Vector2(livingEntity.getxPos() - getxPos(), livingEntity.getyPos() - getyPos());
-        sprite.setOriginCenter();
-        direction = vector2.angleDeg();
-        sprite.setRotation(direction);
+        Vector2 vector2 = new Vector2(livingEntity.getX() - getX(), livingEntity.getY() - getY());
+        setOriginCenter();
+        directionDeg = vector2.angleDeg();
+        setRotation(directionDeg);
     }
 
     /**
      * Detects if the arrow has hit another {@link LivingEntity} and then unregisters itself
      */
     private void hitDetection(){
-        for(LivingEntity livingEntity : EntityRegistry.getAllLivingEntities()){
-            if (Intersector.overlapConvexPolygons(this.hitbox, livingEntity.hitbox) && !livingEntity.equals(owner)) {
+        for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()){
+            if (Intersector.overlapConvexPolygons(this.getHitbox(), livingEntity.getHitbox()) && !livingEntity.equals(owner)) {
                 livingEntity.takeDamage(10);
                 EntityRegistry.unregister(this);
                 break;
@@ -71,9 +71,10 @@ public class Arrow extends Projectile{
 
     @Override
     public void move(float deltaTime) {
-        directionVector.set(1,1);
-        directionVector.setAngleDeg(direction);
-        sprite.translate(directionVector.nor().scl(deltaTime*5).x, directionVector.nor().scl(deltaTime*5).y);
+        direction.set(1,1);
+        direction.setAngleDeg(directionDeg);
+        direction.nor().scl(speed - momentum.len());
+        momentum.add(direction);
         hitDetection();
     }
 

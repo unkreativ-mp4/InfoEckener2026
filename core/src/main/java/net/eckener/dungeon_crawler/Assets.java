@@ -3,7 +3,6 @@ package net.eckener.dungeon_crawler;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
  * {@link AssetManager} for the clean registry of assets, so {@link Main} isn't clogged up
@@ -40,6 +39,17 @@ public final class Assets {
     public static final String MANA_INDICATOR_80  = "textures/gui/mana/indicator_80.png";
     public static final String MANA_INDICATOR_90  = "textures/gui/mana/indicator_90.png";
     public static final String MANA_INDICATOR_100 = "textures/gui/mana/indicator_100.png";
+    public static final String HEALTH_INDICATOR_0   = "textures/gui/health/indicator_0.png";
+    public static final String HEALTH_INDICATOR_10  = "textures/gui/health/indicator_10.png";
+    public static final String HEALTH_INDICATOR_20  = "textures/gui/health/indicator_20.png";
+    public static final String HEALTH_INDICATOR_30  = "textures/gui/health/indicator_30.png";
+    public static final String HEALTH_INDICATOR_40  = "textures/gui/health/indicator_40.png";
+    public static final String HEALTH_INDICATOR_50  = "textures/gui/health/indicator_50.png";
+    public static final String HEALTH_INDICATOR_60  = "textures/gui/health/indicator_60.png";
+    public static final String HEALTH_INDICATOR_70  = "textures/gui/health/indicator_70.png";
+    public static final String HEALTH_INDICATOR_80  = "textures/gui/health/indicator_80.png";
+    public static final String HEALTH_INDICATOR_90  = "textures/gui/health/indicator_90.png";
+    public static final String HEALTH_INDICATOR_100 = "textures/gui/health/indicator_100.png";
     public static final String ARROW = "textures/placeholders/arrow.png";
     public static final String IRON_SHOVEL = "textures/placeholders/iron_shovel.png";
    //public static final String FANTASY_FONT = "fonts/fantasy_font.png";
@@ -79,6 +89,17 @@ public final class Assets {
         manager.load(MANA_INDICATOR_80, Texture.class);
         manager.load(MANA_INDICATOR_90, Texture.class);
         manager.load(MANA_INDICATOR_100, Texture.class);
+        manager.load(HEALTH_INDICATOR_0, Texture.class);
+        manager.load(HEALTH_INDICATOR_10, Texture.class);
+        manager.load(HEALTH_INDICATOR_20, Texture.class);
+        manager.load(HEALTH_INDICATOR_30, Texture.class);
+        manager.load(HEALTH_INDICATOR_40, Texture.class);
+        manager.load(HEALTH_INDICATOR_50, Texture.class);
+        manager.load(HEALTH_INDICATOR_60, Texture.class);
+        manager.load(HEALTH_INDICATOR_70, Texture.class);
+        manager.load(HEALTH_INDICATOR_80, Texture.class);
+        manager.load(HEALTH_INDICATOR_90, Texture.class);
+        manager.load(HEALTH_INDICATOR_100, Texture.class);
         manager.load(ARROW, Texture.class);
         manager.load(IRON_SHOVEL, Texture.class);
         //manager.load(FANTASY_FONT, BitmapFont.class);
@@ -117,6 +138,11 @@ public final class Assets {
         return manager.get(path, Texture.class);
     }
 
+    /**
+     * Gets the actual Font from an asset path
+     * @param path the path providing the file
+     * @return a {@link BitmapFont}
+     */
     public static BitmapFont getFont(String path) { return  manager.get(path, BitmapFont.class);
     }
 

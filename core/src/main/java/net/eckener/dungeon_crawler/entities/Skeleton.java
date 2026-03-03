@@ -1,6 +1,7 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.Assets;
 
@@ -18,19 +19,17 @@ public class Skeleton extends Enemy {
 
     /**
      * Moves the Skeleton to the {@link Player}, but keeps a certain distance
-     * @param deltaTime Frametime for smooth movement even when lagging
      * @param player the {@link Player} which to target
      */
-    public void move(float deltaTime, Player player) {
-        direction.set(player.getxPos() - getxPos(), player.getyPos() - getyPos());
+    public void move(Player player) {
+        direction.set(player.getX() - getX(), player.getY() - getY());
         if (direction.len2() > 2f) {
-            direction.nor().scl(speed * deltaTime);
-            sprite.translate(direction.x, direction.y);
+            direction.nor().scl(speed - MathUtils.clamp(momentum.len(),0, speed ));
+            momentum.add(direction);
         } else if (direction.len2() > 0f) {
-            direction.nor().scl(speed * deltaTime);
-            sprite.translate(-direction.x, -direction.y);
+            direction.nor().scl(speed - MathUtils.clamp(momentum.len(),0, speed ));
+            momentum.add(direction.scl(-1));
         }
-
     }
 
     /**
@@ -49,7 +48,7 @@ public class Skeleton extends Enemy {
     public void update(float deltaTime, Player player) {
         if(isAlive) {
             timeSinceLastAttack += deltaTime;
-            move(deltaTime,player);
+            move(player);
             attack(player);
         }
     }
@@ -60,7 +59,7 @@ public class Skeleton extends Enemy {
     @Override
     public void attack(LivingEntity livingEntity) {
         if(canAttack()) {
-            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), getxPos(), getyPos(), this);
+            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), getX(), getY(), this);
             arrow.setRotationToFaceLivingEntity(livingEntity);
             timeSinceLastAttack = 0;
         }

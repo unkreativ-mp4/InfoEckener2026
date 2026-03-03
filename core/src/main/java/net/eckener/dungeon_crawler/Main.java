@@ -6,14 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -23,27 +17,21 @@ import net.eckener.dungeon_crawler.debug.*;
 import net.eckener.dungeon_crawler.entities.*;
 import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.items.ItemStack;
-import net.eckener.dungeon_crawler.ui.CustomLabel;
-import net.eckener.dungeon_crawler.ui.Inventory;
-import net.eckener.dungeon_crawler.ui.InventoryUI;
-import net.eckener.dungeon_crawler.ui.ManaOrb;
+import net.eckener.dungeon_crawler.ui.*;
+
+import static net.eckener.dungeon_crawler.RoomRegistry.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
-public class Main extends InputAdapter implements ApplicationListener {
+public class Main extends InputAdapter implements ApplicationListener{
 
     SpriteBatch spriteBatch;
-    FitViewport viewport;
-    OrthographicCamera camera;
+    public static FitViewport viewport;
+    public static OrthographicCamera camera;
 
     ManaOrb manaOrb;
+    Health healthIcon;
 
     DebugOverlay debug;
-
-    Array<Texture> backgrounds = new Array<>();
-    int currentBackground = 0;
-
-    CustomLabel healthLabel;
-    CustomLabel manaLabel;
 
     Zombie zombie;
     Skeleton skeleton;
@@ -57,10 +45,7 @@ public class Main extends InputAdapter implements ApplicationListener {
     private Stage stage;
 
     private final IntSet downKeys = new IntSet(20);
-    public void loadBackgrounds(){
-        backgrounds.add(Assets.get(Assets.BACKGROUND_PLACEHOLDER));
-        backgrounds.add(Assets.get(Assets.BACKGROUND_ORANGE));
-    }
+
 
     @Override
     public void create() {
@@ -76,31 +61,17 @@ public class Main extends InputAdapter implements ApplicationListener {
         // ───────────────────────────────
         spriteBatch = new SpriteBatch();
 
-        viewport = new FitViewport(8, 5);
+        viewport = new FitViewport(16, 10);
         stage = new Stage(new ScreenViewport(), spriteBatch);
 
-        loadBackgrounds();
+        loadRooms();
 
-        // ───────────────────────────────
-        // UI Labels
-        // ───────────────────────────────
-        healthLabel = new CustomLabel("Player Health:", 10, 25);
-        manaLabel   = new CustomLabel("Player Mana:",   10, 10);
-
-        stage.addActor(healthLabel.getLabel());
-        stage.addActor(manaLabel.getLabel());
 
         // ───────────────────────────────
         // Player
         // ───────────────────────────────
-        player = new Player(100, 100, viewport, () -> {
-                currentBackground++;
-                if (currentBackground >= backgrounds.size) {
-                    currentBackground = 0;
-                }
-            }, stage
-        );
-        EntityRegistry.register(player);
+
+        player = new Player(100, 100);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -119,7 +90,8 @@ public class Main extends InputAdapter implements ApplicationListener {
         // ───────────────────────────────
         // GUI
         // ───────────────────────────────
-        manaOrb = new ManaOrb(player, 500,50);
+        manaOrb = new ManaOrb(player, 0,30);
+        healthIcon = new Health(player,5,100);
 
         // ───────────────────────────────
         // Items & Inventory
@@ -146,7 +118,7 @@ public class Main extends InputAdapter implements ApplicationListener {
         // Enemies
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
-        skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
+        //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
 
         // ───────────────────────────────
         // Input Handling
@@ -179,13 +151,12 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-        float delta = Gdx.graphics.getDeltaTime();
+        float deltaTime = Gdx.graphics.getDeltaTime();
 
         // --- UPDATE ---
-        EntityRegistry.updateAll(delta, player);
-
-        healthLabel.setText("Player Health: " + player.getHealth());
-        manaLabel.setText("Player Mana: " + player.getMana());
+        EntityRegistry.updateRoom(deltaTime, player);
+        EntityRegistry.updateRoomMovement(deltaTime);
+        handleScreenTransition(player);
 
         // --- CLEAR ---
         ScreenUtils.clear(Color.BLACK);
@@ -197,9 +168,9 @@ public class Main extends InputAdapter implements ApplicationListener {
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
-        spriteBatch.draw(backgrounds.get(currentBackground), 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        spriteBatch.draw(getCurrentRoom().background,0, 0, getCurrentRoom().width, getCurrentRoom().height);
 
-        EntityRegistry.renderAll(spriteBatch);
+        EntityRegistry.renderRoom(spriteBatch);
         spriteBatch.end();
 
         // ======================
@@ -210,11 +181,12 @@ public class Main extends InputAdapter implements ApplicationListener {
 
         spriteBatch.begin();
         manaOrb.draw(spriteBatch);
+        healthIcon.draw(spriteBatch);
         debug.render();   // draw text only
         spriteBatch.end();
 
         // --- STAGE ---
-        stage.act(delta);
+        stage.act(deltaTime);
         stage.draw();
     }
 
@@ -257,6 +229,9 @@ public class Main extends InputAdapter implements ApplicationListener {
             }
             if(keycode == Input.Keys.P) {
                 chest.openCloseChest(player);
+            }
+            if(keycode == Input.Keys.L) {
+                new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
             }
 
         }
