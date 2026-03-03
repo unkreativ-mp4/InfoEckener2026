@@ -1,6 +1,7 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import net.eckener.dungeon_crawler.Assets;
 import net.eckener.dungeon_crawler.items.ItemStack;
 import net.eckener.dungeon_crawler.ui.Inventory;

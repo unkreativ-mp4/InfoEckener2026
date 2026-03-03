@@ -172,8 +172,8 @@ public class Main extends InputAdapter implements ApplicationListener {
             (stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 2f
         );
         chest.getChestInventoryUI().setPosition(
-            (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f,
-            (stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight())
+            (stage.getWidth()  - chest.getChestInventoryUI().getWidth())  / 2f,
+            (stage.getHeight() - chest.getChestInventoryUI().getHeight())
         );
     }
 
