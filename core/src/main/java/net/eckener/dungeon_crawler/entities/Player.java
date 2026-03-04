@@ -2,16 +2,13 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.items.Bow;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.logic.ItemStack;
 import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
-import net.eckener.dungeon_crawler.ui.Inventory;
-import net.eckener.dungeon_crawler.ui.InventoryUI;
+import net.eckener.dungeon_crawler.logic.Inventory;
 
 public class Player extends LivingEntity{
     private int maxMana;

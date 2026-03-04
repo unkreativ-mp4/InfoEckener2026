@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.logic.ItemStack;
 
 public class SlotWidget extends Stack {
 

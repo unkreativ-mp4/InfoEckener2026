@@ -1,9 +1,9 @@
-package net.eckener.dungeon_crawler.ui;
+package net.eckener.dungeon_crawler.logic;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import net.eckener.dungeon_crawler.Assets;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 import java.util.Objects;
 

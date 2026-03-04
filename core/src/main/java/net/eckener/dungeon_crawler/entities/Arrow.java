@@ -16,10 +16,12 @@ import static net.eckener.dungeon_crawler.Main.camera;
 public class Arrow extends Projectile{
 
     Entity owner;
+    int damage;
 
-    public Arrow(Texture texture, float xPos, float yPos, Entity owner) {
+    public Arrow(Texture texture, float xPos, float yPos, Entity owner, int pDamage) {
         super(texture, xPos, yPos, 5);
         this.owner = owner;
+        this.damage = pDamage;
     }
 
     /**
@@ -57,7 +59,7 @@ public class Arrow extends Projectile{
     private void hitDetection(){
         for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()){
             if (Intersector.overlapConvexPolygons(this.getHitbox(), livingEntity.getHitbox()) && !livingEntity.equals(owner)) {
-                livingEntity.takeDamage(10);
+                livingEntity.takeDamage(damage);
                 EntityRegistry.unregister(this);
                 break;
             }

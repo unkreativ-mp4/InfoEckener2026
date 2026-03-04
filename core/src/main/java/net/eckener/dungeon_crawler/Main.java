@@ -15,8 +15,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import net.eckener.dungeon_crawler.debug.*;
 import net.eckener.dungeon_crawler.entities.*;
+import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.Item;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.items.Weapon;
+import net.eckener.dungeon_crawler.logic.ItemStack;
+import net.eckener.dungeon_crawler.logic.LootTable;
 import net.eckener.dungeon_crawler.ui.*;
 
 import static net.eckener.dungeon_crawler.RoomRegistry.*;
@@ -96,17 +99,23 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         // Items & Inventory
         // ───────────────────────────────
-        Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
-        Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 5, 67);
-
-
+        Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 50, 1);
+        Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 60, 67);
+        Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 5, 1, 10000, 1);
 
         System.out.println("Stage: " +stage.getHeight() + " " + stage.getWidth());
 
-
-        chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage);
-
         ItemStack coinStack = new ItemStack(coin, 5);
+        ItemStack woodenSwordStack = new ItemStack(woodenSword, 1);
+        ItemStack darkBowStack = new ItemStack(darkBow, 1);
+
+        LootTable chestTable1 = new LootTable();
+        chestTable1.add(coin, 1,24);
+        chestTable1.add(woodenSword, 1,1);
+        chestTable1.add(darkBow, 1, 1);
+
+        chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage, chestTable1);
+
         player.getPlayerInventory().addItemStack(coinStack, 3, 3);
 
         // ───────────────────────────────

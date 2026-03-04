@@ -1,4 +1,7 @@
-package net.eckener.dungeon_crawler.items;
+package net.eckener.dungeon_crawler.logic;
+
+import net.eckener.dungeon_crawler.items.Item;
+import net.eckener.dungeon_crawler.items.Weapon;
 
 /**
  * Stores an {@link Item} or a {@link Weapon} and an amount

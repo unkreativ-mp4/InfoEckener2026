@@ -13,7 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Array;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.logic.Inventory;
+import net.eckener.dungeon_crawler.logic.ItemStack;
 
 public class InventoryUI extends Table {
 
@@ -163,7 +164,7 @@ public class InventoryUI extends Table {
 
                                 if (originRef.inv == targetRef.inv) {
                                     // SAME inventory: use your existing methods
-                                    if (!shiftClicked) {
+                                    if (shiftClicked) {
                                         originRef.inv.moveItemtoSlot(
                                             originRef.inv.getItemStacks(),
                                             originRef.inv.getItemStack(originRef.row, originRef.col),
@@ -179,10 +180,7 @@ public class InventoryUI extends Table {
                                         );
                                     }
                                 } else {
-                                    // DIFFERENT inventories:
-                                    // You need a method that transfers from A -> B
-                                    // (recommended: implement a transfer helper, see below)
-                                    if (!shiftClicked) {
+                                    if (shiftClicked) {
                                         originRef.inv.transferOneTo(targetRef.inv, originRef.row, originRef.col, targetRef.row, targetRef.col);
                                     } else {
                                         originRef.inv.transferWholeStackTo(targetRef.inv, originRef.row, originRef.col, targetRef.row, targetRef.col);
@@ -251,7 +249,7 @@ public class InventoryUI extends Table {
     }
 
 
-    public boolean getOpen() {
+    public boolean getIsOpen() {
         return isOpen;
     }
 

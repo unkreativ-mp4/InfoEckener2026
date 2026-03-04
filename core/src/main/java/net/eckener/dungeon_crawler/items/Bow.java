@@ -22,7 +22,7 @@ public class Bow extends Weapon{
      */
     @Override
     public void attack(LivingEntity attacker, LivingEntity attacked) {
-        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), attacker.getX(), attacker.getY(),attacker);
+        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), attacker.getX(), attacker.getY(),attacker, this.getDamage());
         arrow.setRotationToFaceCursor();
     }
 }
