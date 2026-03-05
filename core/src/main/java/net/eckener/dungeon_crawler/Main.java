@@ -43,6 +43,7 @@ public class Main extends InputAdapter implements ApplicationListener{
     //Inventory inventory;
     //InventoryUI inventoryUI;
     Chest chest;
+    Hotbar hotbar;
 
 
     private Stage stage;
@@ -116,6 +117,8 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage, chestTable1);
 
+        hotbar = new Hotbar(stage);
+
         player.getPlayerInventory().addItemStack(coinStack, 3, 3);
 
         // ───────────────────────────────
@@ -123,6 +126,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
         //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
+
 
         // ───────────────────────────────
         // Input Handling

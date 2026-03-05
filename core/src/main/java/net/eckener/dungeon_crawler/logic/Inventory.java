@@ -36,6 +36,16 @@ public class Inventory extends Table {
 
     }
 
+    public Inventory(int rows, int cols, String pInventoryName){
+
+        this.inventoryName = pInventoryName;
+        this.rows = rows;
+        this.cols = cols;
+
+        this.itemStacks = new ItemStack[rows][cols];
+
+    }
+
     public boolean isSlotEmpty(int row, int col) {
         return itemStacks[row][col] == null;
     }

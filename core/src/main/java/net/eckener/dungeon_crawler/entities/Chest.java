@@ -24,8 +24,8 @@ public class Chest extends Entity{
         chestInventory = new Inventory(4, 7, "Chest", stage);
         chestInventoryUI = chestInventory.getInventoryUI();
         this.getChestInventoryUI().setPosition(
-            (stage.getWidth() - this.getChestInventoryUI().getWidth()) / 2f,
-            (stage.getHeight() - this.getChestInventoryUI().getHeight())
+            (stage.getWidth() - this.chestInventoryUI.getWidth()) / 2f,
+            (stage.getHeight() - this.chestInventoryUI.getHeight())
         );
         stage.addActor(this.getChestInventoryUI());
         isChestOpen = false;
