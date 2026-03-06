@@ -17,7 +17,9 @@ import net.eckener.dungeon_crawler.debug.*;
 import net.eckener.dungeon_crawler.entities.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.Item;
+import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
+import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.logic.ItemStack;
 import net.eckener.dungeon_crawler.logic.LootTable;
 import net.eckener.dungeon_crawler.ui.*;
@@ -100,9 +102,9 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         // Items & Inventory
         // ───────────────────────────────
-        Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 50, 1);
+        Maul woodenSword = new Maul(Assets.get(Assets.WOODEN_SWORD));
         Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 60, 67);
-        Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 5, 1, 10000, 1);
+        Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 100, 1, 10000, 1);
 
         System.out.println("Stage: " +stage.getHeight() + " " + stage.getWidth());
 
@@ -117,9 +119,10 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage, chestTable1);
 
-        hotbar = new Hotbar(stage);
-
         player.getPlayerInventory().addItemStack(coinStack, 3, 3);
+
+        player.setSelectedItem(darkBowStack);
+
 
         // ───────────────────────────────
         // Enemies
@@ -163,6 +166,10 @@ public class Main extends InputAdapter implements ApplicationListener{
             (stage.getWidth()  - chest.getChestInventoryUI().getWidth())  / 2f,
             (stage.getHeight() - chest.getChestInventoryUI().getHeight())
         );
+
+        player.getPlayerHotbar().getInventoryUI().setPosition(
+            (stage.getWidth()  - player.getPlayerHotbar().getInventoryUI().getWidth())  / 2f,
+            20f);
     }
 
     @Override
@@ -248,6 +255,9 @@ public class Main extends InputAdapter implements ApplicationListener{
             }
             if(keycode == Input.Keys.L) {
                 new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
+            }
+            if(keycode == Input.Keys.K) {
+                player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(hotbar.getInventory());
             }
 
         }

@@ -17,6 +17,25 @@ public class Inventory extends Table {
     private InventoryUI inventoryUI;
     private ItemStack[][] itemStacks;
 
+    public Inventory(int rows, int cols, Stage pStage){
+
+        inventoryName = "";
+        stage = pStage;
+        this.rows = rows;
+        this.cols = cols;
+
+        this.itemStacks = new ItemStack[rows][cols];
+
+        inventoryUI = new InventoryUI(this, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), stage.getHeight(), stage.getWidth(), 2.5f);
+        inventoryUI.setPosition(
+            (stage.getWidth() - inventoryUI.getWidth()) / 2f,
+            (stage.getHeight() - inventoryUI.getHeight()) /2f
+        );
+
+        stage.addActor(inventoryUI);
+
+    }
+
     public Inventory(int rows, int cols, String pInventoryName, Stage pStage){
 
         stage = pStage;
@@ -36,15 +55,6 @@ public class Inventory extends Table {
 
     }
 
-    public Inventory(int rows, int cols, String pInventoryName){
-
-        this.inventoryName = pInventoryName;
-        this.rows = rows;
-        this.cols = cols;
-
-        this.itemStacks = new ItemStack[rows][cols];
-
-    }
 
     public boolean isSlotEmpty(int row, int col) {
         return itemStacks[row][col] == null;

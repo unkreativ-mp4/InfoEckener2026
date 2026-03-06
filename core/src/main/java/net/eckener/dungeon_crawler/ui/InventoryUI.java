@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.Array;
 import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.logic.ItemStack;
 
+import java.util.Objects;
+
 public class InventoryUI extends Table {
 
     private Inventory inventory;
@@ -66,9 +68,11 @@ public class InventoryUI extends Table {
 
         buildInventoryUI(inventory);
 
-        Skin titleSkin = new Skin(Gdx.files.internal("uiskin.json"));
-        Label title = new Label(inventory.getInventoryName(), titleSkin);
-        invPanel.add(title).center().padBottom(8f * uiScale).row();
+        if(!Objects.equals(inventory.getInventoryName(), "")) {
+            Skin titleSkin = new Skin(Gdx.files.internal("uiskin.json"));
+            Label title = new Label(inventory.getInventoryName(), titleSkin);
+            invPanel.add(title).center().padBottom(8f * uiScale).row();
+        }
         invPanel.add(inventory).center();
         add(invPanel).center();
 
