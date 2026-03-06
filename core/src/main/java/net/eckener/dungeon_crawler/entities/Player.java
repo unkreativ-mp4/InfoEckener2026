@@ -25,7 +25,7 @@ public class Player extends LivingEntity{
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
         Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
-        selectedItem = new ItemStack(bow,1);
+        selectedItem = new ItemStack(maul,1);
 
     }
 
@@ -105,14 +105,21 @@ public class Player extends LivingEntity{
     }
 
     /**
-     * Attacks an {@link Enemy} with the selected {@link Weapon}
-     * @param enemy the {@link Enemy} which to attack
+     * Attacks an {@link LivingEntity} with the selected {@link Weapon}
+     * @param livingEntity the {@link LivingEntity} which to attack
      */
     public void attackSelective(LivingEntity livingEntity) {
             selectedItem.getWeapon().attack(this, livingEntity);
             timeSinceLastAttack = 0;
     }
 
+    /**
+     * Checks if the player can attack and what the weapon type is
+     * <p>
+     * If the weapon is of type melee, all LivingEntities in weapon-range are attacked individually
+     * <p>
+     * If the weapon is not of type melee, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
+     */
     public void attack() {
         if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
             if(selectedItem.getWeapon().isMeleeWeapon()) {

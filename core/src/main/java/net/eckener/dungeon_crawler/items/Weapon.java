@@ -28,10 +28,16 @@ public abstract class Weapon extends Item{
         return damage;
     }
 
+    /**
+     * @return if the Weapon is a melee weapon
+     */
     public boolean isMeleeWeapon() {
         return isMeleeWeapon;
     }
 
+    /**
+     * @return the range of the Weapon
+     */
     public float getRange() {
         return range;
     }
