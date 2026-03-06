@@ -2,7 +2,6 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.MathUtils;
 import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.ItemStack;
@@ -26,7 +25,7 @@ public class Player extends LivingEntity{
 
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
         Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
-        selectedItem = new ItemStack(maul,1);
+        selectedItem = new ItemStack(bow,1);
 
     }
 
@@ -109,10 +108,22 @@ public class Player extends LivingEntity{
      * Attacks an {@link Enemy} with the selected {@link Weapon}
      * @param enemy the {@link Enemy} which to attack
      */
-    public void attack(Enemy enemy) {
-        if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
-            selectedItem.getWeapon().attack(this, enemy);
+    public void attackSelective(LivingEntity livingEntity) {
+            selectedItem.getWeapon().attack(this, livingEntity);
             timeSinceLastAttack = 0;
+    }
+
+    public void attack() {
+        if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
+            if(selectedItem.getWeapon().isMeleeWeapon()) {
+                for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                    if(Math.pow(getX() - livingEntity.getX(),2) + Math.pow(getX() - livingEntity.getX(),2) <= selectedItem.getWeapon().getRange() && !(livingEntity instanceof Player)) {
+                        attackSelective( livingEntity);
+                    }
+                }
+            } else {
+                attackSelective(null);
+            }
 
         }
     }
