@@ -116,14 +116,25 @@ public class Player extends LivingEntity{
      * @param enemy the {@link Enemy} which to attack
      */
     public void attack(Enemy enemy) {
-        System.out.println(selectedItem.getItem());
-        System.out.println(selectedItem.getWeapon());
-        if(selectedItem != null) {
-            if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
-                selectedItem.getWeapon().attack(this, enemy);
-                timeSinceLastAttack = 0;
-            }
+        ItemStack weaponSlotStack = hotbar.getInventory().getItemStack(0, 0);
+
+        if (weaponSlotStack == null || weaponSlotStack.getItem() == null) {
+            System.out.println("Hotbar slot 1 is empty");
+            return;
         }
+
+        if (!(weaponSlotStack.getItem() instanceof Weapon)) {
+            System.out.println("Hotbar slot 1 item is not a weapon: " + weaponSlotStack.getItem().getItemName());
+            return;
+        }
+
+        if (timeSinceLastAttack <= baseAttackCooldown) {
+            return;
+        }
+
+        Weapon weapon = (Weapon) weaponSlotStack.getItem();
+        weapon.attack(this, enemy);
+        timeSinceLastAttack = 0;
     }
 
     /**

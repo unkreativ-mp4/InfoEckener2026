@@ -45,7 +45,6 @@ public class Main extends InputAdapter implements ApplicationListener{
     //Inventory inventory;
     //InventoryUI inventoryUI;
     Chest chest;
-    Hotbar hotbar;
 
 
     private Stage stage;
@@ -121,7 +120,7 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         player.getPlayerInventory().addItemStack(coinStack, 3, 3);
 
-        player.setSelectedItem(darkBowStack);
+        player.getPlayerHotbar().getInventory().addItemStack(darkBowStack, 0, 0);
 
 
         // ───────────────────────────────
@@ -257,7 +256,7 @@ public class Main extends InputAdapter implements ApplicationListener{
                 new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
             }
             if(keycode == Input.Keys.K) {
-                player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(hotbar.getInventory());
+                player.getPlayerHotbar().getInventoryUI().inventoryOpenManagement(player.getPlayerHotbar().getInventory());
             }
 
         }

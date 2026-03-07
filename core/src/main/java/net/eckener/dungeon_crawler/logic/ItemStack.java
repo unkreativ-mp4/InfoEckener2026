@@ -10,17 +10,11 @@ public class ItemStack {
 
 
     private Item item;
-    private Weapon weapon;
     private int amount;
 
     public ItemStack(Item pItem, int pAmount) {
         item = pItem;
         amount = pAmount;
-    }
-
-    public ItemStack(Weapon weapon, int amount) {
-        this.weapon = weapon;
-        this.amount = amount;
     }
 
     /**
@@ -54,14 +48,14 @@ public class ItemStack {
     /**
      * @return the {@link Weapon} stored in the ItemStack
      */
-    public Weapon getWeapon() {
-        return weapon;
+    public boolean isWeapon() {
+        return item instanceof Weapon;
     }
 
     /**
      * @return if the stored {@link Item} is just an {@link Item} or actually a {@link Weapon}
      */
-    public boolean isWeapon() {
-        return weapon != null;
+    public Weapon getWeapon() {
+        return item instanceof Weapon ? (Weapon) item : null;
     }
 }
