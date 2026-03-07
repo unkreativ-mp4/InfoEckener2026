@@ -2,12 +2,14 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.items.Bow;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.logic.ItemStack;
 import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
+import net.eckener.dungeon_crawler.logic.Inventory;
+import net.eckener.dungeon_crawler.ui.Hotbar;
 
 public class Player extends LivingEntity{
     private int maxMana;
@@ -17,16 +19,20 @@ public class Player extends LivingEntity{
     private final float baseDamageCooldown = 0.5F;
     private final float baseAttackCooldown = 1.0F;
     private ItemStack selectedItem; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
+    private Inventory inventory;
+    private Hotbar hotbar;
 
 
-
-    public Player(int maxHealth, int maxMana) {
+    public Player(int maxHealth, int maxMana, Stage stage) {
         super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
         this.maxMana = maxMana;
 
+        inventory = new Inventory(4, 7, "Inventory", stage);
+        hotbar = new Hotbar(stage);
+
         Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
         Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
-        selectedItem = new ItemStack(maul,1);
+        selectedItem = hotbar.getInventory().getItemStack(0, 0);
 
     }
 
@@ -110,11 +116,25 @@ public class Player extends LivingEntity{
      * @param enemy the {@link Enemy} which to attack
      */
     public void attack(Enemy enemy) {
-        if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
-            selectedItem.getWeapon().attack(this, enemy);
-            timeSinceLastAttack = 0;
+        ItemStack weaponSlotStack = hotbar.getInventory().getItemStack(0, 0);
 
+        if (weaponSlotStack == null || weaponSlotStack.getItem() == null) {
+            System.out.println("Hotbar slot 1 is empty");
+            return;
         }
+
+        if (!(weaponSlotStack.getItem() instanceof Weapon)) {
+            System.out.println("Hotbar slot 1 item is not a weapon: " + weaponSlotStack.getItem().getItemName());
+            return;
+        }
+
+        if (timeSinceLastAttack <= baseAttackCooldown) {
+            return;
+        }
+
+        Weapon weapon = (Weapon) weaponSlotStack.getItem();
+        weapon.attack(this, enemy);
+        timeSinceLastAttack = 0;
     }
 
     /**
@@ -140,6 +160,7 @@ public class Player extends LivingEntity{
         timeSinceLastDamage += deltaTime;
         timeSinceLastAttack += deltaTime;
         move();
+        selectedItem = hotbar.getInventory().getItemStack(0,0);
     }
 
     /**
@@ -148,6 +169,21 @@ public class Player extends LivingEntity{
      * @param player could honestly just be {@code this}
      */
     @Override
-    public void update(float delta, Player player) {}
-}
+    public void update(float delta, Player player) {
+    }
 
+    public Inventory getPlayerInventory() {
+        return inventory;
+    }
+
+    public Hotbar getPlayerHotbar() {return hotbar;}
+
+    public ItemStack getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(ItemStack pSelectedItem) {
+        selectedItem = pSelectedItem;
+    }
+
+}

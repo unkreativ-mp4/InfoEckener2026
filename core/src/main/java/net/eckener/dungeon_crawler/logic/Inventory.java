@@ -1,7 +1,9 @@
-package net.eckener.dungeon_crawler.ui;
+package net.eckener.dungeon_crawler.logic;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.Assets;
+import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 import java.util.Objects;
 
@@ -9,17 +11,50 @@ public class Inventory extends Table {
 
     private final int rows;
     private final int cols;
+    private final String inventoryName;
+    private Stage stage;
 
+    private InventoryUI inventoryUI;
     private ItemStack[][] itemStacks;
 
-    public Inventory(int rows, int cols){
+    public Inventory(int rows, int cols, Stage pStage){
 
+        inventoryName = "";
+        stage = pStage;
         this.rows = rows;
         this.cols = cols;
 
         this.itemStacks = new ItemStack[rows][cols];
 
+        inventoryUI = new InventoryUI(this, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), stage.getHeight(), stage.getWidth(), 2.5f);
+        inventoryUI.setPosition(
+            (stage.getWidth() - inventoryUI.getWidth()) / 2f,
+            (stage.getHeight() - inventoryUI.getHeight()) /2f
+        );
+
+        stage.addActor(inventoryUI);
+
     }
+
+    public Inventory(int rows, int cols, String pInventoryName, Stage pStage){
+
+        stage = pStage;
+        this.inventoryName = pInventoryName;
+        this.rows = rows;
+        this.cols = cols;
+
+        this.itemStacks = new ItemStack[rows][cols];
+
+        inventoryUI = new InventoryUI(this, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), stage.getHeight(), stage.getWidth(), 2.5f);
+        inventoryUI.setPosition(
+            (stage.getWidth() - inventoryUI.getWidth()) / 2f,
+            (stage.getHeight() - inventoryUI.getHeight()) /2f
+        );
+
+        stage.addActor(inventoryUI);
+
+    }
+
 
     public boolean isSlotEmpty(int row, int col) {
         return itemStacks[row][col] == null;
@@ -60,7 +95,9 @@ public class Inventory extends Table {
         return itemStacks;
     }
 
-    public ItemStack getItemStack(int row, int col) {
+    public String getInventoryName() { return inventoryName; }
+
+    public ItemStack getItemStack( int row, int col) {
         return itemStacks[row][col];
     }
 
@@ -144,5 +181,72 @@ public class Inventory extends Table {
         } else {
             System.out.println("Inventory Slot occupied!");
         }
+    }
+
+    public void transferOneTo(Inventory targetInv, int fromRow, int fromCol, int toRow, int toCol) {
+        ItemStack[][] from = this.itemStacks;
+        ItemStack[][] to = targetInv.itemStacks;
+
+        if (from[fromRow][fromCol] == null) {
+            System.out.println("No Item to move at this slot");
+            return;
+        }
+
+        ItemStack sourceStack = from[fromRow][fromCol];
+        ItemStack targetStack = to[toRow][toCol];
+
+        if (targetStack == null) {
+            // place 1 into target
+            to[toRow][toCol] = new ItemStack(sourceStack.getItem(), 1);
+
+            // remove 1 from source
+            if (sourceStack.getAmount() > 1) sourceStack.setAmount(sourceStack.getAmount() - 1);
+            else from[fromRow][fromCol] = null;
+
+            return;
+        }
+
+        boolean sameItem = Objects.equals(targetStack.getItem().getItemID(), sourceStack.getItem().getItemID());
+        if (sameItem) {
+            targetStack.setAmount(targetStack.getAmount() + 1);
+
+            if (sourceStack.getAmount() > 1) sourceStack.setAmount(sourceStack.getAmount() - 1);
+            else from[fromRow][fromCol] = null;
+        } else {
+            System.out.println("Inventory Slot occupied!");
+        }
+    }
+
+    public void transferWholeStackTo(Inventory targetInv, int fromRow, int fromCol, int toRow, int toCol) {
+        ItemStack[][] from = this.itemStacks;
+        ItemStack[][] to = targetInv.itemStacks;
+
+        if (from[fromRow][fromCol] == null) {
+            System.out.println("No Item to move at this slot");
+            return;
+        }
+
+        ItemStack sourceStack = from[fromRow][fromCol];
+        int stackAmount = sourceStack.getAmount();
+
+        ItemStack targetStack = to[toRow][toCol];
+
+        if (targetStack == null) {
+            to[toRow][toCol] = new ItemStack(sourceStack.getItem(), stackAmount);
+            from[fromRow][fromCol] = null;
+            return;
+        }
+
+        boolean sameItem = Objects.equals(targetStack.getItem().getItemID(), sourceStack.getItem().getItemID());
+        if (sameItem) {
+            targetStack.setAmount(targetStack.getAmount() + stackAmount);
+            from[fromRow][fromCol] = null;
+        } else {
+            System.out.println("Inventory Slot occupied!");
+        }
+    }
+
+    public InventoryUI getInventoryUI() {
+        return inventoryUI;
     }
 }

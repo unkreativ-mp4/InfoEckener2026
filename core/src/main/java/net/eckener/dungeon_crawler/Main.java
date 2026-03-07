@@ -14,12 +14,14 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import net.eckener.dungeon_crawler.debug.*;
-import net.eckener.dungeon_crawler.entities.EntityRegistry;
-import net.eckener.dungeon_crawler.entities.Player;
-import net.eckener.dungeon_crawler.entities.Skeleton;
-import net.eckener.dungeon_crawler.entities.Zombie;
+import net.eckener.dungeon_crawler.entities.*;
+import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.Item;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import net.eckener.dungeon_crawler.items.Maul;
+import net.eckener.dungeon_crawler.items.Weapon;
+import net.eckener.dungeon_crawler.logic.Inventory;
+import net.eckener.dungeon_crawler.logic.ItemStack;
+import net.eckener.dungeon_crawler.logic.LootTable;
 import net.eckener.dungeon_crawler.ui.*;
 
 import static net.eckener.dungeon_crawler.RoomRegistry.*;
@@ -39,12 +41,11 @@ public class Main extends InputAdapter implements ApplicationListener{
     Zombie zombie;
     Skeleton skeleton;
 
-    Player player;
-    Inventory inventory;
-    InventoryUI inventoryUI;
+    public Player player;
+    //Inventory inventory;
+    //InventoryUI inventoryUI;
+    Chest chest;
 
-    Inventory penis;
-    InventoryUI penisUI;
 
     private Stage stage;
 
@@ -75,7 +76,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // Player
         // ───────────────────────────────
 
-        player = new Player(100, 100);
+        player = new Player(100, 100, stage);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -89,7 +90,7 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         debug = new DebugOverlay(layout, debugRenderer, debugInput);
 
-        stage.setDebugAll(false);
+        stage.setDebugAll(true);
 
         // ───────────────────────────────
         // GUI
@@ -100,22 +101,26 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         // Items & Inventory
         // ───────────────────────────────
-        Item woodenSword = new Item("wooden_sword", "Wooden Sword", Assets.get(Assets.WOODEN_SWORD), 1, 64);
-        Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 5, 67);
+        Maul woodenSword = new Maul(Assets.get(Assets.WOODEN_SWORD));
+        Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 60, 67);
+        Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 100, 1, 10000, 1);
+
+        System.out.println("Stage: " +stage.getHeight() + " " + stage.getWidth());
+
         ItemStack coinStack = new ItemStack(coin, 5);
+        ItemStack woodenSwordStack = new ItemStack(woodenSword, 1);
+        ItemStack darkBowStack = new ItemStack(darkBow, 1);
 
-        inventory = new Inventory(4, 7);
-        penis = new Inventory(3,2);
+        LootTable chestTable1 = new LootTable();
+        chestTable1.add(coin, 1,24);
+        chestTable1.add(woodenSword, 1,1);
+        chestTable1.add(darkBow, 1, 1);
 
-        inventory.addItemStack(coinStack, 3, 3);
-        penis.addItemStack(coinStack, 0,0);
+        chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage, chestTable1);
 
-        inventory.printInventory(inventory);
+        player.getPlayerInventory().addItemStack(coinStack, 3, 3);
 
-        inventoryUI = new InventoryUI(inventory, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 3.5f);
-        penisUI = new InventoryUI(penis, Assets.get(Assets.INVENTORY_BACKGROUND), Assets.get(Assets.INVENTORY_SLOT), 2f);
-        stage.addActor(inventoryUI);
-        stage.addActor(penisUI);
+        player.getPlayerHotbar().getInventory().addItemStack(darkBowStack, 0, 0);
 
 
         // ───────────────────────────────
@@ -123,6 +128,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
         //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
+
 
         // ───────────────────────────────
         // Input Handling
@@ -142,6 +148,27 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
+
+        float YwhenChestOpen;
+        if(chest.isChestOpen()) {
+            YwhenChestOpen = ((stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 5f);
+        }
+        else {
+            YwhenChestOpen = ((stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 2f);
+        }
+
+
+        player.getPlayerInventory().getInventoryUI().setPosition(
+            (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f, YwhenChestOpen);
+
+        chest.getChestInventoryUI().setPosition(
+            (stage.getWidth()  - chest.getChestInventoryUI().getWidth())  / 2f,
+            (stage.getHeight() - chest.getChestInventoryUI().getHeight())
+        );
+
+        player.getPlayerHotbar().getInventoryUI().setPosition(
+            (stage.getWidth()  - player.getPlayerHotbar().getInventoryUI().getWidth())  / 2f,
+            20f);
     }
 
     @Override
@@ -208,7 +235,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         } else {
 
             if(keycode == Input.Keys.I) {
-                inventoryUI.openInventory(inventory);
+                player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(player.getPlayerInventory());
             }
             if(keycode == Input.Keys.H) {
                 player.heal(5);
@@ -223,10 +250,13 @@ public class Main extends InputAdapter implements ApplicationListener{
                 player.attack(zombie);
             }
             if(keycode == Input.Keys.P) {
-                penisUI.openInventory(penis);
+                chest.openCloseChest(player);
             }
             if(keycode == Input.Keys.L) {
                 new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
+            }
+            if(keycode == Input.Keys.K) {
+                player.getPlayerHotbar().getInventoryUI().inventoryOpenManagement(player.getPlayerHotbar().getInventory());
             }
 
         }

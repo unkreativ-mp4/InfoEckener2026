@@ -59,7 +59,7 @@ public class Skeleton extends Enemy {
     @Override
     public void attack(LivingEntity livingEntity) {
         if(canAttack()) {
-            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), getX(), getY(), this);
+            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), getX(), getY(), this, 10);
             arrow.setRotationToFaceLivingEntity(livingEntity);
             timeSinceLastAttack = 0;
         }

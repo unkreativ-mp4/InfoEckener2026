@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -13,30 +12,47 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import net.eckener.dungeon_crawler.items.ItemStack;
+import com.badlogic.gdx.utils.Array;
+import net.eckener.dungeon_crawler.logic.Inventory;
+import net.eckener.dungeon_crawler.logic.ItemStack;
+
+import java.util.Objects;
 
 public class InventoryUI extends Table {
 
-    private boolean inventoryVisible;
+    private Inventory inventory;
+    private boolean isOpen;
     private float slotSize = 32f;
     private float slotPad = 3f;
+
+    private float inventoryXPos;
+    private float inventoryYPos;
+
     private Texture slotBackgroundTexture;
     private final BitmapFont uiFont = new BitmapFont();
     private boolean dragging = false;
-    private GridPoint2 dragOrigin = null;     // (col,row) like your userObject
-    private ItemStack draggedStack = null;    // the stack we are moving 1 from
-    private Image dragGhost = new Image();    // image following the pointer
+    private SlotReference dragOrigin = null;
+    private ItemStack draggedStack = null;
+    private Inventory dragOriginInv = null; // optional (dragOrigin already contains inv)   // the stack we are moving 1 from
+    private Image dragGhost = new Image();// image following the pointer
+    private final Array<Inventory> openInventories = new Array<>();
 
 
-    public InventoryUI(Inventory inventory, Texture inventoryTexture, Texture pSlotBackgroundTexture, float uiScale){
+    public InventoryUI(Inventory pInventory, Texture inventoryTexture, Texture pSlotBackgroundTexture, float pInventoryXPos, float pInventoryYPos, float uiScale) {
 
-        this.setFillParent(true);
+        //this.setFillParent(true);
+        inventory = pInventory;
 
         this.setVisible(false);
         inventory.setVisible(false);
         setTouchable(Touchable.disabled);
 
-        center();
+        //inventoryXPos = pInventoryXPos
+        //inventoryYPos = pInventoryYPos;
+        //System.out.println(inventoryXPos + " " + inventoryYPos);
+
+        //this.setPosition(inventoryXPos, inventoryYPos);
+
 
         slotSize = slotSize * uiScale;
         slotPad = slotPad * uiScale;
@@ -52,9 +68,11 @@ public class InventoryUI extends Table {
 
         buildInventoryUI(inventory);
 
-        Skin titleSkin = new Skin(Gdx.files.internal("uiskin.json"));
-        Label title = new Label("Inventory", titleSkin);
-        invPanel.add(title).center().padBottom(8f * uiScale).row();
+        if(!Objects.equals(inventory.getInventoryName(), "")) {
+            Skin titleSkin = new Skin(Gdx.files.internal("uiskin.json"));
+            Label title = new Label(inventory.getInventoryName(), titleSkin);
+            invPanel.add(title).center().padBottom(8f * uiScale).row();
+        }
         invPanel.add(inventory).center();
         add(invPanel).center();
 
@@ -76,27 +94,31 @@ public class InventoryUI extends Table {
                 Table cell = new Table();
                 cell.setBackground(new NinePatchDrawable(slotBackgroundPatch));
 
-                SlotWidget slot = new SlotWidget(inventory.getItemStack(row,col), uiFont);
+                SlotWidget slot = new SlotWidget(inventory.getItemStack(row, col), uiFont);
+                slot.setUserObject(new SlotReference(inventory, row, col));
                 cell.setUserObject(slot);
                 slot.setTouchable(Touchable.enabled);
 
-                slot.setUserObject(new GridPoint2(col, row));
+                slot.setUserObject(new SlotReference(inventory, row, col));
                 final int r = row;
                 final int c = col;
 
-                slot.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener()  {
+                slot.addListener(new com.badlogic.gdx.scenes.scene2d.InputListener() {
 
 
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
+                        SlotReference origin = (SlotReference) slot.getUserObject();
+
                         // Only start dragging if slot has an item
-                        ItemStack stackHere = inventory.getItemStack(r, c);
+                        ItemStack stackHere = origin.inv.getItemStack(origin.row, origin.col);
                         if (stackHere == null) return false;
 
                         dragging = true;
-                        dragOrigin = new GridPoint2(c, r);
+                        dragOrigin = origin;
                         draggedStack = stackHere;
+
 
                         // Setup ghost image from the item's texture
                         var region = new com.badlogic.gdx.graphics.g2d.TextureRegion(stackHere.getItem().getItemTexture());
@@ -114,6 +136,7 @@ public class InventoryUI extends Table {
                         return true; // we handle the drag
 
                     }
+
                     @Override
                     public void touchDragged(InputEvent event, float x, float y, int pointer) {
                         if (!dragging) return;
@@ -121,10 +144,11 @@ public class InventoryUI extends Table {
                         setGhostAt(event.getStageX(), event.getStageY());
                         event.stop();
                     }
+
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                        boolean shiftClicked = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
 
+                        boolean shiftClicked = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
                         if (!dragging) return;
 
                         // Hide ghost
@@ -132,36 +156,39 @@ public class InventoryUI extends Table {
 
                         // Determine drop target slot
                         SlotWidget target = findSlotUnderPointer(event.getStageX(), event.getStageY());
+                        if (target != null && target.getUserObject() instanceof SlotReference) {
+                            SlotReference targetRef = (SlotReference) target.getUserObject();
 
-                        if (target != null && target.getUserObject() instanceof GridPoint2 targetPos) {
+                            SlotReference originRef = dragOrigin;
 
-                            int newCol = targetPos.x;
-                            int newRow = targetPos.y;
+                            // same slot? ignore
+                            if (!(originRef.inv == targetRef.inv &&
+                                originRef.row == targetRef.row &&
+                                originRef.col == targetRef.col)) {
 
-                            int orgCol = dragOrigin.x;
-                            int orgRow = dragOrigin.y;
-
-                            // Ignore dropping back on same slot if you want
-                            if (!(newRow == orgRow && newCol == orgCol)) {
-                                // Move ONE item using your current moveItemtoSlot implementation
-                                if(!shiftClicked) {
-                                    inventory.moveItemtoSlot(
-                                        inventory.getItemStacks(),
-                                        inventory.getItemStack(orgRow, orgCol),
-                                        newRow, newCol,
-                                        orgRow, orgCol
-
-                                    );
-                                }
-                                else {
-                                    inventory.moveWholeItemStacktoSlot(
-                                        inventory.getItemStacks(),
-                                        inventory.getItemStack(orgRow, orgCol),
-                                        newRow,
-                                        newCol,
-                                        orgRow,
-                                        orgCol
-                                    );
+                                if (originRef.inv == targetRef.inv) {
+                                    // SAME inventory: use your existing methods
+                                    if (shiftClicked) {
+                                        originRef.inv.moveItemtoSlot(
+                                            originRef.inv.getItemStacks(),
+                                            originRef.inv.getItemStack(originRef.row, originRef.col),
+                                            targetRef.row, targetRef.col,
+                                            originRef.row, originRef.col
+                                        );
+                                    } else {
+                                        originRef.inv.moveWholeItemStacktoSlot(
+                                            originRef.inv.getItemStacks(),
+                                            originRef.inv.getItemStack(originRef.row, originRef.col),
+                                            targetRef.row, targetRef.col,
+                                            originRef.row, originRef.col
+                                        );
+                                    }
+                                } else {
+                                    if (shiftClicked) {
+                                        originRef.inv.transferOneTo(targetRef.inv, originRef.row, originRef.col, targetRef.row, targetRef.col);
+                                    } else {
+                                        originRef.inv.transferWholeStackTo(targetRef.inv, originRef.row, originRef.col, targetRef.row, targetRef.col);
+                                    }
                                 }
                             }
                         }
@@ -173,6 +200,7 @@ public class InventoryUI extends Table {
 
                         // Rebuild UI so numbers/textures update
                         buildInventoryUI(inventory);
+                        rebuildAllOpenInventories();
 
                         event.stop();
                     }
@@ -181,30 +209,62 @@ public class InventoryUI extends Table {
 
                 cell.add(slot).grow();
                 inventory.add(cell).size(slotSize).pad(slotPad);
-                if(col == inventory.getCols() - 1) {
+                if (col == inventory.getCols() - 1) {
                     inventory.row();
                 }
             }
         }
     }
 
+    public void inventoryOpenManagement(Inventory inventory) {
+
+        if (!isOpen) {
+            openInventory(inventory);
+            isOpen = !isOpen;
+        }
+
+        else {
+            closeInventory(inventory);
+            isOpen = !isOpen;
+        }
+    }
+
     public void openInventory(Inventory inventory) {
-        buildInventoryUI(inventory);
-        inventoryVisible = !inventoryVisible;
-        setVisible(inventoryVisible);
-        inventory.setVisible(inventoryVisible);
-        setTouchable(inventoryVisible ? Touchable.enabled : Touchable.disabled);
+        if (!openInventories.contains(inventory, true)) openInventories.add(inventory);
+        inventory.setVisible(true);
+        setVisible(true);
+        setTouchable(Touchable.enabled);
+        rebuildAllOpenInventories();
+    }
+
+    public void closeInventory(Inventory inventory) {
+        openInventories.removeValue(inventory, true);
+        inventory.setVisible(false);
+        if (openInventories.size == 0) {
+            setVisible(false);
+            setTouchable(Touchable.disabled);
+        }
+    }
+
+    private void rebuildAllOpenInventories() {
+        for (Inventory inv : openInventories) {
+            buildInventoryUI(inv);
+        }
     }
 
 
-    public boolean getInventoryVisible() {
-        return inventoryVisible;
+    public boolean getIsOpen() {
+        return isOpen;
     }
 
     private void setGhostAt(float stageX, float stageY) {
+        if (getStage() == null) return;
+
+        var local = this.stageToLocalCoordinates(new com.badlogic.gdx.math.Vector2(stageX, stageY));
+
         dragGhost.setPosition(
-            stageX - dragGhost.getWidth() / 2f,
-            stageY - dragGhost.getHeight() / 2f
+            local.x - dragGhost.getWidth() / 2f,
+            local.y - dragGhost.getHeight() / 2f
         );
     }
 
@@ -223,4 +283,17 @@ public class InventoryUI extends Table {
         }
         return (SlotWidget) hit;
     }
+
+    public void setInventoryXPos(float inventoryXPos) {
+        this.inventoryXPos = inventoryXPos;
+    }
+
+    public void setInventoryYPos(float inventoryYPos) {
+        this.inventoryYPos = inventoryYPos;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
 }

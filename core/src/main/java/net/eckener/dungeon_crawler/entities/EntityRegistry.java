@@ -94,7 +94,7 @@ public final class EntityRegistry {
      */
     public static void updateRoom(float delta, Player player) {
         for (Entity entity : roomEntities) {
-            if(entity instanceof Enemy) {
+            if(entity instanceof Enemy || entity instanceof Chest) {
                 entity.update(delta, player);
             } else {
                 entity.update(delta);

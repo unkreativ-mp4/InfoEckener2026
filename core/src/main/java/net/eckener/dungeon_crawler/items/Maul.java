@@ -6,7 +6,7 @@ import net.eckener.dungeon_crawler.entities.LivingEntity;
 
 public class Maul extends Weapon{
     public Maul(Texture pItemTexture) {
-        super("maul", "Maul", pItemTexture, 3, 1, 10, 4);
+        super("maul", "Maul", pItemTexture, 100, 1, 10, 4);
     }
 
     @Override
