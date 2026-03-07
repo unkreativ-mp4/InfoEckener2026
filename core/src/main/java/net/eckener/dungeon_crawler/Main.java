@@ -18,8 +18,6 @@ import net.eckener.dungeon_crawler.entities.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.items.Maul;
-import net.eckener.dungeon_crawler.items.Weapon;
-import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.logic.ItemStack;
 import net.eckener.dungeon_crawler.logic.LootTable;
 import net.eckener.dungeon_crawler.ui.*;
@@ -42,8 +40,6 @@ public class Main extends InputAdapter implements ApplicationListener{
     Skeleton skeleton;
 
     public Player player;
-    //Inventory inventory;
-    //InventoryUI inventoryUI;
     Chest chest;
 
 
@@ -126,7 +122,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         // Enemies
         // ───────────────────────────────
-        zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
+        //zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
         //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
         new Wall(Assets.get(Assets.STONE_BRICKS), 4,5);
 

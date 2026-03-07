@@ -65,6 +65,8 @@ public class Chest extends Entity{
         float dy = player.getY() - getY();
         boolean inRange = (dx * dx + dy * dy) <= (range * range);
 
+        System.out.println(inRange);
+
         if (!inRange) {
             // optional: auto-close if you walk away
             if (isChestOpen) {

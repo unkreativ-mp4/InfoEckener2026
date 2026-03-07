@@ -114,8 +114,22 @@ public class Player extends LivingEntity{
     /**
      * Attacks an {@link LivingEntity} with the selected {@link Weapon}
      * @param livingEntity the {@link LivingEntity} which to attack
+     * @param weapon the {@link Weapon} with which to attack
      */
-    public void attack(Enemy enemy) {
+    public void attackSelective(LivingEntity livingEntity, Weapon weapon) {
+
+        weapon.attack(this, livingEntity);
+        timeSinceLastAttack = 0;
+    }
+
+    /**
+     * Checks if the player can attack and what the weapon type is
+     * <p>
+     * If the weapon is of type melee, all LivingEntities in weapon-range are attacked individually
+     * <p>
+     * If the weapon is not of type melee, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
+     */
+    public void attack() {
         ItemStack weaponSlotStack = hotbar.getInventory().getItemStack(0, 0);
 
         if (weaponSlotStack == null || weaponSlotStack.getItem() == null) {
@@ -133,32 +147,14 @@ public class Player extends LivingEntity{
         }
 
         Weapon weapon = (Weapon) weaponSlotStack.getItem();
-        weapon.attack(this, enemy);
-        timeSinceLastAttack = 0;
-    public void attackSelective(LivingEntity livingEntity) {
-            selectedItem.getWeapon().attack(this, livingEntity);
-            timeSinceLastAttack = 0;
-    }
-
-    /**
-     * Checks if the player can attack and what the weapon type is
-     * <p>
-     * If the weapon is of type melee, all LivingEntities in weapon-range are attacked individually
-     * <p>
-     * If the weapon is not of type melee, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
-     */
-    public void attack() {
-        if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
-            if(selectedItem.getWeapon().isMeleeWeapon()) {
-                for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
-                    if(Math.pow(getX() - livingEntity.getX(),2) + Math.pow(getX() - livingEntity.getX(),2) <= selectedItem.getWeapon().getRange() && !(livingEntity instanceof Player)) {
-                        attackSelective( livingEntity);
-                    }
+        if(selectedItem.getWeapon().isMeleeWeapon()) {
+            for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                if(Math.pow(getX() - livingEntity.getX(),2) + Math.pow(getX() - livingEntity.getX(),2) <= selectedItem.getWeapon().getRange() && !(livingEntity instanceof Player)) {
+                    attackSelective(livingEntity, weapon);
                 }
-            } else {
-                attackSelective(null);
             }
-
+        } else {
+            attackSelective(null, weapon);
         }
     }
 
@@ -210,4 +206,5 @@ public class Player extends LivingEntity{
     public void setSelectedItem(ItemStack pSelectedItem) {
         selectedItem = pSelectedItem;
     }
+}
 

@@ -169,14 +169,14 @@ public class InventoryUI extends Table {
                                 if (originRef.inv == targetRef.inv) {
                                     // SAME inventory: use your existing methods
                                     if (shiftClicked) {
-                                        originRef.inv.moveItemtoSlot(
+                                        originRef.inv.moveItemToSlot(
                                             originRef.inv.getItemStacks(),
                                             originRef.inv.getItemStack(originRef.row, originRef.col),
                                             targetRef.row, targetRef.col,
                                             originRef.row, originRef.col
                                         );
                                     } else {
-                                        originRef.inv.moveWholeItemStacktoSlot(
+                                        originRef.inv.moveWholeItemStackToSlot(
                                             originRef.inv.getItemStacks(),
                                             originRef.inv.getItemStack(originRef.row, originRef.col),
                                             targetRef.row, targetRef.col,
@@ -220,13 +220,12 @@ public class InventoryUI extends Table {
 
         if (!isOpen) {
             openInventory(inventory);
-            isOpen = !isOpen;
         }
 
         else {
             closeInventory(inventory);
-            isOpen = !isOpen;
         }
+        isOpen = !isOpen;
     }
 
     public void openInventory(Inventory inventory) {
