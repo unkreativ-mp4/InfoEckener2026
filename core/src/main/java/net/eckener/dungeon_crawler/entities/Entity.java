@@ -32,10 +32,6 @@ public abstract class Entity extends Sprite {
         room = getCurrentRoom();
         EntityRegistry.register(this);
 
-        System.out.println("EntityRegistry: " + EntityRegistry.getAllEntities());
-        System.out.println("EntityRoomRegistry: " + EntityRegistry.getAllRoomEntities());
-
-
         float[] vertices = new float[] {
             0, 0,
             getWidth(), 0,

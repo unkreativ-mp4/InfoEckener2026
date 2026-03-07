@@ -40,7 +40,7 @@ public class Chest extends Entity{
     public void update(float delta, Player player) {
         if (!isChestOpen) return;
 
-        float range = 1.0f;
+        float range = 1.5f;
         float dx = player.getX() - getX();
         float dy = player.getY() - getY();
         boolean inRange = (dx * dx + dy * dy) <= (range * range);
@@ -59,13 +59,11 @@ public class Chest extends Entity{
 
     public void openCloseChest(Player player) {
 
-        float range = 1.0f;
+        float range = 1.5f;
 
         float dx = player.getX() - getX();
         float dy = player.getY() - getY();
         boolean inRange = (dx * dx + dy * dy) <= (range * range);
-
-        System.out.println(inRange);
 
         if (!inRange) {
             // optional: auto-close if you walk away
