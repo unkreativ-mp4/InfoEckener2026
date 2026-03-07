@@ -85,7 +85,7 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         debug = new DebugOverlay(layout, debugRenderer, debugInput);
 
-        stage.setDebugAll(true);
+        stage.setDebugAll(false);
 
         // ───────────────────────────────
         // GUI
@@ -98,7 +98,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         Maul woodenSword = new Maul(Assets.get(Assets.WOODEN_SWORD));
         Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 60, 67);
-        Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 100, 1, 10000, 1);
+        Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 100, 1, 10000, 5);
 
         System.out.println("Stage: " +stage.getHeight() + " " + stage.getWidth());
 
@@ -121,8 +121,8 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         // Enemies
         // ───────────────────────────────
-        //zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
-        //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
+        zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
+        skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
         new Wall(Assets.get(Assets.STONE_BRICKS), 4,5);
 
         // ───────────────────────────────
@@ -226,35 +226,33 @@ public class Main extends InputAdapter implements ApplicationListener{
         downKeys.add(keycode);
         System.out.println(downKeys+" Tasten wurde gedrückt (Keycode)");
 
-        if (downKeys.size >= 2){
+        if (downKeys.size >= 2) {
             onMultipleKeysDown(keycode);
         } else {
 
-            if(keycode == Input.Keys.I) {
-                player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(player.getPlayerInventory());
+            switch (keycode) {
+                case Input.Keys.I:
+                    player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(player.getPlayerInventory());
+                    break;
+                case Input.Keys.H:
+                    player.heal(5);
+                    break;
+                case Input.Keys.M:
+                    player.addMana(5);
+                    break;
+                case Input.Keys.L:
+                    new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
+                    break;
+                case Input.Keys.U:
+                    player.attack();
+                    break;
+                case Input.Keys.C:
+                    zombie.attack(player);
+                    break;
+                case Input.Keys.P:
+                    chest.openCloseChest(player);
+                    break;
             }
-            if(keycode == Input.Keys.H) {
-                player.heal(5);
-            }
-            if(keycode == Input.Keys.M) {
-                player.addMana(5);
-            }
-            if(keycode == Input.Keys.C) {
-                zombie.attack(player);
-            }
-            if(keycode == Input.Keys.U) {
-                player.attack();
-            }
-            if(keycode == Input.Keys.P) {
-                chest.openCloseChest(player);
-            }
-            if(keycode == Input.Keys.L) {
-                new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
-            }
-            if(keycode == Input.Keys.K) {
-                player.getPlayerHotbar().getInventoryUI().inventoryOpenManagement(player.getPlayerHotbar().getInventory());
-            }
-
         }
         return true;
     }
@@ -267,10 +265,10 @@ public class Main extends InputAdapter implements ApplicationListener{
 
     private void onMultipleKeysDown (int mostRecentKeycode){
         //Keys that are currently down are in the IntSet.
-        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.M)){
+        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.M)) {
             player.addMana(-5);
         }
-        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)){
+        if (downKeys.contains(Input.Keys.SHIFT_LEFT) && downKeys.contains(Input.Keys.H)) {
             player.takeDamage(5);
         }
     }
