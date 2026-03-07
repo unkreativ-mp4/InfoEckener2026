@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import net.eckener.dungeon_crawler.Wall;
+import net.eckener.dungeon_crawler.WallRegistry;
 
 import static net.eckener.dungeon_crawler.Main.camera;
 
@@ -54,7 +56,7 @@ public class Arrow extends Projectile{
     }
 
     /**
-     * Detects if the arrow has hit another {@link LivingEntity} and then unregisters itself
+     * Detects if the arrow has hit another {@link LivingEntity} or a {@link Wall} and then unregisters itself
      */
     private void hitDetection(){
         for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()){
@@ -64,11 +66,18 @@ public class Arrow extends Projectile{
                 break;
             }
         }
+
+        for(Wall wall : WallRegistry.getAllRoomWalls()) {
+            if (Intersector.overlapConvexPolygons(this.getHitbox(), wall.getHitbox())) {
+                EntityRegistry.unregister(this);
+                break;
+            }
+        }
     }
 
     /**
      * Moves the arrow in the direction it's facing
-     * @param deltaTime Frametime to satisfy smooth movement even when lagging
+     * @param deltaTime Frame time to satisfy smooth movement even when lagging
      */
 
     @Override
@@ -82,7 +91,7 @@ public class Arrow extends Projectile{
 
     /**
      * Called every frame to update the Arrow
-     * @param deltaTime Frametime to satisfy smooth updating even when lagging
+     * @param deltaTime Frame time to satisfy smooth updating even when lagging
      */
 
     @Override
@@ -92,7 +101,7 @@ public class Arrow extends Projectile{
 
     /**
      * Called every frame to update the Arrow, but this time the Player is passed
-     * @param deltaTime Frametime to satisfy smooth updating even when lagging
+     * @param deltaTime Frame time to satisfy smooth updating even when lagging
      * @param player Here not used
      */
 

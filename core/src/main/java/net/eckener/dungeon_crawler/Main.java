@@ -128,7 +128,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
         //skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
-
+        new Wall(Assets.get(Assets.STONE_BRICKS), 4,5);
 
         // ───────────────────────────────
         // Input Handling
@@ -193,6 +193,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         spriteBatch.draw(getCurrentRoom().background,0, 0, getCurrentRoom().width, getCurrentRoom().height);
 
         EntityRegistry.renderRoom(spriteBatch);
+        WallRegistry.renderRoom(spriteBatch);
         spriteBatch.end();
 
         // ======================
@@ -247,7 +248,7 @@ public class Main extends InputAdapter implements ApplicationListener{
                 zombie.attack(player);
             }
             if(keycode == Input.Keys.U) {
-                player.attack(zombie);
+                player.attack();
             }
             if(keycode == Input.Keys.P) {
                 chest.openCloseChest(player);

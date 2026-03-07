@@ -28,14 +28,10 @@ public final class EntityRegistry {
         if(entity instanceof LivingEntity){
             livingEntities.add((LivingEntity) entity);
         }
-        try {
-            if(entity.getRoom().equals(getCurrentRoom())) {
-                registerRoom(entity);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
 
+        if(entity.getRoom().equals(getCurrentRoom())) {
+            registerRoom(entity);
+        }
     }
 
     /**Enters an {@link Entity} into the Room registry and if it is a {@link LivingEntity} into the specialized registry
@@ -72,7 +68,7 @@ public final class EntityRegistry {
 
     /**
      * Calls the update method for all {@link Entity}s so they can move and shit
-     * @param delta Frametime for smooth updating
+     * @param delta Frame time for smooth updating
      * @param player some {@link Entity}s need it for pathfinding
      */
     public static void updateAll(float delta, Player player) {
@@ -82,14 +78,12 @@ public final class EntityRegistry {
             } else {
                 entity.update(delta);
             }
-
-            entity.updateHitbox();
         }
     }
 
     /**
      * Calls the update method for all {@link Entity}s in the current Room so they can move and shit
-     * @param delta Frametime for smooth updating
+     * @param delta Frame time for smooth updating
      * @param player some {@link Entity}s need it for pathfinding
      */
     public static void updateRoom(float delta, Player player) {
@@ -99,28 +93,28 @@ public final class EntityRegistry {
             } else {
                 entity.update(delta);
             }
-
-            entity.updateHitbox();
         }
     }
 
     /**
      * Calls the updateMovement method for all Entities, so friction and Sprite-translation is processed
-     * @param deltaTime Frametime for smooth movement
+     * @param deltaTime Frame time for smooth movement
      */
     public static void updateMovementAll(float deltaTime) {
         for (Entity entity : entities) {
             entity.updateMovement(deltaTime);
+            entity.updateHitbox();
         }
     }
 
     /**
      * Calls the updateMovement method for all Entities in the current Room, so friction and Sprite-translation is processed
-     * @param deltaTime Frametime for smooth movement
+     * @param deltaTime Frame time for smooth movement
      */
     public static void updateRoomMovement(float deltaTime) {
         for (Entity entity : roomEntities) {
             entity.updateMovement(deltaTime);
+            entity.updateHitbox();
         }
     }
 
@@ -174,6 +168,7 @@ public final class EntityRegistry {
     public static void clear() {
         entities.clear();
         livingEntities.clear();
+        clearRoomEntities();
     }
 
     /**

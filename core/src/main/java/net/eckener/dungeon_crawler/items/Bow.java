@@ -12,7 +12,7 @@ import net.eckener.dungeon_crawler.entities.Player;
 public class Bow extends Weapon{
 
     public Bow(String pItemID, String pItemName, Texture pItemTexture, int pRarity, int pMaxStackSize, int damage, float cooldownModifier) {
-        super(pItemID, pItemName, pItemTexture, pRarity, pMaxStackSize, damage, cooldownModifier);
+        super(pItemID, pItemName, pItemTexture, pRarity, pMaxStackSize, damage, cooldownModifier, false,0);
     }
 
     /**

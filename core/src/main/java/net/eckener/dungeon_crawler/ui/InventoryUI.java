@@ -269,7 +269,7 @@ public class InventoryUI extends Table {
     }
 
 
-    private SlotWidget findSlotUnderPointer(float stageX, float stageY) {   //chatgpt hat gekocht
+    private SlotWidget findSlotUnderPointer(float stageX, float stageY) {   //ChatGPT hat gekocht
         if (getStage() == null) return null;
 
         var hit = getStage().hit(stageX, stageY, true);

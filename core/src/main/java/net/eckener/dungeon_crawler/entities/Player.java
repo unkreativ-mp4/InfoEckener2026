@@ -112,8 +112,8 @@ public class Player extends LivingEntity{
     }
 
     /**
-     * Attacks an {@link Enemy} with the selected {@link Weapon}
-     * @param enemy the {@link Enemy} which to attack
+     * Attacks an {@link LivingEntity} with the selected {@link Weapon}
+     * @param livingEntity the {@link LivingEntity} which to attack
      */
     public void attack(Enemy enemy) {
         ItemStack weaponSlotStack = hotbar.getInventory().getItemStack(0, 0);
@@ -135,6 +135,31 @@ public class Player extends LivingEntity{
         Weapon weapon = (Weapon) weaponSlotStack.getItem();
         weapon.attack(this, enemy);
         timeSinceLastAttack = 0;
+    public void attackSelective(LivingEntity livingEntity) {
+            selectedItem.getWeapon().attack(this, livingEntity);
+            timeSinceLastAttack = 0;
+    }
+
+    /**
+     * Checks if the player can attack and what the weapon type is
+     * <p>
+     * If the weapon is of type melee, all LivingEntities in weapon-range are attacked individually
+     * <p>
+     * If the weapon is not of type melee, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
+     */
+    public void attack() {
+        if(timeSinceLastAttack > baseAttackCooldown && selectedItem.isWeapon()) {
+            if(selectedItem.getWeapon().isMeleeWeapon()) {
+                for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                    if(Math.pow(getX() - livingEntity.getX(),2) + Math.pow(getX() - livingEntity.getX(),2) <= selectedItem.getWeapon().getRange() && !(livingEntity instanceof Player)) {
+                        attackSelective( livingEntity);
+                    }
+                }
+            } else {
+                attackSelective(null);
+            }
+
+        }
     }
 
     /**
@@ -153,7 +178,7 @@ public class Player extends LivingEntity{
 
     /**
      * Runs every frame and increases {@code timeSince} attributes among other things
-     * @param deltaTime Frametime to satisfy smooth updating even when lagging
+     * @param deltaTime Frame time to satisfy smooth updating even when lagging
      */
     @Override
     public void update(float deltaTime) {
@@ -165,7 +190,7 @@ public class Player extends LivingEntity{
 
     /**
      * Never use, because it makes no sense
-     * @param delta Frametime stuff
+     * @param delta Frame time stuff
      * @param player could honestly just be {@code this}
      */
     @Override
@@ -186,4 +211,3 @@ public class Player extends LivingEntity{
         selectedItem = pSelectedItem;
     }
 
-}

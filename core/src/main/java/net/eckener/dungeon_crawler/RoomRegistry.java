@@ -12,7 +12,7 @@ public final class RoomRegistry {
 
     private static final ObjectMap<GridPoint2, Room> rooms = new ObjectMap<>();
 
-    private static GridPoint2 currentCoords = new GridPoint2(0, 0);
+    private static GridPoint2 currentPosition = new GridPoint2(0, 0);
     private static Room currentRoom;
 
     private RoomRegistry() {}
@@ -48,17 +48,18 @@ public final class RoomRegistry {
      * @param y the y coordinate in the grid map of the new Room
      */
     public static void setRoom(int x, int y) {
-        GridPoint2 coords = new GridPoint2(x, y);
-        Room room = rooms.get(coords);
+        GridPoint2 position = new GridPoint2(x, y);
+        Room room = rooms.get(position);
 
         if (room == null)
             throw new IllegalStateException("No room at: " + x + "," + y);
 
-        currentCoords = coords;
+        currentPosition = position;
         currentRoom = room;
 
         updateViewport();
         EntityRegistry.onRoomChange(currentRoom);
+        WallRegistry.onRoomChange(currentRoom);
     }
 
     /**
@@ -75,20 +76,21 @@ public final class RoomRegistry {
      */
     public static void tryTransition(Direction direction, Player player) {
         GridPoint2 target = new GridPoint2(
-            currentCoords.x + direction.dx(),
-            currentCoords.y + direction.dy()
+            currentPosition.x + direction.dx(),
+            currentPosition.y + direction.dy()
         );
 
         Room nextRoom = rooms.get(target);
         if (nextRoom == null) return; // no room in that direction
 
-        currentCoords = target;
+        currentPosition = target;
         Room oldRoom = currentRoom;
         currentRoom = nextRoom;
 
         updateViewport();
         repositionPlayer(direction, player, oldRoom);
         EntityRegistry.onRoomChange(currentRoom);
+        WallRegistry.onRoomChange(currentRoom);
     }
 
     /**
