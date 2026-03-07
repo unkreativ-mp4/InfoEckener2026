@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import net.eckener.dungeon_crawler.Wall;
+import net.eckener.dungeon_crawler.WallRegistry;
 
 import static net.eckener.dungeon_crawler.Main.camera;
 
@@ -52,12 +54,19 @@ public class Arrow extends Projectile{
     }
 
     /**
-     * Detects if the arrow has hit another {@link LivingEntity} and then unregisters itself
+     * Detects if the arrow has hit another {@link LivingEntity} or a {@link Wall} and then unregisters itself
      */
     private void hitDetection(){
         for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()){
             if (Intersector.overlapConvexPolygons(this.getHitbox(), livingEntity.getHitbox()) && !livingEntity.equals(owner)) {
                 livingEntity.takeDamage(10);
+                EntityRegistry.unregister(this);
+                break;
+            }
+        }
+
+        for(Wall wall : WallRegistry.getAllRoomWalls()) {
+            if (Intersector.overlapConvexPolygons(this.getHitbox(), wall.getHitbox())) {
                 EntityRegistry.unregister(this);
                 break;
             }

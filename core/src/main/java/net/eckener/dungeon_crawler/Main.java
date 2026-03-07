@@ -223,7 +223,7 @@ public class Main extends InputAdapter implements ApplicationListener{
                 zombie.attack(player);
             }
             if(keycode == Input.Keys.U) {
-                player.attack(zombie);
+                player.attack();
             }
             if(keycode == Input.Keys.P) {
                 penisUI.openInventory(penis);
