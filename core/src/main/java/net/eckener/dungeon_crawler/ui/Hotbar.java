@@ -1,7 +1,7 @@
 package net.eckener.dungeon_crawler.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import net.eckener.dungeon_crawler.Assets;
+import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.logic.Inventory;
 
 public class Hotbar {

@@ -1,9 +1,8 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.logic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.ObjectMap;
-import net.eckener.dungeon_crawler.entities.EntityRegistry;
 import net.eckener.dungeon_crawler.entities.Player;
 
 import static net.eckener.dungeon_crawler.Main.viewport;
@@ -143,5 +142,23 @@ public final class RoomRegistry {
             tryTransition(Direction.UP, player);
         }
     }
+}
+
+enum Direction {
+    LEFT(-1, 0),
+    RIGHT(1, 0),
+    UP(0, 1),
+    DOWN(0, -1);
+
+    private final int dx;
+    private final int dy;
+
+    Direction(int dx, int dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    public int dx() { return dx; }
+    public int dy() { return dy; }
 }
 

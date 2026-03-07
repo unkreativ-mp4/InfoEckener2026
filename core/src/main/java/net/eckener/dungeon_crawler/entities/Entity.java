@@ -6,8 +6,12 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.*;
+import net.eckener.dungeon_crawler.logic.EntityRegistry;
+import net.eckener.dungeon_crawler.logic.Room;
+import net.eckener.dungeon_crawler.logic.Wall;
+import net.eckener.dungeon_crawler.logic.WallRegistry;
 
-import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
+import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 
 /**
  * The most basic form of an entity. Only exists so all entities can be registered in a single {@link EntityRegistry} and only one draw and update command is needed in {@link Main}

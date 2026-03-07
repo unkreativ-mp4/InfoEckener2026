@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import net.eckener.dungeon_crawler.Wall;
-import net.eckener.dungeon_crawler.WallRegistry;
+import net.eckener.dungeon_crawler.logic.Wall;
+import net.eckener.dungeon_crawler.logic.EntityRegistry;
+import net.eckener.dungeon_crawler.logic.WallRegistry;
 
 import static net.eckener.dungeon_crawler.Main.camera;
 

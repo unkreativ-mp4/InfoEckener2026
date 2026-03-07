@@ -1,10 +1,10 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.logic;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 
-import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
+import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 
 public class Wall extends Sprite {
 

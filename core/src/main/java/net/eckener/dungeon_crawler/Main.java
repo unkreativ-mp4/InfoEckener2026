@@ -18,11 +18,10 @@ import net.eckener.dungeon_crawler.entities.*;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.items.Maul;
-import net.eckener.dungeon_crawler.logic.ItemStack;
-import net.eckener.dungeon_crawler.logic.LootTable;
+import net.eckener.dungeon_crawler.logic.*;
 import net.eckener.dungeon_crawler.ui.*;
 
-import static net.eckener.dungeon_crawler.RoomRegistry.*;
+import static net.eckener.dungeon_crawler.logic.RoomRegistry.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener{

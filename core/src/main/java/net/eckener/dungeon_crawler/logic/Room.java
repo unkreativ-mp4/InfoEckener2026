@@ -1,4 +1,4 @@
-package net.eckener.dungeon_crawler;
+package net.eckener.dungeon_crawler.logic;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Room {

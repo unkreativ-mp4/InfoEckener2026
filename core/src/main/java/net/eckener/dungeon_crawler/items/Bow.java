@@ -1,7 +1,7 @@
 package net.eckener.dungeon_crawler.items;
 
 import com.badlogic.gdx.graphics.Texture;
-import net.eckener.dungeon_crawler.Assets;
+import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.entities.Arrow;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
 import net.eckener.dungeon_crawler.entities.Player;

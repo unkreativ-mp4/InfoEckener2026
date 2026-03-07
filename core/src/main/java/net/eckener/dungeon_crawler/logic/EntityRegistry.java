@@ -1,11 +1,11 @@
-package net.eckener.dungeon_crawler.entities;
+package net.eckener.dungeon_crawler.logic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import net.eckener.dungeon_crawler.Main;
-import net.eckener.dungeon_crawler.Room;
+import net.eckener.dungeon_crawler.entities.*;
 
-import static net.eckener.dungeon_crawler.RoomRegistry.getCurrentRoom;
+import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 
 /**
  * An entity registry so {@link Main} has its peace
