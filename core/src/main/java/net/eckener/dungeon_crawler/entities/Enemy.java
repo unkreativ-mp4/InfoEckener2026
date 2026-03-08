@@ -19,8 +19,6 @@ public abstract class Enemy extends LivingEntity {
         super(xPos, yPos, aliveTexture, maxHealth, speed, room);
     }
 
-        public abstract void update(float deltaTime, Player player);
-
     public abstract void attack(LivingEntity livingEntity);
 
 }

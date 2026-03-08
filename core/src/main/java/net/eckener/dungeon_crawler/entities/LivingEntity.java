@@ -11,6 +11,7 @@ public abstract class LivingEntity extends Entity {
     protected int health;
     protected int maxHealth;
     protected boolean isAlive = true;
+    protected double deathTime = 0;
 
 
     public LivingEntity(float xPos, float yPos, Texture texture, int maxHealth, float speed) {
