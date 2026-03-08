@@ -27,7 +27,7 @@ public final class Assets {
     public static final String WOODEN_SWORD  = "textures/placeholders/wooden_sword.png";
     public static final String DIAMOND_SWORD  = "textures/placeholders/diamond_sword.png";
     public static final String BACKGROUND_ORANGE  = "textures/backgrounds/background_orange.png";
-    public static final String BACKGROUND_PLACEHOLDER  = "textures/backgrounds/background_placeholder.jpg";
+    public static final String BACKGROUND_PLACEHOLDER  = "textures/placeholders/background_placeholder.jpg";
     public static final String COIN  = "textures/items/coin.png";
     public static final String MANA_INDICATOR_0   = "textures/gui/mana/indicator_0.png";
     public static final String MANA_INDICATOR_10  = "textures/gui/mana/indicator_10.png";

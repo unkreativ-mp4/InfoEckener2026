@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 public abstract class Projectile extends Entity {
 
     protected float directionDeg;
+    protected Entity owner;
 
-    public Projectile(Texture texture,float xPos, float yPos, float speed) {
+    public Projectile(Texture texture,float xPos, float yPos, float speed, Entity owner) {
         super(xPos,yPos,texture,speed);
+        this.owner = owner;
     }
 
     public abstract void move(float deltaTime);
@@ -20,6 +22,13 @@ public abstract class Projectile extends Entity {
      */
     public float getDirectionDeg() {
         return directionDeg;
+    }
+
+    /**
+     * @return the Owner of the Projectile
+     */
+    public Entity getOwner() {
+        return owner;
     }
 
     public abstract void update(float deltaTime);

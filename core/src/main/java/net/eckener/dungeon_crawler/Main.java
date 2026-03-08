@@ -29,6 +29,7 @@ public class Main extends InputAdapter implements ApplicationListener{
     SpriteBatch spriteBatch;
     public static FitViewport viewport;
     public static OrthographicCamera camera;
+    public static Stage stage;
 
     ManaOrb manaOrb;
     Health healthIcon;
@@ -37,12 +38,9 @@ public class Main extends InputAdapter implements ApplicationListener{
 
     Zombie zombie;
     Skeleton skeleton;
-
-    public Player player;
     Chest chest;
 
-
-    private Stage stage;
+    public Player player;
 
     private final IntSet downKeys = new IntSet(20);
 
@@ -71,7 +69,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // Player
         // ───────────────────────────────
 
-        player = new Player(100, 100, stage);
+        player = new Player(100, 100);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -100,8 +98,6 @@ public class Main extends InputAdapter implements ApplicationListener{
         Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 60, 67);
         Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 100, 1, 10000, 5);
 
-        System.out.println("Stage: " +stage.getHeight() + " " + stage.getWidth());
-
         ItemStack coinStack = new ItemStack(coin, 5);
         ItemStack woodenSwordStack = new ItemStack(woodenSword, 1);
         ItemStack darkBowStack = new ItemStack(darkBow, 1);
@@ -111,7 +107,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         chestTable1.add(woodenSword, 1,1);
         chestTable1.add(darkBow, 1, 1);
 
-        chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage, chestTable1);
+        chest = new Chest(chestTable1);
 
         player.getPlayerInventory().addItemStack(coinStack, 3, 3);
 
@@ -245,9 +241,6 @@ public class Main extends InputAdapter implements ApplicationListener{
                     break;
                 case Input.Keys.U:
                     player.attack();
-                    break;
-                case Input.Keys.C:
-                    zombie.attack(player);
                     break;
                 case Input.Keys.P:
                     chest.openCloseChest(player);

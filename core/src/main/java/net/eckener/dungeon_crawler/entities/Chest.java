@@ -1,13 +1,10 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import net.eckener.dungeon_crawler.logic.Assets;
-import net.eckener.dungeon_crawler.logic.ItemStack;
-import net.eckener.dungeon_crawler.logic.Inventory;
-import net.eckener.dungeon_crawler.logic.LootEntry;
-import net.eckener.dungeon_crawler.logic.LootTable;
+import net.eckener.dungeon_crawler.logic.*;
 import net.eckener.dungeon_crawler.ui.InventoryUI;
+
+import static net.eckener.dungeon_crawler.Main.stage;
 
 public class Chest extends Entity{
 
@@ -18,10 +15,10 @@ public class Chest extends Entity{
     private final LootTable lootTable;
 
 
-    public Chest(float pInventoryXPos, float pInventoryYPos, Stage stage, LootTable pLootTable) {
+    public Chest(LootTable lootTable) {
         super(4,2, Assets.get(Assets.CHEST),0);
 
-        chestInventory = new Inventory(4, 7, "Chest", stage);
+        chestInventory = new Inventory(4, 7, "Chest");
         chestInventoryUI = chestInventory.getInventoryUI();
         this.getChestInventoryUI().setPosition(
             (stage.getWidth() - this.chestInventoryUI.getWidth()) / 2f,
@@ -29,7 +26,22 @@ public class Chest extends Entity{
         );
         stage.addActor(this.getChestInventoryUI());
         isChestOpen = false;
-        lootTable = pLootTable;
+        this.lootTable = lootTable;
+        generateLootIfNeeded();
+    }
+
+    public Chest(LootTable lootTable, Room room) {
+        super(4,2, Assets.get(Assets.CHEST),0, room);
+
+        chestInventory = new Inventory(4, 7, "Chest");
+        chestInventoryUI = chestInventory.getInventoryUI();
+        this.getChestInventoryUI().setPosition(
+            (stage.getWidth() - this.chestInventoryUI.getWidth()) / 2f,
+            (stage.getHeight() - this.chestInventoryUI.getHeight())
+        );
+        stage.addActor(this.getChestInventoryUI());
+        isChestOpen = false;
+        this.lootTable = lootTable;
         generateLootIfNeeded();
     }
 

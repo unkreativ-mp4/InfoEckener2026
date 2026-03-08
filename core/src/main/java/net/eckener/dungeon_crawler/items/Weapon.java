@@ -3,7 +3,6 @@ package net.eckener.dungeon_crawler.items;
 import com.badlogic.gdx.graphics.Texture;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
 
-
 /**
  * Expands {@link Item} by things like a {@code damage} attribute
  */

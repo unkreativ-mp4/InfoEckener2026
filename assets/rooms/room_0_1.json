@@ -1,0 +1,11 @@
+{
+  "gridX": 0,
+  "gridY": 1,
+  "background": "textures/placeholders/background_placeholder.jpg",
+  "width": 10,
+  "height": 6,
+
+  "walls": [],
+
+  "entities": []
+}

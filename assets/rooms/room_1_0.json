@@ -1,0 +1,11 @@
+{
+  "gridX": 1,
+  "gridY": 0,
+  "background": "textures/backgrounds/background_orange.png",
+  "width": 12,
+  "height": 5,
+
+  "walls": [  ],
+
+  "entities": [  ]
+}

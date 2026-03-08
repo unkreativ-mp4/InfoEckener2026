@@ -2,6 +2,7 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import net.eckener.dungeon_crawler.logic.Room;
 
 /**
  * very basic Zombie {@link Enemy}
@@ -18,6 +19,13 @@ public class Zombie extends Enemy {
         attackCooldown = 1.5;
         this.deathTexture = deathTexture;
     }
+
+    public Zombie(float xPos, float yPos, Texture aliveTexture, Texture deathTexture, Room room) {
+        super(xPos, yPos, baseHealth, aliveTexture,1, room);
+        attackCooldown = 1.5;
+        this.deathTexture = deathTexture;
+    }
+
 
     /**
      * Moves the Zombie straight to the {@link Player}

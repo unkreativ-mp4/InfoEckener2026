@@ -18,11 +18,10 @@ import static net.eckener.dungeon_crawler.Main.camera;
 
 public class Arrow extends Projectile{
 
-    Entity owner;
     int damage;
 
     public Arrow(Texture texture, float xPos, float yPos, Entity owner, int pDamage) {
-        super(texture, xPos, yPos, 5);
+        super(texture, xPos, yPos, 5, owner);
         this.owner = owner;
         this.damage = pDamage;
     }

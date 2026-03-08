@@ -2,12 +2,9 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.logic.EntityRegistry;
 import net.eckener.dungeon_crawler.logic.ItemStack;
-import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.ui.Hotbar;
@@ -24,19 +21,15 @@ public class Player extends LivingEntity{
     private Hotbar hotbar;
 
 
-    public Player(int maxHealth, int maxMana, Stage stage) {
+    public Player(int maxHealth, int maxMana) {
         super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
         this.maxMana = maxMana;
 
-        inventory = new Inventory(4, 7, "Inventory", stage);
-        hotbar = new Hotbar(stage);
+        inventory = new Inventory(4, 7, "Inventory");
+        hotbar = new Hotbar();
 
-        Bow bow = new Bow("bow","toller Bogen", Assets.get(Assets.COIN),1,1,10,2);
-        Maul maul = new Maul(Assets.get(Assets.IRON_SHOVEL));
         selectedItem = hotbar.getInventory().getItemStack(0, 0);
-
     }
-
 
     /**
      * Player movement depending on user input
@@ -118,7 +111,6 @@ public class Player extends LivingEntity{
      * @param weapon the {@link Weapon} with which to attack
      */
     public void attackSelective(LivingEntity livingEntity, Weapon weapon) {
-
         weapon.attack(this, livingEntity);
         timeSinceLastAttack = 0;
     }

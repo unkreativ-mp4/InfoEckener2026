@@ -1,0 +1,18 @@
+{
+  "gridX": 0,
+  "gridY": 0,
+  "background": "textures/placeholders/background_placeholder.jpg",
+  "width": 16,
+  "height": 10,
+
+  "walls": [
+    { "x": 0, "y": 0, "texture": "textures/placeholders/stone_bricks.png" },
+    { "x": 1, "y": 0, "texture": "textures/placeholders/stone_bricks.png" },
+    { "x": 2, "y": 0, "texture": "textures/placeholders/stone_bricks.png" }
+  ],
+
+  "entities": [
+    { "type": "zombie", "x": 5, "y": 3 },
+    { "type": "skeleton", "x": 7, "y": 4 }
+  ]
+}

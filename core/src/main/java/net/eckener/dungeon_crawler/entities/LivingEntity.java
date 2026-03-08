@@ -1,6 +1,7 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import net.eckener.dungeon_crawler.logic.Room;
 
 /**
  * Expands on {@link Entity} with attributes like {@code health}
@@ -14,6 +15,13 @@ public abstract class LivingEntity extends Entity {
 
     public LivingEntity(float xPos, float yPos, Texture texture, int maxHealth, float speed) {
         super(xPos, yPos, texture, speed);
+
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+    }
+
+    public LivingEntity(float xPos, float yPos, Texture texture, int maxHealth, float speed, Room room) {
+        super(xPos, yPos, texture, speed, room);
 
         this.maxHealth = maxHealth;
         this.health = maxHealth;

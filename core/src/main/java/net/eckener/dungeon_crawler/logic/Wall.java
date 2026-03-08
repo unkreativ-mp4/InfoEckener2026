@@ -30,6 +30,25 @@ public class Wall extends Sprite {
         hitbox.setPosition(x, y);
     }
 
+    public Wall(Texture texture, int x, int y, Room room) {
+        super(texture);
+        setSize(1,1);
+        setX(x);
+        setY(y);
+
+        this.room = room;
+        WallRegistry.register(this);
+
+        float[] vertices = new float[]{
+            0, 0,
+            getWidth(), 0,
+            getWidth(), getHeight(),
+            0, getHeight()
+        };
+        hitbox = new Polygon(vertices);
+        hitbox.setPosition(x, y);
+    }
+
     /**
      * @return the Hitbox Polygon of the Wall
      */

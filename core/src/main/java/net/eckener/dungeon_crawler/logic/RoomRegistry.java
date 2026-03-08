@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.ObjectMap;
 import net.eckener.dungeon_crawler.entities.Player;
+import net.eckener.dungeon_crawler.logic.json.RoomLoader;
 
 import static net.eckener.dungeon_crawler.Main.viewport;
 
@@ -17,16 +18,12 @@ public final class RoomRegistry {
     private RoomRegistry() {}
 
     /**
-     * Loads Rooms into the Grid map with their correct dimensions
+     * Loads Rooms into the Grid map from json
      */
     public static void loadRooms() {
         rooms.clear();
 
-        addRoom(0, 0, new Room(Assets.get(Assets.BACKGROUND_PLACEHOLDER), 16, 10));
-
-        addRoom(1, 0, new Room(Assets.get(Assets.BACKGROUND_ORANGE), 12, 5));
-
-        addRoom(0, 1, new Room(Assets.get(Assets.BACKGROUND_PLACEHOLDER), 10, 6));
+        RoomLoader.loadRooms("rooms");
 
         setRoom(0, 0);
     }
@@ -37,7 +34,7 @@ public final class RoomRegistry {
      * @param y the y coordinate of the Room
      * @param room the Room object
      */
-    private static void addRoom(int x, int y, Room room) {
+    public static void addRoom(int x, int y, Room room) {
         rooms.put(new GridPoint2(x, y), room);
     }
 

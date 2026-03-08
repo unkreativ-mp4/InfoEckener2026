@@ -1,25 +1,24 @@
 package net.eckener.dungeon_crawler.logic;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 import java.util.Objects;
+
+import static net.eckener.dungeon_crawler.Main.stage;
 
 public class Inventory extends Table {
 
     private final int rows;
     private final int cols;
     private final String inventoryName;
-    private Stage stage;
-
     private InventoryUI inventoryUI;
     private ItemStack[][] itemStacks;
 
-    public Inventory(int rows, int cols, Stage pStage){
+    public Inventory(int rows, int cols){
 
         inventoryName = "";
-        stage = pStage;
+
         this.rows = rows;
         this.cols = cols;
 
@@ -35,10 +34,9 @@ public class Inventory extends Table {
 
     }
 
-    public Inventory(int rows, int cols, String pInventoryName, Stage pStage){
+    public Inventory(int rows, int cols, String inventoryName){
 
-        stage = pStage;
-        this.inventoryName = pInventoryName;
+        this.inventoryName = inventoryName;
         this.rows = rows;
         this.cols = cols;
 
@@ -65,7 +63,6 @@ public class Inventory extends Table {
             for (int col = 0; col < cols; col++) {
                 if(isSlotEmpty(row, col)) {
                     itemStacks[row][col] = itemStack;
-                    //System.out.println(y + " " + x);
                     break outerLoop;
                 }
             }

@@ -4,16 +4,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.logic.Assets;
+import net.eckener.dungeon_crawler.logic.Room;
 
 public class Skeleton extends Enemy {
 
     private static final int baseHealth = 20;
-    private static final int baseDamage = 3;
+    private static final int baseDamage = 10;
 
     private final Vector2 direction = new Vector2();
 
     public Skeleton(float xPos, float yPos, Texture aliveTexture) {
         super(xPos, yPos, baseHealth, aliveTexture, 1);
+        attackCooldown = 3;
+    }
+    public Skeleton(float xPos, float yPos, Texture aliveTexture, Room room) {
+        super(xPos, yPos, baseHealth, aliveTexture, 1, room);
         attackCooldown = 3;
     }
 
@@ -59,7 +64,7 @@ public class Skeleton extends Enemy {
     @Override
     public void attack(LivingEntity livingEntity) {
         if(canAttack()) {
-            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), getX(), getY(), this, 10);
+            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), getX(), getY(), this, baseDamage);
             arrow.setRotationToFaceLivingEntity(livingEntity);
             timeSinceLastAttack = 0;
         }

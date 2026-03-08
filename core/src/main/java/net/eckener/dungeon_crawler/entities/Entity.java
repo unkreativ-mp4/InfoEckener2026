@@ -43,6 +43,28 @@ public abstract class Entity extends Sprite {
             0, getHeight()
         };
         hitbox = new Polygon(vertices);
+        updateHitbox();
+    }
+
+    public Entity(float xPos, float yPos, Texture texture, float speed, Room room) {
+        super(texture);
+
+        this.speed = speed;
+        setSize(1,1);
+        setX(xPos);
+        setY(yPos);
+
+        this.room = room;
+        EntityRegistry.register(this);
+
+        float[] vertices = new float[] {
+            0, 0,
+            getWidth(), 0,
+            getWidth(), getHeight(),
+            0, getHeight()
+        };
+        hitbox = new Polygon(vertices);
+        updateHitbox();
     }
 
     /**
@@ -160,6 +182,7 @@ public abstract class Entity extends Sprite {
         for (Entity entity : EntityRegistry.getAllEntities()) {
 
             if (entity == this) break;
+            if (this instanceof Projectile && entity.equals(((Projectile) this).getOwner()) ) break;
 
             if (Intersector.overlapConvexPolygons(hitbox, entity.hitbox, mtv)) {
 
