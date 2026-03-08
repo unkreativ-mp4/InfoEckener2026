@@ -56,6 +56,22 @@ public final class WallRegistry {
         clearRoomWalls();
     }
 
+    public static void updateAllWalls() {
+        for(Wall wall : walls) {
+            if(wall instanceof Door) {
+                ((Door) wall).open();
+            }
+        }
+    }
+
+    public static void updateRoomWalls() {
+        for(Wall wall : roomWalls) {
+            if(wall instanceof Door) {
+                ((Door) wall).open();
+            }
+        }
+    }
+
     public static void clearRoomWalls() {
         roomWalls.clear();
     }

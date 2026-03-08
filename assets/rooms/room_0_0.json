@@ -12,7 +12,7 @@
   ],
 
   "entities": [
-    { "type": "zombie", "x": 5, "y": 3 },
-    { "type": "skeleton", "x": 7, "y": 4 }
+    { "type": "Zombie", "x": 5, "y": 3 },
+    { "type": "Skeleton", "x": 7, "y": 4 }
   ]
 }

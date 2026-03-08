@@ -36,8 +36,6 @@ public class Main extends InputAdapter implements ApplicationListener{
 
     DebugOverlay debug;
 
-    Zombie zombie;
-    Skeleton skeleton;
     Chest chest;
 
     public Player player;
@@ -107,19 +105,12 @@ public class Main extends InputAdapter implements ApplicationListener{
         chestTable1.add(woodenSword, 1,1);
         chestTable1.add(darkBow, 1, 1);
 
-        chest = new Chest(chestTable1);
+        chest = new Chest(2, 4, chestTable1);
+        new Door(Assets.get(Assets.COIN),5,8);
 
         player.getPlayerInventory().addItemStack(coinStack, 3, 3);
 
         player.getPlayerHotbar().getInventory().addItemStack(darkBowStack, 0, 0);
-
-
-        // ───────────────────────────────
-        // Enemies
-        // ───────────────────────────────
-        zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
-        skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
-        new Wall(Assets.get(Assets.STONE_BRICKS), 4,5);
 
         // ───────────────────────────────
         // Input Handling
@@ -169,6 +160,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // --- UPDATE ---
         EntityRegistry.updateRoom(deltaTime, player);
         EntityRegistry.updateRoomMovement(deltaTime);
+        WallRegistry.updateRoomWalls();
         handleScreenTransition(player);
 
         // --- CLEAR ---

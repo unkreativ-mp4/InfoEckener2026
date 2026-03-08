@@ -15,8 +15,8 @@ public class Chest extends Entity{
     private final LootTable lootTable;
 
 
-    public Chest(LootTable lootTable) {
-        super(4,2, Assets.get(Assets.CHEST),0);
+    public Chest(float xPos, float yPos, LootTable lootTable) {
+        super(xPos, yPos, Assets.get(Assets.CHEST),0);
 
         chestInventory = new Inventory(4, 7, "Chest");
         chestInventoryUI = chestInventory.getInventoryUI();
@@ -30,8 +30,8 @@ public class Chest extends Entity{
         generateLootIfNeeded();
     }
 
-    public Chest(LootTable lootTable, Room room) {
-        super(4,2, Assets.get(Assets.CHEST),0, room);
+    public Chest(float xPos, float yPos, LootTable lootTable, Room room) {
+        super(xPos, yPos, Assets.get(Assets.CHEST),0, room);
 
         chestInventory = new Inventory(4, 7, "Chest");
         chestInventoryUI = chestInventory.getInventoryUI();

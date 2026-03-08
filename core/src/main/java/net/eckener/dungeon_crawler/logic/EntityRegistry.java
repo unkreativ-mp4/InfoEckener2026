@@ -62,7 +62,7 @@ public final class EntityRegistry {
     public static void unregisterRoom(Entity entity) {
         roomEntities.removeValue(entity, true);
         if(entity instanceof LivingEntity){
-            roomEntities.removeValue(entity, true);
+            roomLivingEntities.removeValue((LivingEntity) entity, true);
         }
     }
 
