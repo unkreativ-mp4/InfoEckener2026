@@ -10,6 +10,10 @@ import net.eckener.dungeon_crawler.logic.*;
 
 public class RoomLoader {
 
+    /**
+     * Loads all Rooms and what they should contain from the selected folder by reading the JSON files
+     * @param folder the folder from which to load
+     */
     public static void loadRooms(String folder) {
 
         Json json = new Json();
@@ -39,6 +43,11 @@ public class RoomLoader {
         }
     }
 
+    /**
+     * Spawns an Entity with the attributes, that were specified in the JSON file
+     * @param room the Room in which to spawn the Entities
+     * @param entity the EntityDefinition which specifies the Entity type and its attributes
+     */
     private static void spawnEntity(Room room, EntityDefinition entity) {
 
         switch (entity.type) {

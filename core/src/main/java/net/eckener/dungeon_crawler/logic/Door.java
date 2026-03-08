@@ -1,7 +1,5 @@
 package net.eckener.dungeon_crawler.logic;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import net.eckener.dungeon_crawler.entities.Enemy;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
@@ -18,13 +16,16 @@ public class Door extends Wall {
         super(texture, x, y, room);
     }
 
-    public void open() {
+    /**
+     * Updates the Door
+     * <p>
+     *     checks if there are Enemies remaining in the current Room (which should automatically be its own) and if not unregisters itself
+     * </p>
+     */
+    public void update() {
         if(getCurrentRoom().equals(getRoom())) {
             boolean roomHasNoEnemies = true;
             for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
-                if (Gdx.input.isKeyPressed(Input.Keys.F)) {
-                    System.out.println(EntityRegistry.getAllRoomLivingEntities());
-                }
                 if (livingEntity instanceof Enemy)  {
                     roomHasNoEnemies = false;
                     break;

@@ -186,18 +186,30 @@ public class Player extends LivingEntity{
     public void update(float delta, Player player) {
     }
 
+    /**
+     * @return the Player's Inventory
+     */
     public Inventory getPlayerInventory() {
         return inventory;
     }
 
+    /**
+     * @return the Player's Hotbar Inventory
+     */
     public Hotbar getPlayerHotbar() {return hotbar;}
 
+    /**
+     * @return the currently selected Item in form of an ItemStack
+     */
     public ItemStack getSelectedItem() {
         return selectedItem;
     }
 
-    public void setSelectedItem(ItemStack pSelectedItem) {
-        selectedItem = pSelectedItem;
+    /**
+     * @param SelectedItem sets the selectedItem in form of an ItemStack
+     */
+    public void setSelectedItem(ItemStack SelectedItem) {
+        selectedItem = SelectedItem;
     }
 }
 
