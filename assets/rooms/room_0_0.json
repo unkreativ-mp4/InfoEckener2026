@@ -6,9 +6,9 @@
   "height": 10,
 
   "walls": [
-    { "x": 0, "y": 0, "texture": "textures/placeholders/stone_bricks.png" },
-    { "x": 1, "y": 0, "texture": "textures/placeholders/stone_bricks.png" },
-    { "x": 2, "y": 0, "texture": "textures/placeholders/stone_bricks.png" }
+    { "x": 0, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    { "x": 1, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    { "x": 2, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Door" }
   ],
 
   "entities": [

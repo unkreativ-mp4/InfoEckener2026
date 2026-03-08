@@ -31,7 +31,7 @@ public class RoomLoader {
 
             // walls
             for (WallDefinition wall : def.walls) {
-                new Wall(Assets.get(wall.texture), wall.x, wall.y, room);
+                spawnWall(room, wall);
             }
 
             // entities
@@ -45,7 +45,7 @@ public class RoomLoader {
 
     /**
      * Spawns an Entity with the attributes, that were specified in the JSON file
-     * @param room the Room in which to spawn the Entities
+     * @param room the Room in which to spawn the Entity
      * @param entity the EntityDefinition which specifies the Entity type and its attributes
      */
     private static void spawnEntity(Room room, EntityDefinition entity) {
@@ -57,6 +57,24 @@ public class RoomLoader {
 
             case "Zombie":
                 new Zombie(entity.x, entity.y,Assets.get(Assets.WOODEN_SHOVEL),Assets.get(Assets.WOODEN_HOE), room);
+                break;
+        }
+    }
+
+    /**
+     * Spawns a Wall with the attributes, that were specified in the JSON file
+     * @param room the Room in which to spawn the Wall
+     * @param wall the WallDefinition which specifies the Wall type and its attributes
+     */
+    private static void spawnWall(Room room, WallDefinition wall) {
+
+        switch (wall.type) {
+            case "Wall":
+                new Wall(Assets.get(wall.texture), wall.x, wall.y, room);
+                break;
+
+            case "Door":
+                new Door(Assets.get(wall.texture), wall.x, wall.y, room);
                 break;
         }
     }

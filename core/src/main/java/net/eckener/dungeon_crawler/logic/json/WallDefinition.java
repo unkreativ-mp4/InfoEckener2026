@@ -4,4 +4,5 @@ public class WallDefinition {
     public int x;
     public int y;
     public String texture;
+    public String type;
 }
