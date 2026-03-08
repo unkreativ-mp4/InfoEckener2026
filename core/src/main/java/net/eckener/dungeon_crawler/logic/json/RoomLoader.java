@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Json;
+import net.eckener.dungeon_crawler.Blocks.Door;
+import net.eckener.dungeon_crawler.Blocks.Wall;
 import net.eckener.dungeon_crawler.entities.Skeleton;
 import net.eckener.dungeon_crawler.entities.Zombie;
 import net.eckener.dungeon_crawler.logic.*;
@@ -29,12 +31,12 @@ public class RoomLoader {
 
             Room room = new Room(background, def.width, def.height);
 
-            // walls
-            for (WallDefinition wall : def.walls) {
-                spawnWall(room, wall);
+            // Blocks
+            for (BlockDefinition block : def.blocks) {
+                spawnBlock(room, block);
             }
 
-            // entities
+            // Entities
             for (EntityDefinition entity : def.entities) {
                 spawnEntity(room, entity);
             }
@@ -62,19 +64,19 @@ public class RoomLoader {
     }
 
     /**
-     * Spawns a Wall with the attributes, that were specified in the JSON file
-     * @param room the Room in which to spawn the Wall
-     * @param wall the WallDefinition which specifies the Wall type and its attributes
+     * Spawns a Block with the attributes, that were specified in the JSON file
+     * @param room the Room in which to spawn the Block
+     * @param block the BlockDefinition which specifies the Block type and its attributes
      */
-    private static void spawnWall(Room room, WallDefinition wall) {
+    private static void spawnBlock(Room room, BlockDefinition block) {
 
-        switch (wall.type) {
+        switch (block.type) {
             case "Wall":
-                new Wall(Assets.get(wall.texture), wall.x, wall.y, room);
+                new Wall(Assets.get(block.texture), block.x, block.y, room);
                 break;
 
             case "Door":
-                new Door(Assets.get(wall.texture), wall.x, wall.y, room);
+                new Door(Assets.get(block.texture), block.x, block.y, room);
                 break;
         }
     }

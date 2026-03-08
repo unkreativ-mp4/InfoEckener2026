@@ -13,6 +13,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import net.eckener.dungeon_crawler.Blocks.BlockRegistry;
+import net.eckener.dungeon_crawler.Blocks.Chest;
+import net.eckener.dungeon_crawler.Blocks.Door;
 import net.eckener.dungeon_crawler.debug.*;
 import net.eckener.dungeon_crawler.entities.*;
 import net.eckener.dungeon_crawler.items.Bow;
@@ -160,7 +163,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         // --- UPDATE ---
         EntityRegistry.updateRoom(deltaTime, player);
         EntityRegistry.updateRoomMovement(deltaTime);
-        WallRegistry.updateRoomWalls();
+        BlockRegistry.updateRoomBlocks(player);
         handleScreenTransition(player);
 
         // --- CLEAR ---
@@ -176,7 +179,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         spriteBatch.draw(getCurrentRoom().background,0, 0, getCurrentRoom().width, getCurrentRoom().height);
 
         EntityRegistry.renderRoom(spriteBatch);
-        WallRegistry.renderRoom(spriteBatch);
+        BlockRegistry.renderRoom(spriteBatch);
         spriteBatch.end();
 
         // ======================

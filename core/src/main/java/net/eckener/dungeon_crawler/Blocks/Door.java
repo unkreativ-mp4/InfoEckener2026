@@ -1,12 +1,15 @@
-package net.eckener.dungeon_crawler.logic;
+package net.eckener.dungeon_crawler.Blocks;
 
 import com.badlogic.gdx.graphics.Texture;
 import net.eckener.dungeon_crawler.entities.Enemy;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
+import net.eckener.dungeon_crawler.entities.Player;
+import net.eckener.dungeon_crawler.logic.EntityRegistry;
+import net.eckener.dungeon_crawler.logic.Room;
 
 import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 
-public class Door extends Wall {
+public class Door extends Block {
 
     public Door(Texture texture, int x, int y) {
         super(texture, x, y);
@@ -22,7 +25,8 @@ public class Door extends Wall {
      *     checks if there are Enemies remaining in the current Room (which should automatically be its own) and if not unregisters itself
      * </p>
      */
-    public void update() {
+    @Override
+    public void update(Player player) {
         if(getCurrentRoom().equals(getRoom())) {
             boolean roomHasNoEnemies = true;
             for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
@@ -33,7 +37,7 @@ public class Door extends Wall {
             }
 
             if(roomHasNoEnemies) {
-                WallRegistry.unregister(this);
+                BlockRegistry.unregister(this);
             }
         }
 

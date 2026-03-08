@@ -3,6 +3,7 @@ package net.eckener.dungeon_crawler.logic;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.ObjectMap;
+import net.eckener.dungeon_crawler.Blocks.BlockRegistry;
 import net.eckener.dungeon_crawler.entities.Player;
 import net.eckener.dungeon_crawler.logic.json.RoomLoader;
 
@@ -55,7 +56,7 @@ public final class RoomRegistry {
 
         updateViewport();
         EntityRegistry.onRoomChange(currentRoom);
-        WallRegistry.onRoomChange(currentRoom);
+        BlockRegistry.onRoomChange(currentRoom);
     }
 
     /**
@@ -86,7 +87,7 @@ public final class RoomRegistry {
         updateViewport();
         repositionPlayer(direction, player, oldRoom);
         EntityRegistry.onRoomChange(currentRoom);
-        WallRegistry.onRoomChange(currentRoom);
+        BlockRegistry.onRoomChange(currentRoom);
     }
 
     /**

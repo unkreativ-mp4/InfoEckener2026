@@ -5,7 +5,7 @@
   "width": 16,
   "height": 10,
 
-  "walls": [
+  "blocks": [
     { "x": 0, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
     { "x": 1, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
     { "x": 2, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Door" }

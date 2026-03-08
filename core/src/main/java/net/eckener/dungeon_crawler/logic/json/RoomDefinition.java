@@ -10,6 +10,6 @@ public class RoomDefinition {
     public int width;
     public int height;
 
-    public Array<WallDefinition> walls;
+    public Array<BlockDefinition> blocks;
     public Array<EntityDefinition> entities;
 }

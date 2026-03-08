@@ -6,10 +6,9 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.*;
-import net.eckener.dungeon_crawler.logic.EntityRegistry;
-import net.eckener.dungeon_crawler.logic.Room;
-import net.eckener.dungeon_crawler.logic.Wall;
-import net.eckener.dungeon_crawler.logic.WallRegistry;
+import net.eckener.dungeon_crawler.Blocks.Block;
+import net.eckener.dungeon_crawler.Blocks.BlockRegistry;
+import net.eckener.dungeon_crawler.logic.*;
 
 import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 
@@ -153,16 +152,16 @@ public abstract class Entity extends Sprite {
     }
 
     /**
-     * Resolves collisions between this Entity and Walls/other Entities by using libGDX's MinimumTranslationVector feature to push this Entity out of the Wall or both Entities out of each other
+     * Resolves collisions between this Entity and Blocks/other Entities by using libGDX's MinimumTranslationVector feature to push this Entity out of the Block or both Entities out of each other
      */
     private void resolveCollisions() {
 
         Intersector.MinimumTranslationVector mtv = new Intersector.MinimumTranslationVector();
 
-        //Walls
-        for (Wall wall : WallRegistry.getAllRoomWalls()) {
+        //Blocks
+        for (Block block : BlockRegistry.getAllRoomBlocks()) {
 
-            if (Intersector.overlapConvexPolygons(hitbox, wall.getHitbox(), mtv)) {
+            if (Intersector.overlapConvexPolygons(hitbox, block.getHitbox(), mtv)) {
 
                 translate(mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth);
 
