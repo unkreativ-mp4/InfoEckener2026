@@ -229,7 +229,7 @@ public class Main extends InputAdapter implements ApplicationListener{
                     break;
                 case Input.Keys.P:
                     for(Block block : BlockRegistry.getAllRoomBlocks()) {
-                        if(block instanceof Chest chestBlock) {
+                        if(block instanceof Chest chestBlock && chestBlock.isInRange(player)) {
                             chestBlock.openCloseChest(player);
                             break;
                         }

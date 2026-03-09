@@ -8,7 +8,8 @@
   "blocks": [
     { "x": 0, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
     { "x": 1, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
-    { "x": 2, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Door" }
+    { "x": 2, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Door" },
+    {"x": 4, "y": 2, "texture": "textures/placeholders/treasure_chest_red.png", "type": "Chest", "lootTablePath":  "basic_chest.json"}
   ],
 
   "entities": [

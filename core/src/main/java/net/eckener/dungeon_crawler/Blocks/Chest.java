@@ -14,6 +14,7 @@ public class Chest extends Block{
     private boolean isChestOpen;
     private boolean generatedLoot = false;
     private final LootTable lootTable;
+    private float range = 1.5f;
 
 
     public Chest(int xPos, int yPos, LootTable lootTable) {
@@ -50,12 +51,7 @@ public class Chest extends Block{
     public void update(Player player) {
         if (!isChestOpen) return;
 
-        float range = 1.5f;
-        float dx = player.getX() - getX();
-        float dy = player.getY() - getY();
-        boolean inRange = (dx * dx + dy * dy) <= (range * range);
-
-        if (!inRange) {
+        if (!isInRange(player)) {
             chestInventoryUI.closeInventory(chestInventory);
             isChestOpen = false;
         }
@@ -69,13 +65,7 @@ public class Chest extends Block{
 
     public void openCloseChest(Player player) {
 
-        float range = 1.5f;
-
-        float dx = player.getX() - getX();
-        float dy = player.getY() - getY();
-        boolean inRange = (dx * dx + dy * dy) <= (range * range);
-
-        if (!inRange) {
+        if (!isInRange(player)) {
             // optional: auto-close if you walk away
             if (isChestOpen) {
                 chestInventoryUI.closeInventory(chestInventory);
@@ -129,6 +119,12 @@ public class Chest extends Block{
 
             // Optional: if not placed, you could try "first empty slot" logic instead
         }
+    }
+
+    public boolean isInRange(Player player) {
+        float dx = player.getX() - getX();
+        float dy = player.getY() - getY();
+        return (dx * dx + dy * dy) <= (range * range);
     }
 
     public boolean isChestOpen() {
