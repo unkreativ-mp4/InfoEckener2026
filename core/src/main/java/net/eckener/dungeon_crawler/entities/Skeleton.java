@@ -46,10 +46,12 @@ public class Skeleton extends Enemy {
      */
     @Override
     public void update(float deltaTime, Player player) {
-        if(isAlive) {
+        if (isAlive) {
             timeSinceLastAttack += deltaTime;
             move(player);
             attack(player);
+        } else {
+            updateDeathTimer(deltaTime);
         }
     }
 
@@ -77,7 +79,7 @@ public class Skeleton extends Enemy {
      */
     @Override
     protected void onDeath() {
-        isAlive=false;
-        //sprite.setTexture(deathTexture);
+        //setTexture(deathTexture);
+
     }
 }

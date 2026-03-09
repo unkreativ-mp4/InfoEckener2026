@@ -57,7 +57,6 @@ public class Zombie extends Enemy {
      */
     @Override
     protected void onDeath() {
-        isAlive=false;
         setTexture(deathTexture);
     }
 
@@ -68,10 +67,12 @@ public class Zombie extends Enemy {
      */
     @Override
     public void update(float deltaTime, Player player) {
-        if(isAlive) {
+        if (isAlive) {
             timeSinceLastAttack += deltaTime;
             move(player);
             attack(player);
+        } else {
+            updateDeathTimer(deltaTime);
         }
     }
 

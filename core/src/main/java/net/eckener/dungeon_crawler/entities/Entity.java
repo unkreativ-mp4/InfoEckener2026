@@ -89,6 +89,10 @@ public abstract class Entity extends Sprite {
         return room;
     }
 
+    public void remove() {
+        EntityRegistry.unregister(this);
+    }
+
     /**
      * Method which runs every frame
      * @param delta Frame time to satisfy smooth updating even when lagging
@@ -159,7 +163,11 @@ public abstract class Entity extends Sprite {
         //Entities
         for (Entity entity : EntityRegistry.getAllEntities()) {
 
-            if (entity == this) break;
+            if (entity == this) continue;
+
+            if (entity instanceof LivingEntity living && !living.isAlive()) continue;
+
+            if (this instanceof LivingEntity living && !living.isAlive()) continue;
 
             if (Intersector.overlapConvexPolygons(hitbox, entity.hitbox, mtv)) {
 

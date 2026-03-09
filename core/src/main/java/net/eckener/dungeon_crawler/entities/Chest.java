@@ -2,11 +2,7 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import net.eckener.dungeon_crawler.logic.Assets;
-import net.eckener.dungeon_crawler.logic.ItemStack;
-import net.eckener.dungeon_crawler.logic.Inventory;
-import net.eckener.dungeon_crawler.logic.LootEntry;
-import net.eckener.dungeon_crawler.logic.LootTable;
+import net.eckener.dungeon_crawler.logic.*;
 import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 public class Chest extends Entity{
@@ -18,8 +14,8 @@ public class Chest extends Entity{
     private final LootTable lootTable;
 
 
-    public Chest(float pInventoryXPos, float pInventoryYPos, Stage stage, LootTable pLootTable) {
-        super(4,2, Assets.get(Assets.CHEST),0);
+    public Chest(float pXPos, float pYPos, Stage stage, LootTable pLootTable) {
+        super(pXPos, pYPos, Assets.get(Assets.CHEST),0);
 
         chestInventory = new Inventory(4, 7, "Chest", stage);
         chestInventoryUI = chestInventory.getInventoryUI();
@@ -51,6 +47,15 @@ public class Chest extends Entity{
         }
     }
 
+    @Override
+    public void remove() {
+        if (isChestOpen) {
+            chestInventoryUI.closeInventory(chestInventory);
+            isChestOpen = false;
+        }
+        chestInventoryUI.remove();
+        EntityRegistry.unregister(this);
+    }
 
     public InventoryUI getChestInventoryUI() {
         return chestInventoryUI;

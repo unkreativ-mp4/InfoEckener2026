@@ -39,7 +39,7 @@ public class Main extends InputAdapter implements ApplicationListener{
     Skeleton skeleton;
 
     public Player player;
-    Chest chest;
+    LootTable lootTable;
 
 
     private Stage stage;
@@ -106,14 +106,15 @@ public class Main extends InputAdapter implements ApplicationListener{
         ItemStack woodenSwordStack = new ItemStack(woodenSword, 1);
         ItemStack darkBowStack = new ItemStack(darkBow, 1);
 
-        LootTable chestTable1 = new LootTable();
-        chestTable1.add(coin, 1,24);
-        chestTable1.add(woodenSword, 1,1);
-        chestTable1.add(darkBow, 1, 1);
+        lootTable = new LootTable();
+        lootTable.add(coin, 1,24);
+        lootTable.add(woodenSword, 1,1);
+        lootTable.add(darkBow, 1, 1);
 
-        chest = new Chest(stage.getHeight(), stage.getWidth() / 2, stage, chestTable1);
+        player.setChestLootTable(lootTable);
 
         player.getPlayerInventory().addItemStack(coinStack, 3, 3);
+        player.getPlayerInventory().addItemStack(woodenSwordStack ,1, 1);
 
         player.getPlayerHotbar().getInventory().addItemStack(darkBowStack, 0, 0);
 
@@ -144,8 +145,9 @@ public class Main extends InputAdapter implements ApplicationListener{
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
 
+        Chest chest = player.getSpawnedChest();
         float YwhenChestOpen;
-        if(chest.isChestOpen()) {
+        if(chest != null && chest.isChestOpen()) {
             YwhenChestOpen = ((stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 5f);
         }
         else {
@@ -156,10 +158,12 @@ public class Main extends InputAdapter implements ApplicationListener{
         player.getPlayerInventory().getInventoryUI().setPosition(
             (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f, YwhenChestOpen);
 
-        chest.getChestInventoryUI().setPosition(
-            (stage.getWidth()  - chest.getChestInventoryUI().getWidth())  / 2f,
-            (stage.getHeight() - chest.getChestInventoryUI().getHeight())
-        );
+        if (chest != null) {
+            chest.getChestInventoryUI().setPosition(
+                (stage.getWidth()  - chest.getChestInventoryUI().getWidth())  / 2f,
+                (stage.getHeight() - chest.getChestInventoryUI().getHeight())
+            );
+        }
 
         player.getPlayerHotbar().getInventoryUI().setPosition(
             (stage.getWidth()  - player.getPlayerHotbar().getInventoryUI().getWidth())  / 2f,
@@ -200,6 +204,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         spriteBatch.begin();
         manaOrb.draw(spriteBatch);
         healthIcon.draw(spriteBatch);
+
         debug.render();   // draw text only
         spriteBatch.end();
 
@@ -250,7 +255,9 @@ public class Main extends InputAdapter implements ApplicationListener{
                     zombie.attack(player);
                     break;
                 case Input.Keys.P:
-                    chest.openCloseChest(player);
+                    if (player.getSpawnedChest() != null) {
+                        player.getSpawnedChest().openCloseChest(player);
+                    }
                     break;
             }
         }

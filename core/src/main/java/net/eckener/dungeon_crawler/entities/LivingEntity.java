@@ -2,6 +2,7 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 
+
 /**
  * Expands on {@link Entity} with attributes like {@code health}
  */
@@ -10,6 +11,10 @@ public abstract class LivingEntity extends Entity {
     protected int health;
     protected int maxHealth;
     protected boolean isAlive = true;
+
+    private boolean pendingRemoval = false;
+    private float timeSinceDeath = 0f;
+    private float removeDelay = 2f;
 
 
     public LivingEntity(float xPos, float yPos, Texture texture, int maxHealth, float speed) {
@@ -31,9 +36,23 @@ public abstract class LivingEntity extends Entity {
      * @param damage the amount of {@code health} getting removed
      */
     public void takeDamage(int damage) {
+        if (!isAlive) return;
+
         health = Math.max(0, health - damage);
         if (health == 0) {
+            isAlive = false;
             onDeath();
+            pendingRemoval = true;
+            timeSinceDeath = 0f;
+        }
+    }
+
+    public void updateDeathTimer(float deltaTime) {
+        if (!pendingRemoval) return;
+
+        timeSinceDeath += deltaTime;
+        if (timeSinceDeath >= removeDelay) {
+            remove();
         }
     }
 
