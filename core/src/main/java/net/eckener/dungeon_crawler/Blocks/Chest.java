@@ -32,7 +32,7 @@ public class Chest extends Block{
     }
 
     public Chest(int xPos, int yPos, LootTable lootTable, Room room) {
-        super(Assets.get(Assets.CHEST), xPos, yPos);
+        super(Assets.get(Assets.CHEST), xPos, yPos, room);
 
         chestInventory = new Inventory(4, 7, "Chest");
         chestInventoryUI = chestInventory.getInventoryUI();

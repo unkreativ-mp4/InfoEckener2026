@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Json;
+import net.eckener.dungeon_crawler.Blocks.Chest;
 import net.eckener.dungeon_crawler.Blocks.Door;
 import net.eckener.dungeon_crawler.Blocks.Wall;
 import net.eckener.dungeon_crawler.entities.Skeleton;
 import net.eckener.dungeon_crawler.entities.Zombie;
 import net.eckener.dungeon_crawler.logic.*;
+
+import static net.eckener.dungeon_crawler.logic.json.LootTableLoader.loadLootTable;
 
 public class RoomLoader {
 
@@ -77,6 +80,10 @@ public class RoomLoader {
 
             case "Door":
                 new Door(Assets.get(block.texture), block.x, block.y, room);
+                break;
+
+            case "Chest":
+                new Chest( block.x, block.y, loadLootTable(block.lootTablePath), room);
                 break;
         }
     }

@@ -9,13 +9,13 @@ public class LootEntry {
     private int minAmount;
     private int maxAmount;
 
-    public LootEntry(Item pItem, int pMinAmount, int pMaxAmount) {
-        if (pItem == null) throw new IllegalArgumentException("ItemStack is null");
+    public LootEntry(Item item, int minAmount, int maxAmount, int weight) {
+        if (item == null) throw new IllegalArgumentException("Item is null");
 
-        item = pItem;
-        weight = item.getRarity();
-        minAmount = pMinAmount;
-        maxAmount = pMaxAmount;
+        this.item = item;
+        this.weight = weight;
+        this.minAmount = minAmount;
+        this.maxAmount = maxAmount;
     }
 
     public Item getItem() {

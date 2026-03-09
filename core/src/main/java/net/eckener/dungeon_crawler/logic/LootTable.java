@@ -11,8 +11,8 @@ public class LootTable {
     private List<LootEntry> entries = new ArrayList<>();
     private int totalWeight = 0;
 
-    public LootTable add(Item item, int minAmount, int maxAmount) {
-        LootEntry entry = new LootEntry(item, minAmount, maxAmount);
+    public LootTable add(Item item, int minAmount, int maxAmount, int weight) {
+        LootEntry entry = new LootEntry(item, minAmount, maxAmount, weight);
         entries.add(entry);
         totalWeight += entry.getWeight();
         return this;

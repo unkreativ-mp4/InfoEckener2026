@@ -5,7 +5,9 @@
   "width": 10,
   "height": 6,
 
-  "blocks": [],
+  "blocks": [
+    {"x": 0, "y": 0, "texture": "textures/placeholders/treasure_chest_red.png", "type": "Chest", "lootTablePath":  "basic_chest.json"}
+  ],
 
   "entities": []
 }

@@ -5,4 +5,5 @@ public class BlockDefinition {
     public int y;
     public String texture;
     public String type;
+    public String lootTablePath;
 }

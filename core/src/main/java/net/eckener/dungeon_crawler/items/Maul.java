@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
 
 public class Maul extends Weapon{
-    public Maul(Texture pItemTexture) {
-        super("maul", "Maul", pItemTexture, 100, 1, 10, 4, true, 4);
+    public Maul(String itemID, String itemName, Texture itemTexture, int maxStackSize, int damage, float cooldownModifier, int range) {
+        super(itemID, itemName, itemTexture, maxStackSize, damage, cooldownModifier, true, range);
     }
 
     /**

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import net.eckener.dungeon_crawler.Blocks.Block;
 import net.eckener.dungeon_crawler.Blocks.BlockRegistry;
 import net.eckener.dungeon_crawler.Blocks.Chest;
 import net.eckener.dungeon_crawler.Blocks.Door;
@@ -25,6 +26,7 @@ import net.eckener.dungeon_crawler.logic.*;
 import net.eckener.dungeon_crawler.ui.*;
 
 import static net.eckener.dungeon_crawler.logic.RoomRegistry.*;
+import static net.eckener.dungeon_crawler.logic.json.LootTableLoader.loadLootTable;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener{
@@ -54,6 +56,8 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         Assets.load();
         Assets.finishLoading();
+
+        ItemRegistry.loadItems();
 
         // ───────────────────────────────
         // Rendering & Viewports
@@ -95,25 +99,11 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         // Items & Inventory
         // ───────────────────────────────
-        Maul woodenSword = new Maul(Assets.get(Assets.WOODEN_SWORD));
-        Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 60, 67);
-        Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 100, 1, 10000, 5);
 
-        ItemStack coinStack = new ItemStack(coin, 5);
-        ItemStack woodenSwordStack = new ItemStack(woodenSword, 1);
-        ItemStack darkBowStack = new ItemStack(darkBow, 1);
-
-        LootTable chestTable1 = new LootTable();
-        chestTable1.add(coin, 1,24);
-        chestTable1.add(woodenSword, 1,1);
-        chestTable1.add(darkBow, 1, 1);
+        LootTable chestTable1 = loadLootTable("basic_chest.json");
 
         chest = new Chest(2, 4, chestTable1);
-        new Door(Assets.get(Assets.COIN),5,8);
 
-        player.getPlayerInventory().addItemStack(coinStack, 3, 3);
-
-        player.getPlayerHotbar().getInventory().addItemStack(darkBowStack, 0, 0);
 
         // ───────────────────────────────
         // Input Handling
@@ -238,7 +228,12 @@ public class Main extends InputAdapter implements ApplicationListener{
                     player.attack();
                     break;
                 case Input.Keys.P:
-                    chest.openCloseChest(player);
+                    for(Block block : BlockRegistry.getAllRoomBlocks()) {
+                        if(block instanceof Chest chestBlock) {
+                            chestBlock.openCloseChest(player);
+                            break;
+                        }
+                    }
                     break;
             }
         }

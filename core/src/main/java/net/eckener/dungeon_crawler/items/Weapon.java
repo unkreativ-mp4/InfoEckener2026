@@ -12,8 +12,8 @@ public abstract class Weapon extends Item{
     private final float cooldownModifier;
     private final boolean isMeleeWeapon;
 
-    public Weapon(String pItemID, String pItemName, Texture pItemTexture, int pRarity, int pMaxStackSize, int damage, float cooldownModifier, boolean isMeleeWeapon, float range) {
-        super(pItemID, pItemName, pItemTexture, pRarity, pMaxStackSize);
+    public Weapon(String itemID, String itemName, Texture itemTexture, int maxStackSize, int damage, float cooldownModifier, boolean isMeleeWeapon, float range) {
+        super(itemID, itemName, itemTexture, maxStackSize);
         this.damage = damage;
         this.cooldownModifier = cooldownModifier;
         this.isMeleeWeapon = isMeleeWeapon;
