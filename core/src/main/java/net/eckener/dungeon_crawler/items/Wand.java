@@ -1,0 +1,21 @@
+package net.eckener.dungeon_crawler.items;
+
+import com.badlogic.gdx.graphics.Texture;
+import net.eckener.dungeon_crawler.entities.Arrow;
+import net.eckener.dungeon_crawler.entities.LivingEntity;
+import net.eckener.dungeon_crawler.entities.Player;
+import net.eckener.dungeon_crawler.logic.Assets;
+
+public class Wand extends Weapon{
+
+    public Wand(String itemID, String itemName, Texture itemTexture, int maxStackSize, int damage, float cooldownModifier) {
+        super(itemID, itemName, itemTexture, maxStackSize, damage, cooldownModifier, true,5);
+    }
+
+    @Override
+    public void attack(LivingEntity attacker, LivingEntity attacked) {
+        Arrow arrow = new Arrow(Assets.get(Assets.FIREBALL), attacker.getX(), attacker.getY(),attacker, this.getDamage());
+        arrow.setRotationToFaceCursor();
+    }
+
+}

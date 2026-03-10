@@ -75,7 +75,8 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         player = new Player(100, 100);
 
-        player.getPlayerHotbar().getInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("vampire_dagger"),1),0,0);
+        player.getPlayerHotbar().getInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("wand"),1),0,0);
+
 
         // ───────────────────────────────
         // Debug Overlay
@@ -120,10 +121,10 @@ public class Main extends InputAdapter implements ApplicationListener{
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
 
-
-
-
-
+        player.getPlayerInventory().getInventoryUI().setPosition(
+            (stage.getWidth() - player.getPlayerInventory().getInventoryUI().getWidth()) / 2f,
+            (stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) /2f
+        );
 
         player.getPlayerHotbar().getInventoryUI().setPosition(
             (stage.getWidth()  - player.getPlayerHotbar().getInventoryUI().getWidth())  / 2f,

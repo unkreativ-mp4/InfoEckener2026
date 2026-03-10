@@ -11,6 +11,7 @@ import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.ui.Hotbar;
 
 import static net.eckener.dungeon_crawler.Main.camera;
+import static net.eckener.dungeon_crawler.Main.stage;
 
 public class Player extends LivingEntity{
     private int maxMana;
@@ -30,6 +31,10 @@ public class Player extends LivingEntity{
         this.maxMana = maxMana;
 
         inventory = new Inventory(4, 7, "Inventory");
+        inventory.getInventoryUI().setPosition(
+            (stage.getWidth() - inventory.getInventoryUI().getWidth()) / 2f,
+            (stage.getHeight() - inventory.getInventoryUI().getHeight())
+        );
         hotbar = new Hotbar();
 
         selectedItem = hotbar.getInventory().getItemStack(0, 0);

@@ -18,6 +18,8 @@ import net.eckener.dungeon_crawler.logic.ItemStack;
 
 import java.util.Objects;
 
+import static net.eckener.dungeon_crawler.Main.stage;
+
 public class InventoryUI extends Table {
 
     private Inventory inventory;
@@ -40,7 +42,6 @@ public class InventoryUI extends Table {
 
     public InventoryUI(Inventory pInventory, Texture inventoryTexture, Texture pSlotBackgroundTexture, float pInventoryXPos, float pInventoryYPos, float uiScale) {
 
-        //this.setFillParent(true);
         inventory = pInventory;
 
         this.setVisible(false);
