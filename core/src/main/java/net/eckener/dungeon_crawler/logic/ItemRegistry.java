@@ -17,8 +17,8 @@ public final class ItemRegistry {
         items.put("maul",new Maul("maul", "Maul", Assets.get(Assets.WOODEN_SWORD), 1,5,2,4));
         items.put("coin", new Item("coin", "Coin", Assets.get(Assets.COIN), 67));
         items.put("lesser_healing_potion", new HealingPotion("lesser_healing_potion", "Lesser Healing Potion", Assets.get(Assets.LESSER_HEALING_POTION), 3, 10));
-        items.put("normal_healing_potion", new HealingPotion("normal_healing_potion", "Normal Healing Potion", Assets.get(Assets.NORMAL_HEALING_POTION), 3, 10));
-        items.put("greater_healing_potion", new HealingPotion("greater_healing_potion", "Greater Healing Potion", Assets.get(Assets.GREATER_HEALING_POTION), 3, 10));
+        items.put("normal_healing_potion", new HealingPotion("normal_healing_potion", "Normal Healing Potion", Assets.get(Assets.NORMAL_HEALING_POTION), 3, 25));
+        items.put("greater_healing_potion", new HealingPotion("greater_healing_potion", "Greater Healing Potion", Assets.get(Assets.GREATER_HEALING_POTION), 3, 50));
     }
 
     public static void addItem(Item item) {
