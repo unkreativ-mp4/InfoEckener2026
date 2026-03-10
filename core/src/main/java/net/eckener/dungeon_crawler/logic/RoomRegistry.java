@@ -142,7 +142,7 @@ public final class RoomRegistry {
     }
 }
 
-enum Direction {
+/*enum Direction {
     LEFT(-1, 0),
     RIGHT(1, 0),
     UP(0, 1),
@@ -158,5 +158,5 @@ enum Direction {
 
     public int dx() { return dx; }
     public int dy() { return dy; }
-}
+}*/
 

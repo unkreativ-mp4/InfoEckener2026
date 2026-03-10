@@ -13,6 +13,11 @@ import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.ui.Hotbar;
+import net.eckener.dungeon_crawler.logic.AnimationLoader;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import net.eckener.dungeon_crawler.logic.Direction;
+
 
 public class Player extends LivingEntity{
     private int maxMana;
@@ -35,6 +40,25 @@ public class Player extends LivingEntity{
         hotbar = new Hotbar();
 
         selectedItem = hotbar.getInventory().getItemStack(0, 0);
+        walkAnimations.put(
+            Direction.UP,
+            AnimationLoader.load("textures/entities/player_up.png", 6, 5, 0.08f)
+        );
+
+        walkAnimations.put(
+            Direction.DOWN,
+            AnimationLoader.load("textures/entities/player_down.png", 6, 5, 0.08f)
+        );
+
+        walkAnimations.put(
+            Direction.LEFT,
+            AnimationLoader.load("textures/entities/player_left.png", 6, 5, 0.08f)
+        );
+
+        walkAnimations.put(
+            Direction.RIGHT,
+            AnimationLoader.load("textures/entities/player_right.png", 6, 5, 0.08f)
+        );
     }
 
     /**
@@ -184,6 +208,7 @@ public class Player extends LivingEntity{
         move();
         selectedItem = hotbar.getInventory().getItemStack(0,0);
     }
+
 
     /**
      * Never use, because it makes no sense

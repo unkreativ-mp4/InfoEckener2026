@@ -1,7 +1,9 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
@@ -9,6 +11,9 @@ import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.Blocks.Block;
 import net.eckener.dungeon_crawler.Blocks.BlockRegistry;
 import net.eckener.dungeon_crawler.logic.*;
+import net.eckener.dungeon_crawler.logic.Direction;
+
+import java.util.EnumMap;
 
 import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 
@@ -22,6 +27,12 @@ public abstract class Entity extends Sprite {
     protected Vector2 momentum = new Vector2();
     protected Vector2 direction = new Vector2();
     private Vector2 timescaledMomentum = new Vector2();
+    protected Direction facing = Direction.DOWN;
+    protected float stateTime = 0f;
+
+    protected EnumMap<Direction, Animation<TextureRegion>> walkAnimations =
+        new EnumMap<>(Direction.class);
+
     private final Room room;
 
     public Entity(float xPos, float yPos, Texture texture, float speed) {
@@ -64,6 +75,28 @@ public abstract class Entity extends Sprite {
         };
         hitbox = new Polygon(vertices);
         updateHitbox();
+    }
+    protected void updateFacing() {
+
+        if (momentum.len2() < 0.0001f)
+            return;
+
+        if (Math.abs(momentum.x) > Math.abs(momentum.y))
+            facing = momentum.x > 0 ? Direction.RIGHT : Direction.LEFT;
+        else
+            facing = momentum.y > 0 ? Direction.UP : Direction.DOWN;
+    }
+
+    protected void updateAnimation() {
+
+        Animation<TextureRegion> animation = walkAnimations.get(facing);
+
+        if (animation == null)
+            return;
+
+        TextureRegion frame = animation.getKeyFrame(stateTime, true);
+
+        setRegion(frame);
     }
 
     /**
@@ -140,6 +173,7 @@ public abstract class Entity extends Sprite {
         momentum.scl(0.95F);
         momentum.clamp(0,200);
         timescaledMomentum.set(momentum).scl(deltaTime);
+        updateFacing();
 
         translate(timescaledMomentum.x, 0);
         updateHitbox();
@@ -148,8 +182,10 @@ public abstract class Entity extends Sprite {
         translate(0, timescaledMomentum.y);
         updateHitbox();
         resolveCollisions();
+        updateAnimation();
 
     }
+
 
     /**
      * Resolves collisions between this Entity and Blocks/other Entities by using libGDX's MinimumTranslationVector feature to push this Entity out of the Block or both Entities out of each other

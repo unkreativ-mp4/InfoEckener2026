@@ -1,0 +1,20 @@
+{
+  "gridX": -1,
+  "gridY": 0,
+  "background": "textures/backgrounds/background_cross.png",
+  "width": 8,
+  "height": 8,
+
+  "blocks": [
+    { "x": 0, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    { "x": 1, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    { "x": 2, "y": 0, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    { "x": 0, "y": 1, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    { "x": 0, "y": 2, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    { "x": 0, "y": 5, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    { "x": 0, "y": 6, "texture": "textures/placeholders/stone_bricks.png", "type": "Wall" },
+    {"x": 3, "y": 3, "texture": "textures/placeholders/treasure_chest_red.png", "type": "Chest", "lootTablePath":  "basic_chest.json"}
+  ],
+
+  "entities": [  ]
+}
