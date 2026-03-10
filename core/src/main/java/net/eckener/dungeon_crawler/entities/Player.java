@@ -22,14 +22,9 @@ public class Player extends LivingEntity{
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
     private final float baseDamageCooldown = 0.5F;
-    private final float baseAttackCooldown = 1.0f;  //hotbar.getInventory().getItemStack(1,1).getItem().isWeapon().getCooldownModifier();
+    private final float baseAttackCooldown = 1.0f;
     private ItemStack selectedItem;
     private int killcount;
-
-    //temporär für Projektabgabe
-    private Stage stage;
-    private LootTable chestLootTable;
-    private Chest spawnedChest;
 
 
     public Player(int maxHealth, int maxMana) {
@@ -124,8 +119,6 @@ public class Player extends LivingEntity{
     public void attackSelective(LivingEntity livingEntity, Weapon weapon) {
         weapon.attack(this, livingEntity);
         timeSinceLastAttack = 0;
-
-        return healthBefore > 0 && livingEntity.getHealth() <= 0;
     }
 
     /**
@@ -156,14 +149,9 @@ public class Player extends LivingEntity{
         Weapon weapon = (Weapon) weaponSlotStack.getItem();
         if(selectedItem.getWeapon().isMeleeWeapon()) {
             for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
-                if (!(livingEntity instanceof Player)
-                    && Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2)
-                    <= selectedItem.getWeapon().getRange()) {
-
-                    if (attackSelective(livingEntity, weapon)) {
-                        handleKillReward();
-                        killsThisAttack++;
-                    }
+                if (!(livingEntity instanceof Player) && Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2) <= selectedItem.getWeapon().getRange()) {
+                    //handleKillReward();
+                    attackSelective(livingEntity, weapon);
                 }
             }
         } else {
@@ -223,35 +211,6 @@ public class Player extends LivingEntity{
      */
     public ItemStack getSelectedItem() {
         return selectedItem;
-    }
-
-    /**
-     * @param SelectedItem sets the selectedItem in form of an ItemStack
-     */
-    public void setSelectedItem(ItemStack SelectedItem) {
-        selectedItem = SelectedItem;
-    }
-
-    public void setChestLootTable(LootTable lootTable) {
-        this.chestLootTable = lootTable;
-    }
-
-    public Chest getSpawnedChest() {
-        return spawnedChest;
-    }
-
-    public void handleKillReward() {
-        killcount++;
-        if (chestLootTable != null) {
-            int i = MathUtils.random(0, 99);
-            if(i < 10) {
-                if (spawnedChest != null) {
-                    spawnedChest.remove();
-                }
-                spawnedChest = new Chest(getX(), getY(), stage, chestLootTable);
-            }
-
-        }
     }
 
 }

@@ -1,7 +1,12 @@
 package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
+import net.eckener.dungeon_crawler.Blocks.Chest;
+import net.eckener.dungeon_crawler.logic.EntityRegistry;
 import net.eckener.dungeon_crawler.logic.Room;
+
+import static net.eckener.dungeon_crawler.logic.json.LootTableLoader.loadLootTable;
 
 
 /**
@@ -12,12 +17,7 @@ public abstract class LivingEntity extends Entity {
     protected int health;
     protected int maxHealth;
     protected boolean isAlive = true;
-    protected double deathTime = 0;
-
-    private boolean pendingRemoval = false;
-    private float timeSinceDeath = 0f;
-    private float removeDelay = 2f;
-
+    protected float deathTime = 0f;
 
     public LivingEntity(float xPos, float yPos, Texture texture, int maxHealth, float speed) {
         super(xPos, yPos, texture, speed);
@@ -50,18 +50,19 @@ public abstract class LivingEntity extends Entity {
         health = Math.max(0, health - damage);
         if (health == 0) {
             isAlive = false;
+
+            handleDeathReward();
             onDeath();
-            pendingRemoval = true;
-            timeSinceDeath = 0f;
         }
     }
 
     public void updateDeathTimer(float deltaTime) {
-        if (!pendingRemoval) return;
+        if (isAlive) return;
 
-        timeSinceDeath += deltaTime;
-        if (timeSinceDeath >= removeDelay) {
-            remove();
+        System.out.println(deathTime);
+        deathTime += deltaTime;
+        if (deathTime > 5f) {
+            EntityRegistry.unregister(this);
         }
     }
 
@@ -93,6 +94,12 @@ public abstract class LivingEntity extends Entity {
      */
     public float getSpeed() {
         return speed;
+    }
+
+    public void handleDeathReward() {
+        if(MathUtils.random(0, 99) < 10) {
+            new Chest(getX(), getY(), loadLootTable("basic_chest.json"));
+        }
     }
 
 }

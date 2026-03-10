@@ -66,7 +66,6 @@ public class Zombie extends Enemy {
      */
     @Override
     protected void onDeath() {
-        isAlive=false;
         setTexture(deathTexture);
     }
 
@@ -81,12 +80,8 @@ public class Zombie extends Enemy {
             timeSinceLastAttack += deltaTime;
             move(player);
             attack(player);
-        } else {
-            deathTime += deltaTime;
-            if(deathTime > 5f) {
-                EntityRegistry.unregister(this);
-            }
         }
+        updateDeathTimer(deltaTime);
     }
 
     /**

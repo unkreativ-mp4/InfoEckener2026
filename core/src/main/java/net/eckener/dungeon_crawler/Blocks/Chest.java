@@ -19,7 +19,7 @@ public class Chest extends Block{
     private float range = 1.5f;
 
 
-    public Chest(int xPos, int yPos, LootTable lootTable) {
+    public Chest(float xPos, float yPos, LootTable lootTable) {
         super(Assets.get(Assets.CHEST), xPos, yPos);
 
         chestInventory = new Inventory(4, 7, "Chest");
@@ -59,22 +59,31 @@ public class Chest extends Block{
         }
     }
 
-    @Override
-    public void remove() {
-        if (isChestOpen) {
-            chestInventoryUI.closeInventory(chestInventory);
-            isChestOpen = false;
-        }
-        chestInventoryUI.remove();
-        EntityRegistry.unregister(this);
-    }
-
     public InventoryUI getChestInventoryUI() {
         return chestInventoryUI;
     }
 
 
     public void openCloseChest(Player player) {
+
+        float YwhenChestOpen;
+        if(!isChestOpen()) {
+            YwhenChestOpen = ((stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 5f);
+        }
+        else {
+            YwhenChestOpen = ((stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 2f);
+        }
+
+
+        player.getPlayerInventory().getInventoryUI().setPosition(
+            (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f, YwhenChestOpen);
+
+
+        getChestInventoryUI().setPosition(
+            (stage.getWidth()  - getChestInventoryUI().getWidth())  / 2f,
+            (stage.getHeight() - getChestInventoryUI().getHeight())
+        );
+
 
         if (!isInRange(player)) {
             // optional: auto-close if you walk away

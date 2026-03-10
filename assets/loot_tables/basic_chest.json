@@ -2,6 +2,9 @@
   "entries": [
     {"itemID":  "bow", "weight": 50, "min": 1, "max":  1},
     {"itemID":  "maul", "weight": 50, "min": 1, "max":  1},
-    {"itemID":  "coin", "weight": 100, "min": 1, "max":  24}
+    {"itemID":  "coin", "weight": 100, "min": 1, "max":  24},
+    {"itemID":  "lesser_healing_potion", "weight": 30, "min": 1, "max":  3},
+    {"itemID":  "normal_healing_potion", "weight": 20, "min": 1, "max":  2},
+    {"itemID":  "greater_healing_potion", "weight": 10, "min": 1, "max":  1}
   ]
 }

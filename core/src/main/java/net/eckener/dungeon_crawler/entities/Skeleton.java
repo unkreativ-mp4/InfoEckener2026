@@ -56,12 +56,8 @@ public class Skeleton extends Enemy {
             timeSinceLastAttack += deltaTime;
             move(player);
             attack(player);
-        } else {
-            deathTime += deltaTime;
-            if (deathTime > 5f) {
-                EntityRegistry.unregister(this);
-            }
         }
+        updateDeathTimer(deltaTime);
     }
 
     /**
@@ -88,7 +84,6 @@ public class Skeleton extends Enemy {
      */
     @Override
     protected void onDeath() {
-        isAlive=false;
         //sprite.setTexture(deathTexture);
     }
 }

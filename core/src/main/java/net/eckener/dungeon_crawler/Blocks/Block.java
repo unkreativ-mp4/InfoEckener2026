@@ -13,7 +13,7 @@ public abstract class Block extends Sprite {
     private Polygon hitbox;
     private final Room room;
 
-    public Block(Texture texture, int x, int y) {
+    public Block(Texture texture, float x, float y) {
         super(texture);
         setSize(1,1);
         setX(x);

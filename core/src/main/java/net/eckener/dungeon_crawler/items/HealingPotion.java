@@ -7,8 +7,8 @@ public class HealingPotion extends Item{
 
     private int healAmount;
 
-    public HealingPotion(String pItemID, String pItemName, Texture pItemTexture, int pRarity, int pMaxStackSize, int pHealAmount) {
-        super(pItemID, pItemName, pItemTexture, pRarity, pMaxStackSize);
+    public HealingPotion(String pItemID, String pItemName, Texture pItemTexture, int pMaxStackSize, int pHealAmount) {
+        super(pItemID, pItemName, pItemTexture, pMaxStackSize);
         this.healAmount = pHealAmount;
     }
 
