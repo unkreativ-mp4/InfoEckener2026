@@ -116,7 +116,6 @@ public class Inventory extends Table {
     public void moveItemToSlot(ItemStack[][] itemStacks, ItemStack itemStack, int newRow, int newCol, int orgRow, int orgCol) {
 
         if(itemStacks[orgRow][orgCol] == null) {
-            System.out.println("No Item to move at this slot");
             return;
         }
 
@@ -131,7 +130,6 @@ public class Inventory extends Table {
             else {
                 itemStacks[orgRow][orgCol] = null;
             }
-            System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol);
             return;
         }
 
@@ -139,17 +137,11 @@ public class Inventory extends Table {
 
         if (sameItem) {
             targetStack.setAmount(targetStack.getAmount() + 1);
-            if(itemStacks[orgRow][orgCol].getAmount() > 1) {
+            if (itemStacks[orgRow][orgCol].getAmount() > 1) {
                 itemStacks[orgRow][orgCol].setAmount(itemStacks[orgRow][orgCol].getAmount() - 1);
-            }
-            else {
+            } else {
                 itemStacks[orgRow][orgCol] = null;
             }
-
-            System.out.println("Moved " + itemStack.getItem().getItemName()
-                + " to pos: " + newRow + ", " + newCol);
-        } else {
-            System.out.println("Inventory Slot occupied!");
         }
     }
 
@@ -157,7 +149,6 @@ public class Inventory extends Table {
         int stackAmount = itemStacks[orgRow][orgCol].getAmount();
 
         if(itemStacks[orgRow][orgCol] == null) {
-            System.out.println("No Item to move at this slot");
             return;
         }
 
@@ -167,7 +158,6 @@ public class Inventory extends Table {
             ItemStack movedStack = new ItemStack(itemStack.getItem(), stackAmount);
             itemStacks[newRow][newCol] = movedStack;
             itemStacks[orgRow][orgCol] = null;
-            System.out.println("Moved " + itemStack.getItem().getItemName() + " to pos: " + newRow + ", " + newCol);
             return;
         }
 
@@ -176,11 +166,6 @@ public class Inventory extends Table {
         if (sameItem) {
             targetStack.setAmount(targetStack.getAmount() + stackAmount);
             itemStacks[orgRow][orgCol] = null;
-
-            System.out.println("Moved " + itemStack.getItem().getItemName()
-                + " to pos: " + newRow + ", " + newCol);
-        } else {
-            System.out.println("Inventory Slot occupied!");
         }
     }
 
@@ -189,7 +174,6 @@ public class Inventory extends Table {
         ItemStack[][] to = targetInv.itemStacks;
 
         if (from[fromRow][fromCol] == null) {
-            System.out.println("No Item to move at this slot");
             return;
         }
 
@@ -214,7 +198,6 @@ public class Inventory extends Table {
             if (sourceStack.getAmount() > 1) sourceStack.setAmount(sourceStack.getAmount() - 1);
             else from[fromRow][fromCol] = null;
         } else {
-            System.out.println("Inventory Slot occupied!");
         }
     }
 
@@ -223,7 +206,6 @@ public class Inventory extends Table {
         ItemStack[][] to = targetInv.itemStacks;
 
         if (from[fromRow][fromCol] == null) {
-            System.out.println("No Item to move at this slot");
             return;
         }
 
@@ -242,8 +224,6 @@ public class Inventory extends Table {
         if (sameItem) {
             targetStack.setAmount(targetStack.getAmount() + stackAmount);
             from[fromRow][fromCol] = null;
-        } else {
-            System.out.println("Inventory Slot occupied!");
         }
     }
 

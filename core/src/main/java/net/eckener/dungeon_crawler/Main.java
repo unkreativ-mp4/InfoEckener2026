@@ -75,7 +75,7 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         player = new Player(100, 100);
 
-        player.getPlayerHotbar().getInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("bow"),1),0,0);
+        player.getPlayerHotbar().getInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("vampire_dagger"),1),0,0);
 
         // ───────────────────────────────
         // Debug Overlay
@@ -221,9 +221,6 @@ public class Main extends InputAdapter implements ApplicationListener{
                 case Input.Keys.L:
                     new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
                     break;
-                case Input.Keys.U:
-                    player.attack();
-                    break;
                 case Input.Keys.P:
                     for(Block block : BlockRegistry.getAllRoomBlocks()) {
                         if(block instanceof Chest chestBlock && chestBlock.isInRange(player)) {
@@ -252,4 +249,13 @@ public class Main extends InputAdapter implements ApplicationListener{
             player.takeDamage(5);
         }
     }
+
+    @Override
+    public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.LEFT && !player.getPlayerInventory().getInventoryUI().getIsOpen()){
+            player.attack();
+        }
+        return true;
+    }
+
 }

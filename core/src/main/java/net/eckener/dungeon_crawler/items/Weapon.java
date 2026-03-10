@@ -10,14 +10,20 @@ public abstract class Weapon extends Item{
     private final int damage;
     private final float range;
     private final float cooldownModifier;
+    private final boolean isAOEWeapon;
     private final boolean isMeleeWeapon;
 
-    public Weapon(String itemID, String itemName, Texture itemTexture, int maxStackSize, int damage, float cooldownModifier, boolean isMeleeWeapon, float range) {
+    public Weapon(String itemID, String itemName, Texture itemTexture, int maxStackSize, int damage, float cooldownModifier, boolean isAOEWeapon, float range) {
         super(itemID, itemName, itemTexture, maxStackSize);
         this.damage = damage;
         this.cooldownModifier = cooldownModifier;
-        this.isMeleeWeapon = isMeleeWeapon;
+        this.isAOEWeapon = isAOEWeapon;
         this.range = range;
+        if (range == 0) {
+            isMeleeWeapon = false;
+        } else {
+            isMeleeWeapon = true;
+        }
     }
 
     /**
@@ -28,10 +34,10 @@ public abstract class Weapon extends Item{
     }
 
     /**
-     * @return if the Weapon is a melee weapon
+     * @return if the Weapon is an AOE weapon
      */
-    public boolean isMeleeWeapon() {
-        return isMeleeWeapon;
+    public boolean isAOEWeapon() {
+        return isAOEWeapon;
     }
 
     /**
@@ -46,6 +52,13 @@ public abstract class Weapon extends Item{
      */
     public float getCooldownModifier() {
         return cooldownModifier;
+    }
+
+    /**
+     * @return if the Weapon is a melee weapon
+     */
+    public boolean isMeleeWeapon() {
+        return isMeleeWeapon;
     }
 
     public abstract void attack(LivingEntity attacker, LivingEntity attacked);

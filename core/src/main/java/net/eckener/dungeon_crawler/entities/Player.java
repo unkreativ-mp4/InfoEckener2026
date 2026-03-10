@@ -2,17 +2,15 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector3;
 import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.logic.EntityRegistry;
 import net.eckener.dungeon_crawler.logic.ItemStack;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import net.eckener.dungeon_crawler.items.Bow;
-import net.eckener.dungeon_crawler.logic.*;
-import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.ui.Hotbar;
+
+import static net.eckener.dungeon_crawler.Main.camera;
 
 public class Player extends LivingEntity{
     private int maxMana;
@@ -124,21 +122,19 @@ public class Player extends LivingEntity{
     /**
      * Checks if the player can attack and what the weapon type is
      * <p>
-     * If the weapon is of type melee, all LivingEntities in weapon-range are attacked individually
+     * If the weapon is of type AOE, all LivingEntities in weapon-range are attacked individually
      * <p>
-     * If the weapon is not of type melee, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
+     * If the weapon is not of type AOE, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
      */
     public void attack() {
         int killsThisAttack = 0;
         ItemStack weaponSlotStack = hotbar.getInventory().getItemStack(0, 0);
 
         if (weaponSlotStack == null || weaponSlotStack.getItem() == null) {
-            System.out.println("Hotbar slot 1 is empty");
             return;
         }
 
         if (!(weaponSlotStack.getItem() instanceof Weapon)) {
-            System.out.println("Hotbar slot 1 item is not a weapon: " + weaponSlotStack.getItem().getItemName());
             return;
         }
 
@@ -147,16 +143,46 @@ public class Player extends LivingEntity{
         }
 
         Weapon weapon = (Weapon) weaponSlotStack.getItem();
-        if(selectedItem.getWeapon().isMeleeWeapon()) {
-            for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
-                if (!(livingEntity instanceof Player) && Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2) <= selectedItem.getWeapon().getRange()) {
-                    //handleKillReward();
-                    attackSelective(livingEntity, weapon);
+
+        if(selectedItem.getWeapon().isAOEWeapon()) {
+            if (selectedItem.getWeapon().isMeleeWeapon()) {
+                //aoe und melee
+                for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                    if (!(livingEntity instanceof Player) && Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2) <= selectedItem.getWeapon().getRange()) {
+                        attackSelective(livingEntity, weapon);
+                    }
                 }
+
+            } else {
+                //aoe und ranged
+                for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                    if (!(livingEntity instanceof Player)) {
+                        attackSelective(null, weapon);
+                    }
+                }
+
             }
         } else {
-            attackSelective(null, weapon);
+            if (selectedItem.getWeapon().isMeleeWeapon()) {
+                //direct und melee
+                Vector3 vector3 = new Vector3();
+                camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+                for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                    if(livingEntity instanceof Player) {continue;}
+
+                    if(vector3.x -0.5 <= livingEntity.getX()+livingEntity.getWidth()/2 && livingEntity.getX()+livingEntity.getWidth()/2 <= vector3.x + 0.5 && vector3.y -0.5 <= livingEntity.getY()+livingEntity.getHeight()/2 && livingEntity.getY()+livingEntity.getHeight()/2 <= vector3.y + 0.5&& Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2) <= selectedItem.getWeapon().getRange()) {
+
+                        attackSelective(livingEntity, weapon);
+                        break;
+                    }
+                }
+            } else {
+                //direct und ranged
+                attackSelective(null, weapon);
+            }
         }
+
+
     }
 
     /**

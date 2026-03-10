@@ -47,17 +47,9 @@ public class InventoryUI extends Table {
         inventory.setVisible(false);
         setTouchable(Touchable.disabled);
 
-        //inventoryXPos = pInventoryXPos
-        //inventoryYPos = pInventoryYPos;
-        //System.out.println(inventoryXPos + " " + inventoryYPos);
-
-        //this.setPosition(inventoryXPos, inventoryYPos);
-
-
         slotSize = slotSize * uiScale;
         slotPad = slotPad * uiScale;
         slotBackgroundTexture = pSlotBackgroundTexture;
-
 
 
         NinePatch invPatch = new NinePatch(inventoryTexture, 11, 11, 11, 11);
