@@ -57,6 +57,9 @@ public final class Assets {
     public static final String CHEST = "textures/placeholders/treasure_chest_red.png";
     public static final String DARK_BOW = "textures/items/dark_bow.png";
     public static final String HOTBAR_BACKGROUND = "textures/gui/inventory/hotbar_background.png";
+    public static final String LESSER_HEALING_POTION = "textures/items/lesser_healing_potion.png";
+    public static final String NORMAL_HEALING_POTION = "textures/items/normal_healing_potion.png";
+    public static final String GREATER_HEALING_POTION = "textures/items/greater_healing_potion.png";
 
 
 
@@ -108,6 +111,9 @@ public final class Assets {
         manager.load(CHEST, Texture.class);
         manager.load(DARK_BOW, Texture.class);
         manager.load(HOTBAR_BACKGROUND, Texture.class);
+        manager.load(LESSER_HEALING_POTION, Texture.class);
+        manager.load(NORMAL_HEALING_POTION, Texture.class);
+        manager.load(GREATER_HEALING_POTION, Texture.class);
 
 
     }

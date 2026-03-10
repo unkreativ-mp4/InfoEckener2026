@@ -5,6 +5,11 @@ import com.badlogic.gdx.Input;
 import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.logic.EntityRegistry;
 import net.eckener.dungeon_crawler.logic.ItemStack;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import net.eckener.dungeon_crawler.items.Bow;
+import net.eckener.dungeon_crawler.logic.*;
+import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.ui.Hotbar;
@@ -12,13 +17,19 @@ import net.eckener.dungeon_crawler.ui.Hotbar;
 public class Player extends LivingEntity{
     private int maxMana;
     private int mana;
+    private Hotbar hotbar;
+    private Inventory inventory;
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
     private final float baseDamageCooldown = 0.5F;
-    private final float baseAttackCooldown = 1.0F;
-    private ItemStack selectedItem; //soll später durch einen slot-Index ausgetauscht werden das kann aber erst mit funktionierendem Inventar geschehen
-    private Inventory inventory;
-    private Hotbar hotbar;
+    private final float baseAttackCooldown = 1.0f;  //hotbar.getInventory().getItemStack(1,1).getItem().isWeapon().getCooldownModifier();
+    private ItemStack selectedItem;
+    private int killcount;
+
+    //temporär für Projektabgabe
+    private Stage stage;
+    private LootTable chestLootTable;
+    private Chest spawnedChest;
 
 
     public Player(int maxHealth, int maxMana) {
@@ -113,6 +124,8 @@ public class Player extends LivingEntity{
     public void attackSelective(LivingEntity livingEntity, Weapon weapon) {
         weapon.attack(this, livingEntity);
         timeSinceLastAttack = 0;
+
+        return healthBefore > 0 && livingEntity.getHealth() <= 0;
     }
 
     /**
@@ -123,6 +136,7 @@ public class Player extends LivingEntity{
      * If the weapon is not of type melee, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
      */
     public void attack() {
+        int killsThisAttack = 0;
         ItemStack weaponSlotStack = hotbar.getInventory().getItemStack(0, 0);
 
         if (weaponSlotStack == null || weaponSlotStack.getItem() == null) {
@@ -142,8 +156,14 @@ public class Player extends LivingEntity{
         Weapon weapon = (Weapon) weaponSlotStack.getItem();
         if(selectedItem.getWeapon().isMeleeWeapon()) {
             for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
-                if(Math.pow(getX() - livingEntity.getX(),2) + Math.pow(getX() - livingEntity.getX(),2) <= selectedItem.getWeapon().getRange() && !(livingEntity instanceof Player)) {
-                    attackSelective(livingEntity, weapon);
+                if (!(livingEntity instanceof Player)
+                    && Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2)
+                    <= selectedItem.getWeapon().getRange()) {
+
+                    if (attackSelective(livingEntity, weapon)) {
+                        handleKillReward();
+                        killsThisAttack++;
+                    }
                 }
             }
         } else {
@@ -211,5 +231,28 @@ public class Player extends LivingEntity{
     public void setSelectedItem(ItemStack SelectedItem) {
         selectedItem = SelectedItem;
     }
+
+    public void setChestLootTable(LootTable lootTable) {
+        this.chestLootTable = lootTable;
+    }
+
+    public Chest getSpawnedChest() {
+        return spawnedChest;
+    }
+
+    public void handleKillReward() {
+        killcount++;
+        if (chestLootTable != null) {
+            int i = MathUtils.random(0, 99);
+            if(i < 10) {
+                if (spawnedChest != null) {
+                    spawnedChest.remove();
+                }
+                spawnedChest = new Chest(getX(), getY(), stage, chestLootTable);
+            }
+
+        }
+    }
+
 }
 

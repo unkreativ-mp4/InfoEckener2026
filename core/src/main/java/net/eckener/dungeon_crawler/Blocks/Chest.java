@@ -3,6 +3,8 @@ package net.eckener.dungeon_crawler.Blocks;
 import com.badlogic.gdx.math.MathUtils;
 import net.eckener.dungeon_crawler.entities.Player;
 import net.eckener.dungeon_crawler.logic.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import net.eckener.dungeon_crawler.logic.*;
 import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 import static net.eckener.dungeon_crawler.Main.stage;
@@ -57,6 +59,15 @@ public class Chest extends Block{
         }
     }
 
+    @Override
+    public void remove() {
+        if (isChestOpen) {
+            chestInventoryUI.closeInventory(chestInventory);
+            isChestOpen = false;
+        }
+        chestInventoryUI.remove();
+        EntityRegistry.unregister(this);
+    }
 
     public InventoryUI getChestInventoryUI() {
         return chestInventoryUI;
@@ -74,13 +85,10 @@ public class Chest extends Block{
             return;
         }
 
-        // toggle
         if (!isChestOpen) {
             chestInventoryUI.openInventory(chestInventory);
             isChestOpen = true;
 
-            // don't TOGGLE player inventory; explicitly open it if you want it open
-            // (replace getOpen() with whatever your UI uses)
             if (!player.getPlayerInventory().getInventoryUI().getIsOpen()) {
                 player.getPlayerInventory().getInventoryUI().openInventory(player.getPlayerInventory());
             }
@@ -96,7 +104,7 @@ public class Chest extends Block{
         if (generatedLoot) return;
         generatedLoot = true;
 
-        int rolls = MathUtils.random(1, 4); // 1-4 item stacks in this chest
+        int rolls = MathUtils.random(1, 4);
 
         for (int i = 0; i < rolls; i++) {
             LootEntry entry = lootTable.rollEntry();
@@ -104,8 +112,6 @@ public class Chest extends Block{
 
             ItemStack stack = new ItemStack(entry.getItem(), amount);
 
-            // Put it somewhere random (retry a few times to find empty slots)
-            //boolean placed = false;
             for (int tries = 0; tries < 20; tries++) {
                 int r = MathUtils.random(0, chestInventory.getRows() - 1);
                 int c = MathUtils.random(0, chestInventory.getCols() - 1);
@@ -114,10 +120,7 @@ public class Chest extends Block{
                     chestInventory.addItemStack(stack, r, c);
                     break;
                 }
-
             }
-
-            // Optional: if not placed, you could try "first empty slot" logic instead
         }
     }
 

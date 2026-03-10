@@ -1,6 +1,7 @@
 package net.eckener.dungeon_crawler.logic;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 import java.util.Objects;
@@ -73,6 +74,9 @@ public class Inventory extends Table {
         itemStacks[row][col] = itemStack;
     }
 
+    public void removeItemStack(int row, int col) {
+        itemStacks[row][col] = null;
+    }
 
     @Override
     public int getRows() {
@@ -82,6 +86,7 @@ public class Inventory extends Table {
     public int getCols() {
         return cols;
     }
+
 
     public int getInventorySize() {
         return cols * rows;
@@ -240,6 +245,45 @@ public class Inventory extends Table {
         } else {
             System.out.println("Inventory Slot occupied!");
         }
+    }
+
+    public boolean containsItemType(Class<? extends Item> itemClass) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                ItemStack stack = itemStacks[row][col];
+
+                if (stack != null && itemClass.isInstance(stack.getItem())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public ItemStack findItemStack(Class<? extends Item> itemClass) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                ItemStack stack = itemStacks[row][col];
+
+                if (stack != null && itemClass.isInstance(stack.getItem())) {
+                    return stack;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public int[] findItemStackPosition(ItemStack targetStack) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if(itemStacks[row][col] == targetStack) {
+                    return new int[]{row, col};
+                }
+            }
+        }
+
+        return null;
     }
 
     public InventoryUI getInventoryUI() {

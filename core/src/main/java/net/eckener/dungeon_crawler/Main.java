@@ -20,6 +20,7 @@ import net.eckener.dungeon_crawler.Blocks.Door;
 import net.eckener.dungeon_crawler.debug.*;
 import net.eckener.dungeon_crawler.entities.*;
 import net.eckener.dungeon_crawler.items.Bow;
+import net.eckener.dungeon_crawler.items.HealingPotion;
 import net.eckener.dungeon_crawler.items.Item;
 import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.logic.*;
@@ -104,6 +105,43 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         chest = new Chest(2, 4, chestTable1);
 
+        Maul woodenSword = new Maul(Assets.get(Assets.WOODEN_SWORD));
+        Item coin = new Item("coin", "Coin", Assets.get(Assets.COIN), 60, 67);
+        Bow darkBow = new Bow("dark_bow", "Dark Bow", Assets.get(Assets.DARK_BOW), 100, 1, 50, 5);
+        HealingPotion lesserHealingPotion = new HealingPotion("lesser_healing_potion", "Lesser Healing Potion", Assets.get(Assets.LESSER_HEALING_POTION), 50, 3, 10);
+        HealingPotion normalHealingPotion = new HealingPotion("normal_healing_potion", "Normal Healing Potion", Assets.get(Assets.NORMAL_HEALING_POTION), 30, 3, 25);
+        HealingPotion greaterHealingPotion = new HealingPotion("greater_healing_potion", "Greater Healing Potion", Assets.get(Assets.GREATER_HEALING_POTION), 10, 3, 50);
+
+        System.out.println("Stage: " +stage.getHeight() + " " + stage.getWidth());
+
+        ItemStack coinStack = new ItemStack(coin, 5);
+        ItemStack woodenSwordStack = new ItemStack(woodenSword, 1);
+        ItemStack darkBowStack = new ItemStack(darkBow, 1);
+        ItemStack lesserHealingPotionStack = new ItemStack(lesserHealingPotion, 3);
+
+        lootTable = new LootTable();
+        lootTable.add(coin, 1,24);
+        lootTable.add(woodenSword, 1,1);
+        lootTable.add(darkBow, 1, 1);
+        lootTable.add(lesserHealingPotion, 1, 3);
+        lootTable.add(normalHealingPotion, 1, 2);
+        lootTable.add(greaterHealingPotion, 1, 1);
+
+        player.setChestLootTable(lootTable);
+
+        player.getPlayerInventory().addItemStack(coinStack, 3, 3);
+        player.getPlayerInventory().addItemStack(woodenSwordStack ,1, 1);
+        player.getPlayerInventory().addItemStack(lesserHealingPotionStack ,2, 1);
+
+        player.getPlayerHotbar().getInventory().addItemStack(darkBowStack, 0, 0);
+
+
+        // ───────────────────────────────
+        // Enemies
+        // ───────────────────────────────
+        zombie = new Zombie(1, 1, Assets.get(Assets.WOODEN_SHOVEL), Assets.get(Assets.WOODEN_HOE));
+        skeleton = new Skeleton(2,2,Assets.get(Assets.IRON_SHOVEL));
+        new Wall(Assets.get(Assets.STONE_BRICKS), 4,5);
 
         // ───────────────────────────────
         // Input Handling
@@ -125,7 +163,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         stage.getViewport().update(width, height, true);
 
         float YwhenChestOpen;
-        if(chest.isChestOpen()) {
+        if(chest != null && chest.isChestOpen()) {
             YwhenChestOpen = ((stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) / 5f);
         }
         else {
@@ -136,10 +174,12 @@ public class Main extends InputAdapter implements ApplicationListener{
         player.getPlayerInventory().getInventoryUI().setPosition(
             (stage.getWidth()  - player.getPlayerInventory().getInventoryUI().getWidth())  / 2f, YwhenChestOpen);
 
-        chest.getChestInventoryUI().setPosition(
-            (stage.getWidth()  - chest.getChestInventoryUI().getWidth())  / 2f,
-            (stage.getHeight() - chest.getChestInventoryUI().getHeight())
-        );
+        if (chest != null) {
+            chest.getChestInventoryUI().setPosition(
+                (stage.getWidth()  - chest.getChestInventoryUI().getWidth())  / 2f,
+                (stage.getHeight() - chest.getChestInventoryUI().getHeight())
+            );
+        }
 
         player.getPlayerHotbar().getInventoryUI().setPosition(
             (stage.getWidth()  - player.getPlayerHotbar().getInventoryUI().getWidth())  / 2f,
@@ -181,6 +221,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         spriteBatch.begin();
         manaOrb.draw(spriteBatch);
         healthIcon.draw(spriteBatch);
+
         debug.render();   // draw text only
         spriteBatch.end();
 
@@ -216,7 +257,18 @@ public class Main extends InputAdapter implements ApplicationListener{
                     player.getPlayerInventory().getInventoryUI().inventoryOpenManagement(player.getPlayerInventory());
                     break;
                 case Input.Keys.H:
-                    player.heal(5);
+                    ItemStack stack = player.getPlayerHotbar().getInventory().findItemStack(HealingPotion.class);
+                    if(stack != null) {
+                        HealingPotion potion = (HealingPotion) stack.getItem();
+                        potion.heal(player);
+
+                        if (stack.getAmount() > 1) {
+                            stack.setAmount(stack.getAmount() - 1);
+                        }
+                        else {
+                            player.getPlayerHotbar().getInventory().removeItemStack(player.getPlayerHotbar().getInventory().findItemStackPosition(stack)[0], player.getPlayerHotbar().getInventory().findItemStackPosition(stack)[1]);
+                        }
+                    }
                     break;
                 case Input.Keys.M:
                     player.addMana(5);
