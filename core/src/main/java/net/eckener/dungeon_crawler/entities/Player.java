@@ -2,6 +2,7 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.logic.*;
@@ -238,13 +239,15 @@ public class Player extends LivingEntity{
 
     public void handleKillReward() {
         killcount++;
-        if (killcount % 5 == 0 && chestLootTable != null) {
-            if (spawnedChest != null) {
-                spawnedChest.remove();
-
+        if (chestLootTable != null) {
+            int i = MathUtils.random(0, 99);
+            if(i < 10) {
+                if (spawnedChest != null) {
+                    spawnedChest.remove();
+                }
+                spawnedChest = new Chest(getX(), getY(), stage, chestLootTable);
             }
 
-            spawnedChest = new Chest(getX(), getY(), stage, chestLootTable);
         }
     }
 

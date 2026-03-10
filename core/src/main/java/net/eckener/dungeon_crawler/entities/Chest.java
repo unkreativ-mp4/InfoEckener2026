@@ -71,7 +71,6 @@ public class Chest extends Entity{
         boolean inRange = (dx * dx + dy * dy) <= (range * range);
 
         if (!inRange) {
-            // optional: auto-close if you walk away
             if (isChestOpen) {
                 chestInventoryUI.closeInventory(chestInventory);
                 isChestOpen = false;
@@ -79,13 +78,10 @@ public class Chest extends Entity{
             return;
         }
 
-        // toggle
         if (!isChestOpen) {
             chestInventoryUI.openInventory(chestInventory);
             isChestOpen = true;
 
-            // don't TOGGLE player inventory; explicitly open it if you want it open
-            // (replace getOpen() with whatever your UI uses)
             if (!player.getPlayerInventory().getInventoryUI().getIsOpen()) {
                 player.getPlayerInventory().getInventoryUI().openInventory(player.getPlayerInventory());
             }
@@ -101,7 +97,7 @@ public class Chest extends Entity{
         if (generatedLoot) return;
         generatedLoot = true;
 
-        int rolls = MathUtils.random(1, 4); // 1-4 item stacks in this chest
+        int rolls = MathUtils.random(1, 4);
 
         for (int i = 0; i < rolls; i++) {
             LootEntry entry = lootTable.rollEntry();
@@ -109,8 +105,6 @@ public class Chest extends Entity{
 
             ItemStack stack = new ItemStack(entry.getItem(), amount);
 
-            // Put it somewhere random (retry a few times to find empty slots)
-            //boolean placed = false;
             for (int tries = 0; tries < 20; tries++) {
                 int r = MathUtils.random(0, chestInventory.getRows() - 1);
                 int c = MathUtils.random(0, chestInventory.getCols() - 1);
@@ -119,10 +113,7 @@ public class Chest extends Entity{
                     chestInventory.addItemStack(stack, r, c);
                     break;
                 }
-
             }
-
-            // Optional: if not placed, you could try "first empty slot" logic instead
         }
     }
 
