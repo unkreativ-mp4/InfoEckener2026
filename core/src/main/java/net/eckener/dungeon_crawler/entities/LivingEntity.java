@@ -51,7 +51,7 @@ public abstract class LivingEntity extends Entity {
         if (health == 0) {
             isAlive = false;
 
-            handleDeathReward();
+
             onDeath();
         }
     }
@@ -95,6 +95,9 @@ public abstract class LivingEntity extends Entity {
         return speed;
     }
 
+    /**
+     * rolls a random chance -> 10% of the time spawns a chest
+     */
     public void handleDeathReward() {
         if(MathUtils.random(0, 99) < 10) {
             new Chest(getX(), getY(), loadLootTable("basic_chest.json"));

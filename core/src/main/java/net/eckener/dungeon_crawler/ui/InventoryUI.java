@@ -238,7 +238,7 @@ public class InventoryUI extends Table {
         }
     }
 
-    private void rebuildAllOpenInventories() {
+    public void rebuildAllOpenInventories() {
         for (Inventory inv : openInventories) {
             buildInventoryUI(inv);
         }

@@ -29,7 +29,7 @@ public class Skeleton extends Enemy {
      */
     public void move(Player player) {
         direction.set(player.getX() - getX(), player.getY() - getY());
-        if (direction.len2() > 2f) {
+        if (direction.len2() > 4f) {
             direction.nor().scl(speed - MathUtils.clamp(momentum.len(),0, speed ));
             momentum.add(direction);
         } else if (direction.len2() > 0f) {

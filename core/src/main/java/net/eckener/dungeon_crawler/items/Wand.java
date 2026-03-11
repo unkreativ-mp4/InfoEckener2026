@@ -11,7 +11,7 @@ public class Wand extends Weapon{
     private final int manaCost;
 
     public Wand(String itemID, String itemName, Texture itemTexture, int maxStackSize, int damage, float cooldownModifier, int pManaCost) {
-        super(itemID, itemName, itemTexture, maxStackSize, damage, cooldownModifier, true,5);
+        super(itemID, itemName, itemTexture, maxStackSize, damage, cooldownModifier, false,0);
         this.manaCost = pManaCost;
     }
 

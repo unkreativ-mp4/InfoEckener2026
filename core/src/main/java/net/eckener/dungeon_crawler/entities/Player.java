@@ -239,7 +239,9 @@ public class Player extends LivingEntity{
         timeSinceLastAttack += deltaTime;
         timeSinceLastManaRegen += deltaTime;
         move();
+
         selectedItem = hotbar.getInventory().getItemStack(0,0);
+        hotbar.getInventoryUI().rebuildAllOpenInventories();
 
         if(timeSinceLastManaRegen >= 5) {
             addMana(10);
