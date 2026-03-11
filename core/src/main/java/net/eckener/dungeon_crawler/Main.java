@@ -76,6 +76,7 @@ public class Main extends InputAdapter implements ApplicationListener{
         player = new Player(100, 100);
 
         player.getPlayerHotbar().getInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("wand"),1),0,0);
+        player.getPlayerInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("arrow"),10),0,0);
 
 
         // ───────────────────────────────
@@ -215,9 +216,6 @@ public class Main extends InputAdapter implements ApplicationListener{
                             player.getPlayerHotbar().getInventory().removeItemStack(player.getPlayerHotbar().getInventory().findItemStackPosition(stack)[0], player.getPlayerHotbar().getInventory().findItemStackPosition(stack)[1]);
                         }
                     }
-                    break;
-                case Input.Keys.M:
-                    player.addMana(5);
                     break;
                 case Input.Keys.L:
                     new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));

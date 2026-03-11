@@ -8,14 +8,30 @@ import net.eckener.dungeon_crawler.logic.Assets;
 
 public class Wand extends Weapon{
 
-    public Wand(String itemID, String itemName, Texture itemTexture, int maxStackSize, int damage, float cooldownModifier) {
+    private final int manaCost;
+
+    public Wand(String itemID, String itemName, Texture itemTexture, int maxStackSize, int damage, float cooldownModifier, int pManaCost) {
         super(itemID, itemName, itemTexture, maxStackSize, damage, cooldownModifier, true,5);
+        this.manaCost = pManaCost;
     }
 
     @Override
     public void attack(LivingEntity attacker, LivingEntity attacked) {
+        if(!(attacker instanceof Player player)) {
+            return;
+        }
+
+        if(player.getMana() < manaCost)  {
+            return;
+        }
+
+        player.addMana(-manaCost);
         Arrow arrow = new Arrow(Assets.get(Assets.FIREBALL), attacker.getX(), attacker.getY(),attacker, this.getDamage());
         arrow.setRotationToFaceCursor();
+    }
+
+    public int getManaCost() {
+        return manaCost;
     }
 
 }

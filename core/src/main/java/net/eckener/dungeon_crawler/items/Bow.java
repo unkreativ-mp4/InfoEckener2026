@@ -5,6 +5,7 @@ import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.entities.Arrow;
 import net.eckener.dungeon_crawler.entities.LivingEntity;
 import net.eckener.dungeon_crawler.entities.Player;
+import net.eckener.dungeon_crawler.logic.ItemStack;
 
 /**
  * Simple bow {@link Weapon} which can shoot {@link Arrow}s
@@ -22,7 +23,19 @@ public class Bow extends Weapon{
      */
     @Override
     public void attack(LivingEntity attacker, LivingEntity attacked) {
-        Arrow arrow = new Arrow(Assets.get(Assets.ARROW), attacker.getX(), attacker.getY(),attacker, this.getDamage());
-        arrow.setRotationToFaceCursor();
+        if(!(attacker instanceof Player player)) {
+            return;
+        }
+
+        if(player.getPlayerHotbar().getInventory().containsItemType(ArrowItem.class)) {
+            ItemStack stack = player.getPlayerHotbar().getInventory().findItemStack(ArrowItem.class);
+            if (stack.getAmount() > 1) {
+                stack.setAmount(stack.getAmount() - 1);
+            } else {
+                player.getPlayerHotbar().getInventory().removeItemStack(player.getPlayerHotbar().getInventory().findItemStackPosition(stack)[0], player.getPlayerHotbar().getInventory().findItemStackPosition(stack)[1]);
+            }
+            Arrow arrow = new Arrow(Assets.get(Assets.ARROW), attacker.getX(), attacker.getY(), attacker, this.getDamage());
+            arrow.setRotationToFaceCursor();
+        }
     }
 }

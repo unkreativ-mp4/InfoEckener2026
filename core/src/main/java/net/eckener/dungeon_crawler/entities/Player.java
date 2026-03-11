@@ -20,6 +20,7 @@ public class Player extends LivingEntity{
     private Inventory inventory;
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
+    private float timeSinceLastManaRegen;
     private final float baseDamageCooldown = 0.5F;
     private final float baseAttackCooldown = 1.0f;
     private ItemStack selectedItem;
@@ -212,8 +213,16 @@ public class Player extends LivingEntity{
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
         timeSinceLastAttack += deltaTime;
+        timeSinceLastManaRegen += deltaTime;
         move();
         selectedItem = hotbar.getInventory().getItemStack(0,0);
+
+        if(timeSinceLastManaRegen >= 5) {
+            addMana(10);
+            timeSinceLastManaRegen = 0f;
+        }
+
+
     }
 
     /**

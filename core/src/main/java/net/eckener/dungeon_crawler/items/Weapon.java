@@ -61,5 +61,6 @@ public abstract class Weapon extends Item{
         return isMeleeWeapon;
     }
 
+
     public abstract void attack(LivingEntity attacker, LivingEntity attacked);
 }
