@@ -5,7 +5,7 @@ import net.eckener.dungeon_crawler.entities.Player;
 
 public class HealingPotion extends Item{
 
-    private int healAmount;
+    private final int healAmount;
 
     public HealingPotion(String pItemID, String pItemName, Texture pItemTexture, int pMaxStackSize, int pHealAmount) {
         super(pItemID, pItemName, pItemTexture, pMaxStackSize);

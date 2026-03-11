@@ -3,20 +3,17 @@ package net.eckener.dungeon_crawler.Blocks;
 import com.badlogic.gdx.math.MathUtils;
 import net.eckener.dungeon_crawler.entities.Player;
 import net.eckener.dungeon_crawler.logic.*;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import net.eckener.dungeon_crawler.logic.*;
 import net.eckener.dungeon_crawler.ui.InventoryUI;
 
 import static net.eckener.dungeon_crawler.Main.stage;
 
 public class Chest extends Block{
 
-    private Inventory chestInventory;
-    private InventoryUI chestInventoryUI;
+    private final Inventory chestInventory;
+    private final InventoryUI chestInventoryUI;
     private boolean isChestOpen;
     private boolean generatedLoot = false;
     private final LootTable lootTable;
-    private float range = 1.5f;
 
 
     public Chest(float xPos, float yPos, LootTable lootTable) {
@@ -119,7 +116,7 @@ public class Chest extends Block{
             LootEntry entry = lootTable.rollEntry();
             int amount = lootTable.rollAmount(entry);
 
-            ItemStack stack = new ItemStack(entry.getItem(), amount);
+            ItemStack stack = new ItemStack(entry.item(), amount);
 
             for (int tries = 0; tries < 20; tries++) {
                 int r = MathUtils.random(0, chestInventory.getRows() - 1);
@@ -136,6 +133,7 @@ public class Chest extends Block{
     public boolean isInRange(Player player) {
         float dx = player.getX() - getX();
         float dy = player.getY() - getY();
+        float range = 1.5f;
         return (dx * dx + dy * dy) <= (range * range);
     }
 

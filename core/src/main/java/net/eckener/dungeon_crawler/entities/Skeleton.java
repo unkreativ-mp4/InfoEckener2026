@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import net.eckener.dungeon_crawler.logic.Assets;
-import net.eckener.dungeon_crawler.logic.EntityRegistry;
 import net.eckener.dungeon_crawler.logic.Room;
 
 public class Skeleton extends Enemy {

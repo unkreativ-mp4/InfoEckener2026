@@ -2,7 +2,6 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import net.eckener.dungeon_crawler.logic.EntityRegistry;
 import net.eckener.dungeon_crawler.logic.Room;
 
 /**

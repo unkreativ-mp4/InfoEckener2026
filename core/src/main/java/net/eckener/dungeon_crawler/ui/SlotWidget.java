@@ -11,8 +11,8 @@ import net.eckener.dungeon_crawler.logic.ItemStack;
 
 public class SlotWidget extends Stack {
 
-    private Image slotItemTexture;
-    private Label itemAmount;
+    private final Image slotItemTexture;
+    private final Label itemAmount;
 
     public SlotWidget(ItemStack pItemStack, BitmapFont font) {
 

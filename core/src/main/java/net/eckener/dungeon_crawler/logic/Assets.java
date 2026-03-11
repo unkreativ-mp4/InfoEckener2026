@@ -67,6 +67,11 @@ public final class Assets {
     public static final String GREATER_HEALING_POTION = "textures/items/greater_healing_potion.png";
     public static final String FIREBALL = "textures/entities/fireball.png";
     public static final String WAND = "textures/items/wand.png";
+    public static final String SKELETON_DOWN = "textures/entities/skeleton_down.png";
+    public static final String ZOMBIE_UP = "textures/entities/zombie_up.png";
+    public static final String ZOMBIE_DOWN = "textures/entities/zombie_down.png";
+    public static final String ZOMBIE_LEFT = "textures/entities/zombie_left.png";
+    public static final String ZOMBIE_RIGHT = "textures/entities/zombie_right.png";
 
 
 
@@ -132,6 +137,11 @@ public final class Assets {
         manager.load(GREATER_HEALING_POTION, Texture.class);
         manager.load(FIREBALL, Texture.class);
         manager.load(WAND, Texture.class);
+        manager.load(SKELETON_DOWN, Texture.class);
+        manager.load(ZOMBIE_UP, Texture.class);
+        manager.load(ZOMBIE_DOWN, Texture.class);
+        manager.load(ZOMBIE_LEFT, Texture.class);
+        manager.load(ZOMBIE_RIGHT, Texture.class);
 
 
     }

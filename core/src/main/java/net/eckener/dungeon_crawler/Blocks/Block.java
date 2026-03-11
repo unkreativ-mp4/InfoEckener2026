@@ -10,7 +10,7 @@ import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 
 public abstract class Block extends Sprite {
 
-    private Polygon hitbox;
+    private final Polygon hitbox;
     private final Room room;
 
     public Block(Texture texture, float x, float y) {

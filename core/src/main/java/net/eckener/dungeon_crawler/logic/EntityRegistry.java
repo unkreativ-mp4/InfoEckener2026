@@ -1,7 +1,6 @@
 package net.eckener.dungeon_crawler.logic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import net.eckener.dungeon_crawler.Main;
 import net.eckener.dungeon_crawler.entities.*;

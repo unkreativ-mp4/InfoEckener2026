@@ -57,7 +57,7 @@ public class RoomLoader {
 
         switch (entity.type) {
             case "Skeleton":
-                new Skeleton( entity.x, entity.y,Assets.get(Assets.IRON_SHOVEL), room);
+                new Skeleton( entity.x, entity.y,Assets.get(Assets.SKELETON_DOWN), room);
                 break;
 
             case "Zombie":

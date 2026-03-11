@@ -13,8 +13,8 @@ public class Inventory extends Table {
     private final int rows;
     private final int cols;
     private final String inventoryName;
-    private InventoryUI inventoryUI;
-    private ItemStack[][] itemStacks;
+    private final InventoryUI inventoryUI;
+    private final ItemStack[][] itemStacks;
 
     public Inventory(int rows, int cols){
 
@@ -197,7 +197,6 @@ public class Inventory extends Table {
 
             if (sourceStack.getAmount() > 1) sourceStack.setAmount(sourceStack.getAmount() - 1);
             else from[fromRow][fromCol] = null;
-        } else {
         }
     }
 

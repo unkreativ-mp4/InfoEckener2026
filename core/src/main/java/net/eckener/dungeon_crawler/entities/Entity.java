@@ -11,7 +11,6 @@ import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.Blocks.Block;
 import net.eckener.dungeon_crawler.Blocks.BlockRegistry;
 import net.eckener.dungeon_crawler.logic.*;
-import net.eckener.dungeon_crawler.logic.EntityDirection;
 
 
 
@@ -23,10 +22,10 @@ import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 public abstract class Entity extends Sprite {
 
     protected float speed;
-    private Polygon hitbox;
+    private final Polygon hitbox;
     protected Vector2 momentum = new Vector2();
     protected Vector2 direction = new Vector2();
-    private Vector2 timescaledMomentum = new Vector2();
+    private final Vector2 timescaledMomentum = new Vector2();
     protected EntityDirection facing = EntityDirection.DOWN;
 
     protected Animation<TextureRegion> currentAnimation;

@@ -2,7 +2,6 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.logic.EntityRegistry;
@@ -24,18 +23,16 @@ import static net.eckener.dungeon_crawler.Main.stage;
 public class Player extends LivingEntity{
     private int maxMana;
     private int mana;
-    private Hotbar hotbar;
-    private Inventory inventory;
+    private final Hotbar hotbar;
+    private final Inventory inventory;
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
     private float timeSinceLastManaRegen;
     private final float baseDamageCooldown = 0.5F;
     private final float baseAttackCooldown = 1.0f;
     private ItemStack selectedItem;
-    private int killcount;
-    private float stateTime = 0f;
     private boolean isMoving = false;
-    private EnumMap<EntityDirection, Animation<TextureRegion>> walkAnimations = new EnumMap<>(EntityDirection.class);
+    private final EnumMap<EntityDirection, Animation<TextureRegion>> walkAnimations;
 
 
     public Player(int maxHealth, int maxMana) {
@@ -152,9 +149,13 @@ public class Player extends LivingEntity{
     /**
      * Checks if the player can attack and what the weapon type is
      * <p>
-     * If the weapon is of type AOE, all LivingEntities in weapon-range are attacked individually
+     *     If the weapon is of type AOE, and is of type melee the {@code attackSelective()} method is called for all LivingEntities in weapon-range
      * <p>
-     * If the weapon is not of type AOE, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
+     *     If the weapon is of type AOE, and not of type melee the {@code attackSelective()} method is called only for each livingEntity with {@code livingEntity = null}
+     * <p>
+     *     If the weapon is not of type AOE and is of type melee the {@code attackSelective()} method is called for the livingEntity under the cursor if it exists and is in weapon-range
+     *<p>
+     *     If the weapon is not of type AOE and not of type melee the {@code attackSelective()} method is called only once with {@code livingEntity = null}
      */
     public void attack() {
         int killsThisAttack = 0;
@@ -230,7 +231,7 @@ public class Player extends LivingEntity{
     }
 
     /**
-     * Runs every frame and increases {@code timeSince} attributes among other things
+     * Runs every frame and increases {@code timeSince} attributes among other things, also checks for some animation things
      * @param deltaTime Frame time to satisfy smooth updating even when lagging
      */
     @Override

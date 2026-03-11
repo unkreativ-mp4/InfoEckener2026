@@ -1,7 +1,6 @@
 package net.eckener.dungeon_crawler.items;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 
 /**
  * A simple item

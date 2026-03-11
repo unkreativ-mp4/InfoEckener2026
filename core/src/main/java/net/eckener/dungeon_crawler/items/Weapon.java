@@ -19,11 +19,7 @@ public abstract class Weapon extends Item{
         this.cooldownModifier = cooldownModifier;
         this.isAOEWeapon = isAOEWeapon;
         this.range = range;
-        if (range == 0) {
-            isMeleeWeapon = false;
-        } else {
-            isMeleeWeapon = true;
-        }
+        isMeleeWeapon = range != 0;
     }
 
     /**

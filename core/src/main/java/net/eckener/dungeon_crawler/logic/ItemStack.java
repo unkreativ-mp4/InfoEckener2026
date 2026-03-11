@@ -9,7 +9,7 @@ import net.eckener.dungeon_crawler.items.Weapon;
 public class ItemStack {
 
 
-    private Item item;
+    private final Item item;
     private int amount;
 
     public ItemStack(Item pItem, int pAmount) {

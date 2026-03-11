@@ -18,25 +18,18 @@ import net.eckener.dungeon_crawler.logic.ItemStack;
 
 import java.util.Objects;
 
-import static net.eckener.dungeon_crawler.Main.stage;
-
 public class InventoryUI extends Table {
 
-    private Inventory inventory;
+    private final Inventory inventory;
     private boolean isOpen;
     private float slotSize = 32f;
     private float slotPad = 3f;
 
-    private float inventoryXPos;
-    private float inventoryYPos;
-
-    private Texture slotBackgroundTexture;
+    private final Texture slotBackgroundTexture;
     private final BitmapFont uiFont = new BitmapFont();
     private boolean dragging = false;
     private SlotReference dragOrigin = null;
-    private ItemStack draggedStack = null;
-    private Inventory dragOriginInv = null; // optional (dragOrigin already contains inv)   // the stack we are moving 1 from
-    private Image dragGhost = new Image();// image following the pointer
+    private final Image dragGhost = new Image();
     private final Array<Inventory> openInventories = new Array<>();
 
 
@@ -105,12 +98,11 @@ public class InventoryUI extends Table {
                         SlotReference origin = (SlotReference) slot.getUserObject();
 
                         // Only start dragging if slot has an item
-                        ItemStack stackHere = origin.inv.getItemStack(origin.row, origin.col);
+                        ItemStack stackHere = origin.inv().getItemStack(origin.row(), origin.col());
                         if (stackHere == null) return false;
 
                         dragging = true;
                         dragOrigin = origin;
-                        draggedStack = stackHere;
 
 
                         // Setup ghost image from the item's texture
@@ -155,32 +147,32 @@ public class InventoryUI extends Table {
                             SlotReference originRef = dragOrigin;
 
                             // same slot? ignore
-                            if (!(originRef.inv == targetRef.inv &&
-                                originRef.row == targetRef.row &&
-                                originRef.col == targetRef.col)) {
+                            if (!(originRef.inv() == targetRef.inv() &&
+                                originRef.row() == targetRef.row() &&
+                                originRef.col() == targetRef.col())) {
 
-                                if (originRef.inv == targetRef.inv) {
+                                if (originRef.inv() == targetRef.inv()) {
                                     // SAME inventory: use your existing methods
                                     if (shiftClicked) {
-                                        originRef.inv.moveItemToSlot(
-                                            originRef.inv.getItemStacks(),
-                                            originRef.inv.getItemStack(originRef.row, originRef.col),
-                                            targetRef.row, targetRef.col,
-                                            originRef.row, originRef.col
+                                        originRef.inv().moveItemToSlot(
+                                            originRef.inv().getItemStacks(),
+                                            originRef.inv().getItemStack(originRef.row(), originRef.col()),
+                                            targetRef.row(), targetRef.col(),
+                                            originRef.row(), originRef.col()
                                         );
                                     } else {
-                                        originRef.inv.moveWholeItemStackToSlot(
-                                            originRef.inv.getItemStacks(),
-                                            originRef.inv.getItemStack(originRef.row, originRef.col),
-                                            targetRef.row, targetRef.col,
-                                            originRef.row, originRef.col
+                                        originRef.inv().moveWholeItemStackToSlot(
+                                            originRef.inv().getItemStacks(),
+                                            originRef.inv().getItemStack(originRef.row(), originRef.col()),
+                                            targetRef.row(), targetRef.col(),
+                                            originRef.row(), originRef.col()
                                         );
                                     }
                                 } else {
                                     if (shiftClicked) {
-                                        originRef.inv.transferOneTo(targetRef.inv, originRef.row, originRef.col, targetRef.row, targetRef.col);
+                                        originRef.inv().transferOneTo(targetRef.inv(), originRef.row(), originRef.col(), targetRef.row(), targetRef.col());
                                     } else {
-                                        originRef.inv.transferWholeStackTo(targetRef.inv, originRef.row, originRef.col, targetRef.row, targetRef.col);
+                                        originRef.inv().transferWholeStackTo(targetRef.inv(), originRef.row(), originRef.col(), targetRef.row(), targetRef.col());
                                     }
                                 }
                             }
@@ -189,7 +181,6 @@ public class InventoryUI extends Table {
                         // Reset drag state
                         dragging = false;
                         dragOrigin = null;
-                        draggedStack = null;
 
                         // Rebuild UI so numbers/textures update
                         buildInventoryUI(inventory);
@@ -274,14 +265,6 @@ public class InventoryUI extends Table {
             hit = hit.getParent();
         }
         return (SlotWidget) hit;
-    }
-
-    public void setInventoryXPos(float inventoryXPos) {
-        this.inventoryXPos = inventoryXPos;
-    }
-
-    public void setInventoryYPos(float inventoryYPos) {
-        this.inventoryYPos = inventoryYPos;
     }
 
     public Inventory getInventory() {

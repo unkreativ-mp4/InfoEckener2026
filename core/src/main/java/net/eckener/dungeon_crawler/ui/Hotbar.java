@@ -7,8 +7,8 @@ import net.eckener.dungeon_crawler.logic.Inventory;
 import static net.eckener.dungeon_crawler.Main.stage;
 
 public class Hotbar {
-    private Inventory inventory;
-    private InventoryUI inventoryUI;
+    private final Inventory inventory;
+    private final InventoryUI inventoryUI;
 
 
     public Hotbar() {

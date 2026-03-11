@@ -9,6 +9,11 @@ public final class ItemRegistry {
 
     private static final Map<String, Item> items = new HashMap<>();
 
+    /**
+     * Called once upon game start and fills the hashMap with items.
+     * <p>
+     *     The HashMap String must match the itemID!
+     */
     public static void loadItems() {
         items.put("bow", new Bow("bow", "Bow", Assets.get(Assets.DARK_BOW), 1,100,2));
         items.put("maul",new Maul("maul", "Maul", Assets.get(Assets.WOODEN_SWORD), 1,5,2,4));
@@ -21,10 +26,18 @@ public final class ItemRegistry {
         items.put("arrow", new ArrowItem("arrow", "Arrow", Assets.get(Assets.ARROW), 64));
     }
 
+    /**
+     * @param item Adds an Item to the HashMap
+     */
     public static void addItem(Item item) {
         items.put(item.getItemID(),  item);
     }
 
+    /**
+     * Retrieves an Item from the HashMap by its {@code itemID}
+     * @param id the itemID of the wanted Item
+     * @return the wanted Item
+     */
     public static Item getItemFromID(String id) {
         return items.get(id);
     }

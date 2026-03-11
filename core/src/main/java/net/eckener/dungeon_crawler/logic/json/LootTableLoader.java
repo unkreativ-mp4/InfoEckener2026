@@ -8,6 +8,11 @@ import net.eckener.dungeon_crawler.logic.LootTable;
 
 public class LootTableLoader {
 
+    /**
+     * Loads a lootTable from the assets/loot_tables/ directory
+      * @param lootTablePath the path to the lootTable JSON
+     * @return the loaded lootTable
+     */
     public static LootTable loadLootTable(String lootTablePath) {
 
         Json json = new Json();

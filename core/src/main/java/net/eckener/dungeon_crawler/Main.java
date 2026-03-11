@@ -16,18 +16,13 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import net.eckener.dungeon_crawler.Blocks.Block;
 import net.eckener.dungeon_crawler.Blocks.BlockRegistry;
 import net.eckener.dungeon_crawler.Blocks.Chest;
-import net.eckener.dungeon_crawler.Blocks.Door;
 import net.eckener.dungeon_crawler.debug.*;
 import net.eckener.dungeon_crawler.entities.*;
-import net.eckener.dungeon_crawler.items.Bow;
 import net.eckener.dungeon_crawler.items.HealingPotion;
-import net.eckener.dungeon_crawler.items.Item;
-import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.logic.*;
 import net.eckener.dungeon_crawler.ui.*;
 
 import static net.eckener.dungeon_crawler.logic.RoomRegistry.*;
-import static net.eckener.dungeon_crawler.logic.json.LootTableLoader.loadLootTable;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. Listens to user input. */
 public class Main extends InputAdapter implements ApplicationListener{
@@ -51,20 +46,18 @@ public class Main extends InputAdapter implements ApplicationListener{
     public void create() {
 
         // ───────────────────────────────
-        // Asset loading
+        // Loading of basic components
         // ───────────────────────────────
-        Assets.load();
-        Assets.finishLoading();
 
-        ItemRegistry.loadItems();
-
-        // ───────────────────────────────
-        // Rendering & Viewports
-        // ───────────────────────────────
         spriteBatch = new SpriteBatch();
 
         viewport = new FitViewport(16, 10);
         stage = new Stage(new ScreenViewport(), spriteBatch);
+
+        Assets.load();
+        Assets.finishLoading();
+
+        ItemRegistry.loadItems();
 
         loadRooms();
 
@@ -98,10 +91,6 @@ public class Main extends InputAdapter implements ApplicationListener{
         // ───────────────────────────────
         manaOrb = new ManaOrb(player, 0,30);
         healthIcon = new Health(player,5,100);
-
-        // ───────────────────────────────
-        // Items & Inventory
-        // ───────────────────────────────
 
         // ───────────────────────────────
         // Input Handling
