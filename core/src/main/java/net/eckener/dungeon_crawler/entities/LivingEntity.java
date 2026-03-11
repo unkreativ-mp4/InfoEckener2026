@@ -59,7 +59,6 @@ public abstract class LivingEntity extends Entity {
     public void updateDeathTimer(float deltaTime) {
         if (isAlive) return;
 
-        System.out.println(deathTime);
         deathTime += deltaTime;
         if (deathTime > 5f) {
             EntityRegistry.unregister(this);

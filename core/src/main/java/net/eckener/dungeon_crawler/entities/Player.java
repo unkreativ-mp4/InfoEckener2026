@@ -3,6 +3,7 @@ package net.eckener.dungeon_crawler.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.logic.EntityRegistry;
 import net.eckener.dungeon_crawler.logic.ItemStack;
@@ -17,6 +18,9 @@ import net.eckener.dungeon_crawler.logic.EntityDirection;
 import java.util.EnumMap;
 
 
+import static net.eckener.dungeon_crawler.Main.camera;
+import static net.eckener.dungeon_crawler.Main.stage;
+
 public class Player extends LivingEntity{
     private int maxMana;
     private int mana;
@@ -24,6 +28,7 @@ public class Player extends LivingEntity{
     private Inventory inventory;
     private float timeSinceLastDamage;
     private float timeSinceLastAttack;
+    private float timeSinceLastManaRegen;
     private final float baseDamageCooldown = 0.5F;
     private final float baseAttackCooldown = 1.0f;
     private ItemStack selectedItem;
@@ -38,6 +43,10 @@ public class Player extends LivingEntity{
         this.maxMana = maxMana;
 
         inventory = new Inventory(4, 7, "Inventory");
+        inventory.getInventoryUI().setPosition(
+            (stage.getWidth() - inventory.getInventoryUI().getWidth()) / 2f,
+            (stage.getHeight() - inventory.getInventoryUI().getHeight())
+        );
         hotbar = new Hotbar();
         selectedItem = hotbar.getInventory().getItemStack(0, 0);
 
@@ -143,21 +152,19 @@ public class Player extends LivingEntity{
     /**
      * Checks if the player can attack and what the weapon type is
      * <p>
-     * If the weapon is of type melee, all LivingEntities in weapon-range are attacked individually
+     * If the weapon is of type AOE, all LivingEntities in weapon-range are attacked individually
      * <p>
-     * If the weapon is not of type melee, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
+     * If the weapon is not of type AOE, the {@code attackSelective()} method is called only once with {@code livingEntity = null}
      */
     public void attack() {
         int killsThisAttack = 0;
         ItemStack weaponSlotStack = hotbar.getInventory().getItemStack(0, 0);
 
         if (weaponSlotStack == null || weaponSlotStack.getItem() == null) {
-            System.out.println("Hotbar slot 1 is empty");
             return;
         }
 
         if (!(weaponSlotStack.getItem() instanceof Weapon)) {
-            System.out.println("Hotbar slot 1 item is not a weapon: " + weaponSlotStack.getItem().getItemName());
             return;
         }
 
@@ -166,16 +173,46 @@ public class Player extends LivingEntity{
         }
 
         Weapon weapon = (Weapon) weaponSlotStack.getItem();
-        if(selectedItem.getWeapon().isMeleeWeapon()) {
-            for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
-                if (!(livingEntity instanceof Player) && Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2) <= selectedItem.getWeapon().getRange()) {
-                    //handleKillReward();
-                    attackSelective(livingEntity, weapon);
+
+        if(selectedItem.getWeapon().isAOEWeapon()) {
+            if (selectedItem.getWeapon().isMeleeWeapon()) {
+                //aoe und melee
+                for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                    if (!(livingEntity instanceof Player) && Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2) <= selectedItem.getWeapon().getRange()) {
+                        attackSelective(livingEntity, weapon);
+                    }
                 }
+
+            } else {
+                //aoe und ranged
+                for (LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                    if (!(livingEntity instanceof Player)) {
+                        attackSelective(null, weapon);
+                    }
+                }
+
             }
         } else {
-            attackSelective(null, weapon);
+            if (selectedItem.getWeapon().isMeleeWeapon()) {
+                //direct und melee
+                Vector3 vector3 = new Vector3();
+                camera.unproject(vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+                for(LivingEntity livingEntity : EntityRegistry.getAllRoomLivingEntities()) {
+                    if(livingEntity instanceof Player) {continue;}
+
+                    if(vector3.x -0.5 <= livingEntity.getX()+livingEntity.getWidth()/2 && livingEntity.getX()+livingEntity.getWidth()/2 <= vector3.x + 0.5 && vector3.y -0.5 <= livingEntity.getY()+livingEntity.getHeight()/2 && livingEntity.getY()+livingEntity.getHeight()/2 <= vector3.y + 0.5&& Math.pow(getX() - livingEntity.getX(), 2) + Math.pow(getY() - livingEntity.getY(), 2) <= selectedItem.getWeapon().getRange()) {
+
+                        attackSelective(livingEntity, weapon);
+                        break;
+                    }
+                }
+            } else {
+                //direct und ranged
+                attackSelective(null, weapon);
+            }
         }
+
+
     }
 
     /**
@@ -200,8 +237,16 @@ public class Player extends LivingEntity{
     public void update(float deltaTime) {
         timeSinceLastDamage += deltaTime;
         timeSinceLastAttack += deltaTime;
+        timeSinceLastManaRegen += deltaTime;
         move();
         selectedItem = hotbar.getInventory().getItemStack(0,0);
+
+        if(timeSinceLastManaRegen >= 5) {
+            addMana(10);
+            timeSinceLastManaRegen = 0f;
+        }
+
+
 
         // Determine which animation should be active
         Animation<TextureRegion> newAnim = walkAnimations.get(facing);
@@ -219,7 +264,6 @@ public class Player extends LivingEntity{
             stateTime = currentAnimation.getAnimationDuration(); // stays on first frame
         }
     }
-
 
     /**
      * Never use, because it makes no sense

@@ -75,7 +75,9 @@ public class Main extends InputAdapter implements ApplicationListener{
 
         player = new Player(100, 100);
 
-        player.getPlayerHotbar().getInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("bow"),1),0,0);
+        player.getPlayerHotbar().getInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("wand"),1),0,0);
+        player.getPlayerInventory().addItemStack(new ItemStack(ItemRegistry.getItemFromID("arrow"),10),0,0);
+
 
         // ───────────────────────────────
         // Debug Overlay
@@ -120,10 +122,10 @@ public class Main extends InputAdapter implements ApplicationListener{
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
 
-
-
-
-
+        player.getPlayerInventory().getInventoryUI().setPosition(
+            (stage.getWidth() - player.getPlayerInventory().getInventoryUI().getWidth()) / 2f,
+            (stage.getHeight() - player.getPlayerInventory().getInventoryUI().getHeight()) /2f
+        );
 
         player.getPlayerHotbar().getInventoryUI().setPosition(
             (stage.getWidth()  - player.getPlayerHotbar().getInventoryUI().getWidth())  / 2f,
@@ -215,14 +217,8 @@ public class Main extends InputAdapter implements ApplicationListener{
                         }
                     }
                     break;
-                case Input.Keys.M:
-                    player.addMana(5);
-                    break;
                 case Input.Keys.L:
                     new Zombie(1,2,Assets.get(Assets.DIAMOND_SWORD),Assets.get(Assets.COIN));
-                    break;
-                case Input.Keys.U:
-                    player.attack();
                     break;
                 case Input.Keys.P:
                     for(Block block : BlockRegistry.getAllRoomBlocks()) {
@@ -252,4 +248,13 @@ public class Main extends InputAdapter implements ApplicationListener{
             player.takeDamage(5);
         }
     }
+
+    @Override
+    public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.LEFT && !player.getPlayerInventory().getInventoryUI().getIsOpen()){
+            player.attack();
+        }
+        return true;
+    }
+
 }

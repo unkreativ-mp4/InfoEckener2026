@@ -65,6 +65,8 @@ public final class Assets {
     public static final String LESSER_HEALING_POTION = "textures/items/lesser_healing_potion.png";
     public static final String NORMAL_HEALING_POTION = "textures/items/normal_healing_potion.png";
     public static final String GREATER_HEALING_POTION = "textures/items/greater_healing_potion.png";
+    public static final String FIREBALL = "textures/entities/fireball.png";
+    public static final String WAND = "textures/items/wand.png";
 
 
 
@@ -128,6 +130,10 @@ public final class Assets {
         manager.load(LESSER_HEALING_POTION, Texture.class);
         manager.load(NORMAL_HEALING_POTION, Texture.class);
         manager.load(GREATER_HEALING_POTION, Texture.class);
+        manager.load(FIREBALL, Texture.class);
+        manager.load(WAND, Texture.class);
+
+
     }
 
     /**
