@@ -1,6 +1,6 @@
 package net.eckener.dungeon_crawler.logic;
 
-public enum Direction {
+public enum EntityDirection {
         LEFT(-1, 0),
         RIGHT(1, 0),
         UP(0, 1),
@@ -9,7 +9,7 @@ public enum Direction {
         private final int dx;
         private final int dy;
 
-        Direction(int dx, int dy) {
+        EntityDirection(int dx, int dy) {
             this.dx = dx;
             this.dy = dy;
         }

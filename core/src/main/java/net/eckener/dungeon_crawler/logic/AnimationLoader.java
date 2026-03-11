@@ -6,25 +6,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AnimationLoader {
 
-    public static Animation<TextureRegion> load(String path, int cols, int rows, float frameDuration) {
+    public static Animation<TextureRegion> load(String folderPath, int frameCount, float frameDuration) {
 
-        Texture sheet = new Texture(Gdx.files.internal(path));
+        TextureRegion[] frames = new TextureRegion[frameCount];
 
-        TextureRegion[][] grid = TextureRegion.split(
-            sheet,
-            sheet.getWidth() / cols,
-            sheet.getHeight() / rows
-        );
-
-        TextureRegion[] frames = new TextureRegion[cols * rows];
-
-        int index = 0;
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                frames[index++] = grid[y][x];
-            }
+        for (int i = 0; i < frameCount; i++) {
+            Texture texture = Assets.manager.get(folderPath + "frame_" + i + ".png", Texture.class);
+            frames[i] = new TextureRegion(texture);
         }
-
         return new Animation<>(frameDuration, frames);
     }
 }

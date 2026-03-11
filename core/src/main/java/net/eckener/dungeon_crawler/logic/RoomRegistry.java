@@ -68,13 +68,13 @@ public final class RoomRegistry {
 
     /**
      * Transitions the player to a new Room if possible and calls the next methods for clean transition
-     * @param direction the Direction the Player is moving in
+     * @param entityDirection the Direction the Player is moving in
      * @param player the Player that is moving
      */
-    public static void tryTransition(Direction direction, Player player) {
+    public static void tryTransition(EntityDirection entityDirection, Player player) {
         GridPoint2 target = new GridPoint2(
-            currentPosition.x + direction.dx(),
-            currentPosition.y + direction.dy()
+            currentPosition.x + entityDirection.dx(),
+            currentPosition.y + entityDirection.dy()
         );
 
         Room nextRoom = rooms.get(target);
@@ -85,21 +85,21 @@ public final class RoomRegistry {
         currentRoom = nextRoom;
 
         updateViewport();
-        repositionPlayer(direction, player, oldRoom);
+        repositionPlayer(entityDirection, player, oldRoom);
         EntityRegistry.onRoomChange(currentRoom);
         BlockRegistry.onRoomChange(currentRoom);
     }
 
     /**
      * Sets the Player position to the edge of the screen depending on the Direction the Player is moving in, also respects the Player's position in relation to the Room width/height
-     * @param direction the Direction the Player is moving in
+     * @param entityDirection the Direction the Player is moving in
      * @param player the moving Player
      */
-    private static void repositionPlayer(Direction direction, Player player, Room oldRoom) {
+    private static void repositionPlayer(EntityDirection entityDirection, Player player, Room oldRoom) {
         float playerWidth = player.getWidth();
         float playerHeight = player.getHeight();
 
-        switch (direction) {
+        switch (entityDirection) {
             case LEFT -> player.setPosition(currentRoom.width - playerWidth, player.getY() / oldRoom.height * currentRoom.height);
             case RIGHT -> player.setPosition(0, player.getY() / oldRoom.height * currentRoom.height);
             case UP -> player.setPosition(player.getX() / oldRoom.width * currentRoom.width , 0);
@@ -128,16 +128,16 @@ public final class RoomRegistry {
         float top = bottom + player.getHeight();
 
         if (right <= 0) {
-            tryTransition(Direction.LEFT, player);
+            tryTransition(EntityDirection.LEFT, player);
         }
         else if (left >= currentRoom.width) {
-            tryTransition(Direction.RIGHT, player);
+            tryTransition(EntityDirection.RIGHT, player);
         }
         else if (top <= 0) {
-            tryTransition(Direction.DOWN, player);
+            tryTransition(EntityDirection.DOWN, player);
         }
         else if (bottom >= currentRoom.height) {
-            tryTransition(Direction.UP, player);
+            tryTransition(EntityDirection.UP, player);
         }
     }
 }

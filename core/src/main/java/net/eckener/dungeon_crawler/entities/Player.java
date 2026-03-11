@@ -2,21 +2,19 @@ package net.eckener.dungeon_crawler.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import net.eckener.dungeon_crawler.logic.Assets;
 import net.eckener.dungeon_crawler.logic.EntityRegistry;
 import net.eckener.dungeon_crawler.logic.ItemStack;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import net.eckener.dungeon_crawler.items.Bow;
-import net.eckener.dungeon_crawler.logic.*;
-import net.eckener.dungeon_crawler.items.Maul;
 import net.eckener.dungeon_crawler.items.Weapon;
 import net.eckener.dungeon_crawler.logic.Inventory;
 import net.eckener.dungeon_crawler.ui.Hotbar;
 import net.eckener.dungeon_crawler.logic.AnimationLoader;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import net.eckener.dungeon_crawler.logic.Direction;
+import net.eckener.dungeon_crawler.logic.EntityDirection;
+
+import java.util.EnumMap;
 
 
 public class Player extends LivingEntity{
@@ -30,35 +28,27 @@ public class Player extends LivingEntity{
     private final float baseAttackCooldown = 1.0f;
     private ItemStack selectedItem;
     private int killcount;
+    private float stateTime = 0f;
+    private boolean isMoving = false;
+    private EnumMap<EntityDirection, Animation<TextureRegion>> walkAnimations = new EnumMap<>(EntityDirection.class);
 
 
     public Player(int maxHealth, int maxMana) {
-        super(1,1, Assets.get(Assets.PLAYER_DOWN), maxHealth,2);
+        super(1,1, Assets.get(Assets.PLAYER_DOWN + "frame_0.png"), maxHealth,2);
         this.maxMana = maxMana;
 
         inventory = new Inventory(4, 7, "Inventory");
         hotbar = new Hotbar();
-
         selectedItem = hotbar.getInventory().getItemStack(0, 0);
-        walkAnimations.put(
-            Direction.UP,
-            AnimationLoader.load("textures/entities/player_up.png", 6, 5, 0.08f)
-        );
 
-        walkAnimations.put(
-            Direction.DOWN,
-            AnimationLoader.load("textures/entities/player_down.png", 6, 5, 0.08f)
-        );
+        walkAnimations = new EnumMap<>(EntityDirection.class);
+        // load animations
+        walkAnimations.put(EntityDirection.UP, AnimationLoader.load(Assets.PLAYER_UP, 14, 0.08f));
+        walkAnimations.put(EntityDirection.DOWN, AnimationLoader.load(Assets.PLAYER_DOWN, 14, 0.08f));
+        walkAnimations.put(EntityDirection.LEFT, AnimationLoader.load(Assets.PLAYER_LEFT, 14, 0.08f));
+        walkAnimations.put(EntityDirection.RIGHT, AnimationLoader.load(Assets.PLAYER_RIGHT, 14, 0.08f));
 
-        walkAnimations.put(
-            Direction.LEFT,
-            AnimationLoader.load("textures/entities/player_left.png", 6, 5, 0.08f)
-        );
-
-        walkAnimations.put(
-            Direction.RIGHT,
-            AnimationLoader.load("textures/entities/player_right.png", 6, 5, 0.08f)
-        );
+        TextureRegion firstFrame = walkAnimations.get(EntityDirection.DOWN).getKeyFrame(0);
     }
 
     /**
@@ -67,25 +57,30 @@ public class Player extends LivingEntity{
     public void move() {
         boolean matched = false;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            setTexture(Assets.get(Assets.PLAYER_UP));
+            //setTexture(Assets.get(Assets.PLAYER_UP));
             direction.add(0,1);
             matched = true;
+            facing = EntityDirection.UP;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            setTexture(Assets.get(Assets.PLAYER_LEFT));
+            //setTexture(Assets.get(Assets.PLAYER_LEFT));
             direction.add(-1,0);
             matched = true;
+            facing = EntityDirection.LEFT;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)  || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            setTexture(Assets.get(Assets.PLAYER_DOWN));
+            //setTexture(Assets.get(Assets.PLAYER_DOWN));
             direction.add(0,-1);
             matched = true;
+            facing = EntityDirection.DOWN;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            setTexture(Assets.get(Assets.PLAYER_RIGHT));
+            //setTexture(Assets.get(Assets.PLAYER_RIGHT));
             direction.add(1,0);
             matched = true;
+            facing = EntityDirection.RIGHT;
         }
+        isMoving = matched;
         if (matched) {
             direction.nor().scl(speed - momentum.len());
             momentum.add(direction);
@@ -207,6 +202,22 @@ public class Player extends LivingEntity{
         timeSinceLastAttack += deltaTime;
         move();
         selectedItem = hotbar.getInventory().getItemStack(0,0);
+
+        // Determine which animation should be active
+        Animation<TextureRegion> newAnim = walkAnimations.get(facing);
+
+        // Switch animation only if the animation object actually changed
+        if (currentAnimation != newAnim) {
+            setCurrentAnimation(newAnim); // resets stateTime only when switching direction
+        }
+
+        // Advance the animation timer
+        updateAnimation(deltaTime);
+
+        // Optional: handle stopping movement by showing the first frame
+        if (!isMoving && currentAnimation != null) {
+            stateTime = currentAnimation.getAnimationDuration(); // stays on first frame
+        }
     }
 
 

@@ -11,9 +11,9 @@ import net.eckener.dungeon_crawler.*;
 import net.eckener.dungeon_crawler.Blocks.Block;
 import net.eckener.dungeon_crawler.Blocks.BlockRegistry;
 import net.eckener.dungeon_crawler.logic.*;
-import net.eckener.dungeon_crawler.logic.Direction;
+import net.eckener.dungeon_crawler.logic.EntityDirection;
 
-import java.util.EnumMap;
+
 
 import static net.eckener.dungeon_crawler.logic.RoomRegistry.getCurrentRoom;
 
@@ -27,11 +27,10 @@ public abstract class Entity extends Sprite {
     protected Vector2 momentum = new Vector2();
     protected Vector2 direction = new Vector2();
     private Vector2 timescaledMomentum = new Vector2();
-    protected Direction facing = Direction.DOWN;
-    protected float stateTime = 0f;
+    protected EntityDirection facing = EntityDirection.DOWN;
 
-    protected EnumMap<Direction, Animation<TextureRegion>> walkAnimations =
-        new EnumMap<>(Direction.class);
+    protected Animation<TextureRegion> currentAnimation;
+    protected float stateTime = 0f;
 
     private final Room room;
 
@@ -76,27 +75,44 @@ public abstract class Entity extends Sprite {
         hitbox = new Polygon(vertices);
         updateHitbox();
     }
+
     protected void updateFacing() {
 
         if (momentum.len2() < 0.0001f)
             return;
 
         if (Math.abs(momentum.x) > Math.abs(momentum.y))
-            facing = momentum.x > 0 ? Direction.RIGHT : Direction.LEFT;
+            facing = momentum.x > 0 ? EntityDirection.RIGHT : EntityDirection.LEFT;
         else
-            facing = momentum.y > 0 ? Direction.UP : Direction.DOWN;
+            facing = momentum.y > 0 ? EntityDirection.UP : EntityDirection.DOWN;
     }
 
-    protected void updateAnimation() {
+    protected void updateAnimation(float delta) {
 
-        Animation<TextureRegion> animation = walkAnimations.get(facing);
+        if (currentAnimation == null) return;
 
-        if (animation == null)
-            return;
+        stateTime += delta;
 
-        TextureRegion frame = animation.getKeyFrame(stateTime, true);
+        TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
 
         setRegion(frame);
+    }
+
+    public void setCurrentAnimation(Animation<TextureRegion> animation) {
+        if (this.currentAnimation != animation) {
+            this.currentAnimation = animation;
+            this.stateTime = 0f; // restart animation when switching
+        }
+    }
+
+    public TextureRegion getCurrentFrame() {
+        if (currentAnimation != null) {
+            return currentAnimation.getKeyFrame(stateTime, true); // looping
+        }
+        if (getTexture() != null) {
+            return new TextureRegion(getTexture()); // fallback to static texture
+        }
+        return null; // nothing to draw
     }
 
     /**
@@ -182,7 +198,7 @@ public abstract class Entity extends Sprite {
         translate(0, timescaledMomentum.y);
         updateHitbox();
         resolveCollisions();
-        updateAnimation();
+        updateAnimation(deltaTime);
 
     }
 

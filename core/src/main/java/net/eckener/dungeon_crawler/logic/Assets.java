@@ -16,10 +16,14 @@ public final class Assets {
     /**
      * Connecting identifier-strings to their respective texture/asset paths
      */
-    public static final String PLAYER_DOWN = "textures/entities/player_down.png";
-    public static final String PLAYER_UP = "textures/entities/player_up.png";
-    public static final String PLAYER_LEFT  = "textures/entities/player_left.png";
-    public static final String PLAYER_RIGHT  = "textures/entities/player_right.png";
+    public static final String PLAYER_DOWN_OLD = "textures/entities/player_down.png";
+    public static final String PLAYER_UP_OLD = "textures/entities/player_up.png";
+    public static final String PLAYER_LEFT_OLD  = "textures/entities/player_left.png";
+    public static final String PLAYER_RIGHT_OLD  = "textures/entities/player_right.png";
+    public static final String PLAYER_DOWN = "textures/entities/player_down/";
+    public static final String PLAYER_UP = "textures/entities/player_up/";
+    public static final String PLAYER_LEFT  = "textures/entities/player_left/";
+    public static final String PLAYER_RIGHT  = "textures/entities/player_right/";
     public static final String INVENTORY_SLOT  = "textures/gui/inventory/inventory_slot.png";
     public static final String INVENTORY_BACKGROUND  = "textures/gui/inventory/inventory_background.png";
     public static final String WOODEN_SHOVEL  = "textures/placeholders/wooden_shovel.png";
@@ -71,10 +75,18 @@ public final class Assets {
      */
 
     public static void load() {
-        manager.load(PLAYER_DOWN, Texture.class);
-        manager.load(PLAYER_UP, Texture.class);
-        manager.load(PLAYER_LEFT , Texture.class);
-        manager.load(PLAYER_RIGHT, Texture.class);
+        for (int i = 0; i < 14; i++) {
+
+            manager.load(PLAYER_UP + "frame_" + i + ".png", Texture.class);
+            manager.load(PLAYER_DOWN + "frame_" + i + ".png", Texture.class);
+            manager.load(PLAYER_LEFT + "frame_" + i + ".png", Texture.class);
+            manager.load(PLAYER_RIGHT + "frame_" + i + ".png", Texture.class);
+
+        }
+        manager.load(PLAYER_DOWN_OLD, Texture.class);
+        manager.load(PLAYER_UP_OLD, Texture.class);
+        manager.load(PLAYER_LEFT_OLD, Texture.class);
+        manager.load(PLAYER_RIGHT_OLD, Texture.class);
         manager.load(INVENTORY_SLOT, Texture.class);
         manager.load(INVENTORY_BACKGROUND, Texture.class);
         manager.load(WOODEN_SHOVEL, Texture.class);
@@ -116,8 +128,6 @@ public final class Assets {
         manager.load(LESSER_HEALING_POTION, Texture.class);
         manager.load(NORMAL_HEALING_POTION, Texture.class);
         manager.load(GREATER_HEALING_POTION, Texture.class);
-
-
     }
 
     /**
@@ -147,6 +157,8 @@ public final class Assets {
      * @return {@link Texture}
      */
     public static Texture get(String path) {
+        if (!manager.isLoaded(path, Texture.class))
+            throw new RuntimeException("Asset not loaded: " + path);
         return manager.get(path, Texture.class);
     }
 
